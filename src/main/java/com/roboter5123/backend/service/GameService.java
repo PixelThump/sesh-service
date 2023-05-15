@@ -1,7 +1,7 @@
 package com.roboter5123.backend.service;
-import com.roboter5123.backend.service.model.Command;
+import java.util.List;
 
 public interface GameService {
 
-    void addCommand(Command command, String gameCode);
+    List<String> joinGame(String gameCode, String playerName);
 }
