@@ -1,6 +1,4 @@
-package com.roboter5123.backend.service.model;
-import com.roboter5123.backend.service.model.action.Action;
-
+package com.roboter5123.backend.game;
 public interface Command {
 
     String getPlayer();
