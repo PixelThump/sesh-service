@@ -1,7 +1,10 @@
 package com.roboter5123.backend.service;
-import java.util.List;
+import com.roboter5123.backend.game.Command;
+import com.roboter5123.backend.game.GameState;
 
 public interface GameService {
 
-    List<String> joinGame(String gameCode, String playerName);
+    GameState<Object> joinGame(String gameCode, String playerName);
+    void addCommand(String gameCode, Command command);
+    GameState<Object> updateGameState(String gameCode);
 }

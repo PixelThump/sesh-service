@@ -1,38 +1,49 @@
 package com.roboter5123.backend.service;
+import com.roboter5123.backend.game.Command;
+import com.roboter5123.backend.game.Game;
+import com.roboter5123.backend.game.GameFactory;
+import com.roboter5123.backend.game.GameState;
+import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    Map<String, List<String>> games;
-    private final SimpMessagingTemplate messagingTemplate;
+    Map<String, Game> games;
+    GameFactory factory;
 
     @Autowired
-    public GameServiceImpl(SimpMessagingTemplate messagingTemplate) {
+    public GameServiceImpl(GameFactory factory) {
 
         this.games = new HashMap<>();
-        this.messagingTemplate = messagingTemplate;
+        this.factory = factory;
+        this.games.put("a", factory.createGame("chat"));
     }
 
     @Override
-    public List<String> joinGame(String gameCode, String playerName) {
+    public GameState joinGame(String gameCode, String playerName) throws NoSuchSessionException {
 
-        List<String> game = this.games.computeIfAbsent(gameCode, k ->
-                {
-                    this.games.put(k, new ArrayList<>());
-                    return this.games.get(k);
-                }
-        );
+        Game game = this.games.get(gameCode);
 
-        game.add(playerName);
-        this.messagingTemplate.convertAndSend("/topic/game/" + gameCode, playerName);
-        return game;
+        if (game == null) {
+
+            throw new NoSuchSessionException();
+        }
+        return game.joinGame(playerName);
+    }
+
+    @Override
+    public void addCommand(String gameCode, Command command) {
+//Todo: Implement
+    }
+
+    @Override
+    public GameState updateGameState(String gameCode) {
+//Todo: Implement
+        return null;
     }
 }
