@@ -1,9 +1,10 @@
-package com.roboter5123.backend.game;
+package com.roboter5123.backend.service;
+import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.chat.ChatGame;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameFactory {
+public class GameFactory{
 
     public Game createGame(String type) {
 

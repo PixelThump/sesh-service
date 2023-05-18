@@ -1,9 +1,10 @@
 package com.roboter5123.backend.service;
 import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
-import com.roboter5123.backend.game.GameFactory;
 import com.roboter5123.backend.game.GameState;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.model.StompMessage;
+import com.roboter5123.backend.service.model.StompMessageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,22 @@ import java.util.Map;
 @Service
 public class GameServiceImpl implements GameService {
 
-    Map<String, Game> games;
-    GameFactory factory;
+    private final Map<String, Game> games;
+    private final GameFactory gameFactory;
+    private final StompMessageFactory messageFactory;
 
     @Autowired
-    public GameServiceImpl(GameFactory factory) {
+    public GameServiceImpl(GameFactory gameFactory, StompMessageFactory messageFactory) {
+
+        this.messageFactory = messageFactory;
 
         this.games = new HashMap<>();
-        this.factory = factory;
-        this.games.put("a", factory.createGame("chat"));
+        this.gameFactory = gameFactory;
+        this.games.put("a", this.gameFactory.createGame("chat"));
     }
 
     @Override
-    public GameState joinGame(String gameCode, String playerName) throws NoSuchSessionException {
+    public Map<String, StompMessage> joinGame(String gameCode, String playerName) throws NoSuchSessionException {
 
         Game game = this.games.get(gameCode);
 
@@ -33,7 +37,13 @@ public class GameServiceImpl implements GameService {
 
             throw new NoSuchSessionException();
         }
-        return game.joinGame(playerName);
+
+        GameState state = game.joinGame(playerName);
+
+        Map<String,StompMessage> messages = new HashMap<>();
+        messages.put("reply", messageFactory.getMessage(state));
+        messages.put("broadcast", messageFactory.getMessage(state.getLastCommand()));
+        return messages;
     }
 
     @Override
