@@ -1,6 +1,5 @@
 package com.roboter5123.backend.stomp;
 import com.roboter5123.backend.service.GameService;
-import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.StompMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,17 +31,17 @@ public class GameController {
     @SubscribeMapping("/topic/game/{gameCode}")
     public StompMessage subscribe(@DestinationVariable String gameCode, @Header("playerName") String playerName) {
 
-        try {
 
             Map<String, StompMessage> messages= gameService.joinGame(gameCode, playerName);
+
+            if (messages.containsKey("error")){
+
+                return messages.get("error");
+            }
+
             messagingTemplate.convertAndSend("/topic/game/"+gameCode, messages.get("broadcast"));
             return messages.get("reply");
 
-        } catch (NoSuchSessionException e) {
-
-            logger.warn("Game Session with code: {} does not exist", gameCode);
-            throw e;
-        }
 
     }
 }

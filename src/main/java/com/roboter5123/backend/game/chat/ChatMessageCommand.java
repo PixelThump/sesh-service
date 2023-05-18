@@ -11,20 +11,18 @@ public class ChatMessageCommand implements Command {
     private ChatMessageAction action;
 
 
-
-    @Override
     public String getPlayer() {
 
         return player;
     }
 
-    @Override
-    public void setPlayer(String player) {
 
-        this.player = player;
+    public void setPlayer(String playerName) {
+
+        this.player = playerName;
     }
 
-    @Override
+
     public ChatMessageAction getAction() {
 
         return action;

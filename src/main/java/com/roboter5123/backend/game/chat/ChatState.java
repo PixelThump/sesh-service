@@ -24,7 +24,7 @@ public class ChatState implements GameState {
 
         this.chatter.add(playerName);
         this.chattLog.add(playerName + " joined the Conversation");
-        this.lastJoinCommand = new ChatMessageCommand("server", new ChatMessageAction("JOIN", playerName));
+        this.lastJoinCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
     }
 
     @Override

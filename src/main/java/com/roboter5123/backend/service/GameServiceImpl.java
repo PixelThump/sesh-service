@@ -3,6 +3,7 @@ import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameState;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.model.ErrorStompMessage;
 import com.roboter5123.backend.service.model.StompMessage;
 import com.roboter5123.backend.service.model.StompMessageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,11 @@ public class GameServiceImpl implements GameService {
 
         if (game == null) {
 
-            throw new NoSuchSessionException();
+            NoSuchSessionException exception = new NoSuchSessionException("No such Session exists");
+            ErrorStompMessage message = messageFactory.getMessage(exception);
+            Map<String,StompMessage> messages = new HashMap<>();
+            messages.put("error", message);
+            return messages;
         }
 
         GameState state = game.joinGame(playerName);
