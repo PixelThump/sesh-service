@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MessagingControllerImpl implements MessagingController {
@@ -31,7 +32,8 @@ public class MessagingControllerImpl implements MessagingController {
     }
 
     @Override
-    public StompMessage createSession() {
+    @PostMapping("/sessions")
+    public String createSession() {
 
 //        TODO:Implement
         return null;

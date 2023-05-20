@@ -8,6 +8,7 @@ import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.JoinPayloads;
+import lombok.experimental.StandardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -45,6 +47,10 @@ class MessagingControllerImplTest {
     @Test
     void createSession_should_return_session_code() {
 
+        String expected = sessionCode;
+        String result = messagingController.createSession();
+
+        assertEquals(expected, result);
     }
 
     @Test
@@ -81,7 +87,9 @@ class MessagingControllerImplTest {
     }
 
     @Test
-    void broadcast() {
+    void broadcast_should_call_broadcaster(){
 
+        messagingController.broadcast(sessionCode,playername);
+        verify(broadcasterMock).broadcastGameUpdate(any(),any());
     }
 }
