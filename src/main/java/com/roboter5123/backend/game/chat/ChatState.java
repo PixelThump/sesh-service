@@ -10,20 +10,20 @@ import java.util.Map;
 public class ChatState implements GameState {
 
      private final List<String> chatter;
-     private final List<String> chattLog;
+     private final List<String> chatLog;
 
      private Command lastJoinCommand;
 
     public ChatState() {
 
         this.chatter = new ArrayList<>();
-        this.chattLog = new ArrayList<>();
+        this.chatLog = new ArrayList<>();
     }
 
     public void join(String playerName) {
 
         this.chatter.add(playerName);
-        this.chattLog.add(playerName + " joined the Conversation");
+        this.chatLog.add(playerName + " joined the Conversation");
         this.lastJoinCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
     }
 
@@ -37,7 +37,7 @@ public class ChatState implements GameState {
     public Map<String, Object> getState() {
 
         Map<String,Object> state = new HashMap<>();
-        state.put("chatlog", this.chattLog);
+        state.put("chatlog", this.chatLog);
         state.put("chatters", this.chatter);
         return state;
     }

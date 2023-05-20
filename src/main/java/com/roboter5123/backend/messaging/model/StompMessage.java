@@ -1,4 +1,4 @@
-package com.roboter5123.backend.service.model;
+package com.roboter5123.backend.messaging.model;
 public abstract class StompMessage {
 
     private StompMessageType messageType;
