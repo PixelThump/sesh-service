@@ -39,7 +39,7 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @SubscribeMapping("/topic/game/{sessionCode}")
-    public StompMessage joinSession(@Header String playerName, @DestinationVariable String sessionCode) {
+    public StompMessage joinSession(@DestinationVariable String sessionCode, @Header String playerName) {
 
         JoinPayloads payloads;
 
@@ -53,7 +53,7 @@ public class MessagingControllerImpl implements MessagingController {
         }
 
         Command broadcast = payloads.getBroadcast();
-        broadcast("/topic/game/" + sessionCode, broadcast);
+        broadcast(sessionCode, broadcast);
 
         return messageFactory.getMessage(payloads.getReply());
     }
