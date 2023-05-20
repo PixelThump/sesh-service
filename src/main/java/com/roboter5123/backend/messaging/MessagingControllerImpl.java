@@ -39,7 +39,7 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @SubscribeMapping("/topic/game/{sessionCode}")
-    public StompMessage joinSession(@DestinationVariable String sessionCode, @Header String playerName) {
+    public StompMessage joinSession(@Header String playerName, @DestinationVariable String sessionCode) {
 
         JoinPayloads payloads;
 
