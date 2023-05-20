@@ -14,13 +14,12 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class MessagingControllerImpl implements MessagingController{
+public class MessagingControllerImpl implements MessagingController {
 
     private final GameService gameService;
     private final MessageBroadcaster broadcaster;
     Logger logger;
     StompMessageFactory messageFactory;
-
 
     @Autowired
     public MessagingControllerImpl(GameService gameService, MessageBroadcaster broadcaster, StompMessageFactory messageFactory) {
@@ -48,13 +47,13 @@ public class MessagingControllerImpl implements MessagingController{
 
             payloads = gameService.joinGame(sessionCode, playerName);
 
-        }catch (NoSuchSessionException e){
+        } catch (NoSuchSessionException e) {
 
             return messageFactory.getMessage(e);
         }
 
         Command broadcast = payloads.getBroadcast();
-        broadcast("/topic/game/"+sessionCode, broadcast);
+        broadcast("/topic/game/" + sessionCode, broadcast);
 
         return messageFactory.getMessage(payloads.getReply());
     }
@@ -62,8 +61,7 @@ public class MessagingControllerImpl implements MessagingController{
     @Override
     public void broadcast(String sessionCode, Object payload) {
 
-        StompMessage message = messageFactory.getMessage(payload);
-        this.broadcaster.broadcast(sessionCode,message);
+        this.broadcaster.broadcastGameUpdate(sessionCode, payload);
     }
 
 }

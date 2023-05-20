@@ -42,7 +42,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void broadcastGameUpdate(String sessionCode, Object payload) {
 
-        this.broadcaster.broadcastGameUpdate("/topic/game/"+sessionCode,payload);
+        this.broadcaster.broadcastGameUpdate(sessionCode,payload);
     }
 
 }
