@@ -15,7 +15,6 @@ public class GameSessionManagerImpl implements GameSessionManager {
     Random random;
     private final GameFactory gameFactory;
 
-
     public GameSessionManagerImpl(GameFactory gameFactory, Random random) {
 
         this.games = new HashMap<>();
@@ -70,11 +69,16 @@ public class GameSessionManagerImpl implements GameSessionManager {
 
         final int LETTER_A_NUMBER = 97;
         final int LETTER_Z_NUMBER = 122;
-        final int codeLength= 4;
+        final int codeLength = 4;
 
-        return random.ints(LETTER_A_NUMBER,LETTER_Z_NUMBER + 1)
-                .limit(codeLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+        String sessionCode;
+        do {
+            sessionCode = random.ints(LETTER_A_NUMBER, LETTER_Z_NUMBER + 1)
+                    .limit(codeLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+        } while (this.games.containsKey(sessionCode));
+
+        return sessionCode;
     }
 }
