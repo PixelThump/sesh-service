@@ -1,38 +1,48 @@
 package com.roboter5123.backend.service;
+import com.roboter5123.backend.game.Game;
+import com.roboter5123.backend.game.GameMode;
+import com.roboter5123.backend.game.JoinUpdate;
+import com.roboter5123.backend.messaging.MessageBroadcaster;
+import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.model.JoinPayloads;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    Map<String, List<String>> games;
-    private final SimpMessagingTemplate messagingTemplate;
+    GameSessionManager gameSessionManager;
+
+    private final MessageBroadcaster broadcaster;
 
     @Autowired
-    public GameServiceImpl(SimpMessagingTemplate messagingTemplate) {
+    public GameServiceImpl(GameSessionManager gameSessionManager, MessageBroadcaster broadcaster) {
 
-        this.games = new HashMap<>();
-        this.messagingTemplate = messagingTemplate;
+        this.gameSessionManager = gameSessionManager;
+        this.broadcaster = broadcaster;
+
+//        Todo: Remove in production
+        gameSessionManager.createGameSession(GameMode.CHAT, this);
     }
 
     @Override
-    public List<String> joinGame(String gameCode, String playerName) {
+    public JoinPayloads joinGame(String gameCode, String playerName) throws NoSuchSessionException {
 
-        List<String> game = this.games.computeIfAbsent(gameCode, k ->
-                {
-                    this.games.put(k, new ArrayList<>());
-                    return this.games.get(k);
-                }
-        );
+        Game game = this.gameSessionManager.getGameSession(gameCode);
 
-        game.add(playerName);
-        this.messagingTemplate.convertAndSend("/topic/game/" + gameCode, playerName);
-        return game;
+        JoinUpdate joinUpdate = game.joinGame(playerName);
+
+        JoinPayloads payloads = new JoinPayloads();
+        payloads.setReply(joinUpdate.getGameState());
+        payloads.setBroadcast(joinUpdate.getJoincommand());
+
+        return payloads;
     }
+
+    @Override
+    public void broadcastGameUpdate(String sessionCode, Object payload) {
+
+        this.broadcaster.broadcastGameUpdate("/topic/game/"+sessionCode,payload);
+    }
+
 }
