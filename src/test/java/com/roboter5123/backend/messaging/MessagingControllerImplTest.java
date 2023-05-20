@@ -1,4 +1,5 @@
 package com.roboter5123.backend.messaging;
+import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.chat.ChatMessageAction;
 import com.roboter5123.backend.game.chat.ChatMessageCommand;
 import com.roboter5123.backend.game.chat.ChatState;
@@ -8,7 +9,6 @@ import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.JoinPayloads;
-import lombok.experimental.StandardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -47,8 +47,10 @@ class MessagingControllerImplTest {
     @Test
     void createSession_should_return_session_code() {
 
+        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(sessionCode);
+
         String expected = sessionCode;
-        String result = messagingController.createSession();
+        String result = messagingController.createSession(GameMode.CHAT);
 
         assertEquals(expected, result);
     }

@@ -1,5 +1,6 @@
 package com.roboter5123.backend.messaging;
 import com.roboter5123.backend.game.Command;
+import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.messaging.model.StompMessage;
 import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
@@ -33,10 +34,9 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @PostMapping("/sessions")
-    public String createSession() {
+    public String createSession(GameMode gameMode) {
 
-//        TODO:Implement
-        return null;
+        return this.gameService.createSession(gameMode);
     }
 
     @Override
