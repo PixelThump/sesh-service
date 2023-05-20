@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B clean test package --file pom.xml
+        run: mvn -B clean test jacoco:check package --file pom.xml
 
       - name: Add coverage to PR
         uses: madrapps/jacoco-report@v1.3
