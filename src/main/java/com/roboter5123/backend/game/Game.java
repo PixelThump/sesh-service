@@ -1,7 +1,9 @@
 package com.roboter5123.backend.game;
+import java.util.Map;
+
 public interface Game {
 
-    GameState joinGame(String playerName);
+    Map<String, Object> joinGame(String playerName);
     void addCommand(Command command);
     GameState processCommands();
 }

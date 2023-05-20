@@ -3,6 +3,9 @@ import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameState;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChatGame implements Game {
 
     ChatState chatState;
@@ -13,10 +16,16 @@ public class ChatGame implements Game {
     }
 
     @Override
-    public GameState joinGame(String playerName) {
+    public Map<String, Object> joinGame(String playerName) {
 
         this.chatState.join(playerName);
-        return chatState;
+        Command joinCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
+
+        Map<String, Object> joinUpdate = new HashMap<>();
+        joinUpdate.put("state", this.chatState);
+        joinUpdate.put("joinCommand", joinCommand);
+
+        return joinUpdate;
     }
 
     @Override

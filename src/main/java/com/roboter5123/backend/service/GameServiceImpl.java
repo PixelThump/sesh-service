@@ -4,7 +4,7 @@ import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameState;
 import com.roboter5123.backend.messaging.MessagingController;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
-import com.roboter5123.backend.service.model.GameMode;
+import com.roboter5123.backend.game.GameMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +32,10 @@ public class GameServiceImpl implements GameService {
 
         Game game = this.gameSessionManager.getGameSession(gameCode);
 
-        GameState state = game.joinGame(playerName);
+        Map<String, Object> joinChanges = game.joinGame(playerName);
+        GameState state = (GameState) joinChanges.get("state");
         //        TODO: Rework how i get the join command
-        Command joinCommand = state.getLastCommand();
+        Command joinCommand = (Command)joinChanges.get("joinCommand");
 
         Map<String,Object> payloads = new HashMap<>();
         payloads.put("reply", state);

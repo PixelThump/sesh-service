@@ -1,7 +1,7 @@
 package com.roboter5123.backend.service;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.chat.ChatGame;
-import com.roboter5123.backend.service.model.GameMode;
+import com.roboter5123.backend.game.GameMode;
 import org.springframework.stereotype.Component;
 
 @Component
