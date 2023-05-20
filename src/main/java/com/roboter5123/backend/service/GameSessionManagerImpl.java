@@ -1,7 +1,7 @@
 package com.roboter5123.backend.service;
 import com.roboter5123.backend.game.Game;
-import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.backend.game.GameMode;
+import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -55,13 +55,24 @@ public class GameSessionManagerImpl implements GameSessionManager {
         return sessionCode;
     }
 
+    @Override
+    public String createGameSession(GameMode gameMode, GameService service) {
+
+        Game game = gameFactory.createGame(gameMode, service);
+        String sessionCode = createSessionCode();
+
+        this.games.put(sessionCode, game);
+
+        return sessionCode;
+    }
+
     private String createSessionCode() {
 
         final int LETTER_A_NUMBER = 97;
         final int LETTER_Z_NUMBER = 122;
         final int codeLength= 4;
 
-        return random.ints(LETTER_Z_NUMBER, LETTER_A_NUMBER + 1)
+        return random.ints(LETTER_A_NUMBER,LETTER_Z_NUMBER + 1)
                 .limit(codeLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();

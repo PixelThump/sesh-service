@@ -1,15 +1,17 @@
 package com.roboter5123.backend.messaging;
+import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.messaging.model.StompMessage;
 import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.model.JoinPayloads;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-
-import java.util.Map;
 
 @Controller
 public class MessagingControllerImpl implements MessagingController{
@@ -37,10 +39,10 @@ public class MessagingControllerImpl implements MessagingController{
     }
 
     @Override
-    @SubscribeMapping("/topic/game/{gameCode}")
-    public StompMessage joinSession(String playerName, String sessionCode) {
+    @SubscribeMapping("/topic/game/{sessionCode}")
+    public StompMessage joinSession(@Header String playerName, @DestinationVariable String sessionCode) {
 
-        Map<String, Object> payloads;
+        JoinPayloads payloads;
 
         try {
 
@@ -51,10 +53,10 @@ public class MessagingControllerImpl implements MessagingController{
             return messageFactory.getMessage(e);
         }
 
-        StompMessage broadcast = messageFactory.getMessage(payloads.get("braoadcast"));
+        Command broadcast = payloads.getBroadcast();
         broadcast("/topic/game/"+sessionCode, broadcast);
 
-        return messageFactory.getMessage(payloads.get("reply"));
+        return messageFactory.getMessage(payloads.getReply());
     }
 
     @Override

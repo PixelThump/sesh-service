@@ -5,6 +5,5 @@ public interface MessagingController {
 
     StompMessage createSession();
     StompMessage joinSession(String playerName, String sessionCode);
-
     void broadcast(String sessionCode, Object payload);
 }

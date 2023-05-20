@@ -1,41 +1,47 @@
 package com.roboter5123.backend.game.chat;
 import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
-import com.roboter5123.backend.game.GameState;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.roboter5123.backend.game.GameMode;
+import com.roboter5123.backend.game.JoinUpdate;
+import com.roboter5123.backend.service.GameService;
 
 public class ChatGame implements Game {
 
     ChatState chatState;
 
-    public ChatGame() {
+    private final GameService service;
+    private GameMode gameMode;
+
+    public ChatGame(GameService service) {
 
         this.chatState = new ChatState();
+        this.service = service;
+
+
     }
 
     @Override
-    public Map<String, Object> joinGame(String playerName) {
+    public JoinUpdate joinGame(String playerName) {
 
         this.chatState.join(playerName);
         Command joinCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
 
-        Map<String, Object> joinUpdate = new HashMap<>();
-        joinUpdate.put("state", this.chatState);
-        joinUpdate.put("joinCommand", joinCommand);
+        JoinUpdate joinUpdate = new ChatJoinUpdate();
+        joinUpdate.setGameState(this.chatState);
+        joinUpdate.setJoinCommand(joinCommand);
 
         return joinUpdate;
     }
 
     @Override
-    public void addCommand(Command command) {
-//TODO:IMPLEMENT
+    public void setGamemode(GameMode gameMode) {
+
+        this.gameMode = gameMode;
     }
 
     @Override
-    public GameState processCommands() {
+    public GameMode getGameMode() {
 
-        return null;
+        return this.gameMode;
     }
 }
