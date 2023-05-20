@@ -26,6 +26,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public String createSession(GameMode gameMode) {
+
+        return this.gameSessionManager.createGameSession(gameMode);
+    }
+
+    @Override
     public JoinPayloads joinGame(String gameCode, String playerName) throws NoSuchSessionException {
 
         Game game = this.gameSessionManager.getGameSession(gameCode);
