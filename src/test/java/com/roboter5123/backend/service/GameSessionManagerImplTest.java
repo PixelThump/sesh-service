@@ -33,7 +33,7 @@ class GameSessionManagerImplTest {
     @BeforeEach
     void setUp() {
 
-        chat = new ChatGame(null);
+        chat = new ChatGame();
     }
 
     @Test

@@ -3,21 +3,16 @@ import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.JoinUpdate;
-import com.roboter5123.backend.service.GameService;
 
 public class ChatGame implements Game {
 
-    ChatState chatState;
+    private final ChatState chatState;
 
-    private final GameService service;
     private GameMode gameMode;
 
-    public ChatGame(GameService service) {
+    public ChatGame() {
 
         this.chatState = new ChatState();
-        this.service = service;
-
-
     }
 
     @Override
