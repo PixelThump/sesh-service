@@ -2,7 +2,9 @@ package com.roboter5123.backend.game.chat;
 import com.roboter5123.backend.game.Action;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessageAction implements Action {

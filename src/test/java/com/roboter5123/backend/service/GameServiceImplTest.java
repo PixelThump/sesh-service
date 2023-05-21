@@ -62,7 +62,8 @@ class GameServiceImplTest {
         expected.setReply(chatJoinUpdate.getGameState());
 
         JoinPayloads result = gameService.joinGame(sessioncode,playerName);
-        assertEquals(expected, result);
+        assertEquals(expected.getBroadcast(), result.getBroadcast());
+        assertEquals(expected.getReply(), result.getReply());
     }
 
     @Test
