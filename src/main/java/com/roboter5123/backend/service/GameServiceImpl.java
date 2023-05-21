@@ -32,9 +32,9 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public JoinPayloads joinGame(String gameCode, String playerName) throws NoSuchSessionException {
+    public JoinPayloads joinGame(String sessionCode, String playerName) throws NoSuchSessionException {
 
-        Game game = this.gameSessionManager.getGameSession(gameCode);
+        Game game = this.gameSessionManager.getGameSession(sessionCode);
 
         JoinUpdate joinUpdate = game.joinGame(playerName);
 

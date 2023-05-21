@@ -18,7 +18,6 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
         this.factory = factory;
     }
 
-    @Override
     public void broadcast(String destination, StompMessage message) {
 
         this.messagingTemplate.convertAndSend(destination, message);
