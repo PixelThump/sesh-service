@@ -1,17 +1,11 @@
 package com.roboter5123.backend.messaging.model;
-import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Map;
+@Getter
+@Setter
 public class StateStompMessage extends StompMessage {
 
     Map<String, Object> body;
-
-    public Map<String, Object> getBody() {
-
-        return body;
-    }
-
-    public void setBody(Map<String, Object> body) {
-
-        this.body = body;
-    }
 }

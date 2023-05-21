@@ -3,8 +3,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ErrorStompMessage extends StompMessage{
 
     private String body;
