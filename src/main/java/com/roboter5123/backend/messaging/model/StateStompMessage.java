@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,4 +14,18 @@ import java.util.Map;
 public class StateStompMessage extends StompMessage {
 
     Map<String, Object> body;
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof StateStompMessage that)) return false;
+        return body.equals(that.body);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(body);
+    }
 }
