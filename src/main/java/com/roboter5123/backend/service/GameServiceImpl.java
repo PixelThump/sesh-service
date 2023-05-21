@@ -4,6 +4,7 @@ import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.JoinUpdate;
 import com.roboter5123.backend.messaging.MessageBroadcaster;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,13 @@ public class GameServiceImpl implements GameService {
         this.broadcaster = broadcaster;
 
 //        Todo: Remove in production
-        gameSessionManager.createGameSession(GameMode.CHAT, this);
+//        gameSessionManager.createGameSession(GameMode.CHAT, this);
     }
 
     @Override
-    public String createSession(GameMode gameMode) {
+    public String createSession(GameMode gameMode) throws TooManySessionsException {
 
-        return this.gameSessionManager.createGameSession(gameMode);
+        return this.gameSessionManager.createGameSession(gameMode, this);
     }
 
     @Override

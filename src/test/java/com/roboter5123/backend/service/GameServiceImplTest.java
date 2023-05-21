@@ -5,6 +5,7 @@ import com.roboter5123.backend.game.JoinUpdate;
 import com.roboter5123.backend.game.chat.ChatGame;
 import com.roboter5123.backend.game.chat.ChatJoinUpdate;
 import com.roboter5123.backend.messaging.MessageBroadcaster;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +42,9 @@ class GameServiceImplTest {
     }
 
     @Test
-    void createSession() {
+    void createSession() throws TooManySessionsException {
 
-        when(sessionManager.createGameSession(GameMode.CHAT)).thenReturn(sessioncode);
+        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(sessioncode);
 
         String result = gameService.createSession(GameMode.CHAT);
         assertEquals(sessioncode, result);
