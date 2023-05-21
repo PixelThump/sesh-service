@@ -11,9 +11,12 @@ public class GameFactory{
 
         Game game;
         if (gameMode == GameMode.CHAT && service!= null) {
+
             game = new ChatGame();
+
         } else {
-            game = new ChatGame();
+
+            throw new UnsupportedOperationException("");
         }
 
         return game;

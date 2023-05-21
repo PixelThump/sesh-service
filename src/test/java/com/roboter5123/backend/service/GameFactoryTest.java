@@ -6,26 +6,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class GameFactoryTest {
 
     @Autowired
     GameFactory gameFactory;
-
     @Autowired
     GameService service;
 
     @Test
-    void createGame() {
+    void CREATEGAME_WHEN_SUPPORTED_GAME_SHOULD_RETURN_GAME() {
 
         Game result = gameFactory.createGame(GameMode.CHAT, service);
-
-        assertEquals(ChatGame.class, result.getClass());
-
-        result = gameFactory.createGame(GameMode.CHAT,null);
-
         assertEquals(ChatGame.class, result.getClass());
     }
+
+    @Test
+    void CREATEGAME_WHEN_NOT_SUPPORTED_GAME_SHOULD_THROW_EXCEPTION() {
+
+        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.ZELDA, service));
+
+    }
+
 }

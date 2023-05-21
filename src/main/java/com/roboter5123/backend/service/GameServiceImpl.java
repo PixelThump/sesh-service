@@ -21,9 +21,6 @@ public class GameServiceImpl implements GameService {
 
         this.gameSessionManager = gameSessionManager;
         this.broadcaster = broadcaster;
-
-//        Todo: Remove in production
-//        gameSessionManager.createGameSession(GameMode.CHAT, this);
     }
 
     @Override
