@@ -8,6 +8,7 @@ import com.roboter5123.backend.messaging.model.StompMessage;
 import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class MessagingControllerImplTest {
     }
 
     @Test
-    void createSession_should_return_session_code() {
+    void createSession_should_return_session_code() throws TooManySessionsException {
 
         when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(sessionCode);
 

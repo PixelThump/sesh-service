@@ -2,6 +2,7 @@ package com.roboter5123.backend.service;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -44,18 +45,7 @@ public class GameSessionManagerImpl implements GameSessionManager {
     }
 
     @Override
-    public String createGameSession(GameMode gameMode) {
-
-        Game game = gameFactory.createGame(gameMode);
-        String sessionCode = createSessionCode();
-
-        this.games.put(sessionCode, game);
-
-        return sessionCode;
-    }
-
-    @Override
-    public String createGameSession(GameMode gameMode, GameService service) {
+    public String createGameSession(GameMode gameMode, GameService service) throws TooManySessionsException {
 
         Game game = gameFactory.createGame(gameMode, service);
         String sessionCode = createSessionCode();
@@ -65,13 +55,18 @@ public class GameSessionManagerImpl implements GameSessionManager {
         return sessionCode;
     }
 
-    private String createSessionCode() {
+    private String createSessionCode() throws TooManySessionsException {
 
         final int LETTER_A_NUMBER = 97;
         final int LETTER_Z_NUMBER = 122;
         final int codeLength = 4;
 
-        String sessionCode;
+        if (games.size() >= (Math.pow(LETTER_Z_NUMBER - (double)LETTER_A_NUMBER, codeLength))){
+
+            throw new TooManySessionsException();
+        }
+
+            String sessionCode;
         do {
             sessionCode = random.ints(LETTER_A_NUMBER, LETTER_Z_NUMBER + 1)
                     .limit(codeLength)

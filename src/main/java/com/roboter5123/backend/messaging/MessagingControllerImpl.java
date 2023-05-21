@@ -5,6 +5,7 @@ import com.roboter5123.backend.messaging.model.StompMessage;
 import com.roboter5123.backend.messaging.model.StompMessageFactory;
 import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,10 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @PostMapping("/sessions")
-    public String createSession(GameMode gameMode) {
+    public String createSession(GameMode gameMode) throws TooManySessionsException {
 
         return this.gameService.createSession(gameMode);
+
     }
 
     @Override
