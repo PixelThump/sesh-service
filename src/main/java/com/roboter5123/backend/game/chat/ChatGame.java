@@ -3,16 +3,19 @@ import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.JoinUpdate;
+import lombok.Getter;
 
 public class ChatGame implements Game {
 
     private final ChatState chatState;
 
-    private GameMode gameMode;
+    @Getter
+    private final GameMode gameMode;
 
     public ChatGame() {
 
         this.chatState = new ChatState();
+        this.gameMode = GameMode.CHAT;
     }
 
     @Override
@@ -26,17 +29,5 @@ public class ChatGame implements Game {
         joinUpdate.setJoinCommand(joinCommand);
 
         return joinUpdate;
-    }
-
-    @Override
-    public void setGamemode(GameMode gameMode) {
-
-        this.gameMode = gameMode;
-    }
-
-    @Override
-    public GameMode getGameMode() {
-
-        return this.gameMode;
     }
 }
