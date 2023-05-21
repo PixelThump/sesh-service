@@ -51,7 +51,7 @@ jobs:
         uses: madrapps/jacoco-report@v1.3
         with:
           paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
           min-coverage-overall: 80
           title: Coverage
           update-comment: true
