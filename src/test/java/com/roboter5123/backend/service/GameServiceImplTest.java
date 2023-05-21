@@ -58,7 +58,7 @@ class GameServiceImplTest {
         when(chat.joinGame(playerName)).thenReturn(chatJoinUpdate);
 
         JoinPayloads expected = new JoinPayloads();
-        expected.setBroadcast(chatJoinUpdate.getJoincommand());
+        expected.setBroadcast(chatJoinUpdate.getJoinCommand());
         expected.setReply(chatJoinUpdate.getGameState());
 
         JoinPayloads result = gameService.joinGame(sessioncode,playerName);

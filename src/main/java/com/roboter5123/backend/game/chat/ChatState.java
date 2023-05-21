@@ -12,7 +12,7 @@ public class ChatState implements GameState {
      private final List<String> chatter;
      private final List<String> chatLog;
 
-     private Command lastJoinCommand;
+     private Command lastCommand;
 
     public ChatState() {
 
@@ -24,13 +24,13 @@ public class ChatState implements GameState {
 
         this.chatter.add(playerName);
         this.chatLog.add(playerName + " joined the Conversation");
-        this.lastJoinCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
+        this.lastCommand = new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!"));
     }
 
     @Override
     public Command getLastCommand() {
 
-        return this.lastJoinCommand;
+        return this.lastCommand;
     }
 
     @Override

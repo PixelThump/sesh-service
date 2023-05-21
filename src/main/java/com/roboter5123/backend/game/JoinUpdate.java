@@ -3,6 +3,6 @@ public interface JoinUpdate {
 
     GameState getGameState();
     void setGameState(GameState state);
-    Command getJoincommand();
+    Command getJoinCommand();
     void setJoinCommand(Command command);
 }
