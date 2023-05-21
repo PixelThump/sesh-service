@@ -11,16 +11,11 @@ public class GameFactory{
 
         Game game;
         if (gameMode == GameMode.CHAT && service!= null) {
-            game = new ChatGame(service);
+            game = new ChatGame();
         } else {
-            game = new ChatGame(service);
+            game = new ChatGame();
         }
 
         return game;
-    }
-
-    public Game createGame(GameMode gameMode){
-
-        return this.createGame(gameMode,null);
     }
 }
