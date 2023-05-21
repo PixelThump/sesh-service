@@ -34,13 +34,13 @@ class GameFactoryTest {
     @Test
     void CREATEGAME_WHEN_NOT_SUPPORTED_GAME_WITH_NO_SERVICE_SHOULD_THROW_EXCEPTION() {
 
-        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.ZELDA));
+        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.UNKNOWN));
     }
 
     @Test
     void CREATEGAME_WHEN_NOT_SUPPORTED_GAME_WITH_SERVICE_SHOULD_THROW_EXCEPTION() {
 
-        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.ZELDA,service));
+        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.UNKNOWN,service));
     }
 
 }
