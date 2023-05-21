@@ -7,16 +7,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameFactory{
 
-    public Game createGame(GameMode gameMode, GameService service) {
+    public Game createGame(GameMode gameMode, GameService service) throws UnsupportedOperationException {
 
         Game game;
-        if (gameMode == GameMode.CHAT && service!= null) {
 
-            game = new ChatGame();
+        if (service == null) {
+
+            game = this.createGame(gameMode);
 
         } else {
 
-            throw new UnsupportedOperationException("");
+            throw new UnsupportedOperationException("No game of game mode " + gameMode.name() + "is supported.");
+        }
+
+        return game;
+    }
+
+    public Game createGame(GameMode gameMode) throws UnsupportedOperationException {
+
+        Game game;
+
+        if (gameMode == GameMode.CHAT){
+
+            game = new ChatGame();
+        }else {
+
+            throw new UnsupportedOperationException("No game of game mode " + gameMode.name() + "is supported.");
         }
 
         return game;
