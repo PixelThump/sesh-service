@@ -15,6 +15,8 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MessagingControllerImpl implements MessagingController {
@@ -35,7 +37,8 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @PostMapping("/sessions")
-    public String createSession(GameMode gameMode) throws TooManySessionsException {
+    @ResponseBody
+    public String createSession(@RequestBody GameMode gameMode) throws TooManySessionsException {
 
         return this.gameService.createSession(gameMode);
 
