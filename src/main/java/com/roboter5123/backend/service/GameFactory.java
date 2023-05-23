@@ -11,26 +11,11 @@ public class GameFactory{
 
         Game game;
 
-        if (service == null) {
-
-            game = this.createGame(gameMode);
-
-        } else {
-
-            throw new UnsupportedOperationException("No game of game mode " + gameMode.name() + "is supported.");
-        }
-
-        return game;
-    }
-
-    public Game createGame(GameMode gameMode) throws UnsupportedOperationException {
-
-        Game game;
-
-        if (gameMode == GameMode.CHAT){
+        if (gameMode == GameMode.CHAT) {
 
             game = new ChatGame();
-        }else {
+
+        } else {
 
             throw new UnsupportedOperationException("No game of game mode " + gameMode.name() + "is supported.");
         }

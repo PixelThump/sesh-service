@@ -49,7 +49,6 @@ public class GameSessionManagerImpl implements GameSessionManager {
 
         Game game = gameFactory.createGame(gameMode, service);
         String sessionCode = createSessionCode();
-
         this.games.put(sessionCode, game);
 
         return sessionCode;

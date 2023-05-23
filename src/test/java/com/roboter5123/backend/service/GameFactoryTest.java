@@ -18,23 +18,10 @@ class GameFactoryTest {
     GameService service;
 
     @Test
-    void CREATEGAME_WHEN_SUPPORTED_GAME_WITHOUT_SERVICE_SHOULD_RETURN_GAME() {
-
-        Game result = gameFactory.createGame(GameMode.CHAT);
-        assertEquals(ChatGame.class, result.getClass());
-    }
-
-    @Test
     void CREATEGAME_WHEN_SUPPORTED_GAME_WITH_SERVICE_SHOULD_RETURN_GAME() {
 
-        Game result = gameFactory.createGame(GameMode.CHAT, null);
+        Game result = gameFactory.createGame(GameMode.CHAT, service);
         assertEquals(ChatGame.class, result.getClass());
-    }
-
-    @Test
-    void CREATEGAME_WHEN_NOT_SUPPORTED_GAME_WITH_NO_SERVICE_SHOULD_THROW_EXCEPTION() {
-
-        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.UNKNOWN));
     }
 
     @Test
