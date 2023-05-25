@@ -1,7 +1,13 @@
 package com.roboter5123.backend.game;
-public interface Command {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    String getPlayer();
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class Command {
 
-    void setPlayer(String playerName);
+    private String player;
+
 }
