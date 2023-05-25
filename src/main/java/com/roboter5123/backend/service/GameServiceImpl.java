@@ -38,7 +38,7 @@ public class GameServiceImpl implements GameService {
 
         JoinPayloads payloads = new JoinPayloads();
         payloads.setReply(joinUpdate.getGameState());
-        payloads.setBroadcast(joinUpdate.getJoinCommand());
+        payloads.setBroadcast(joinUpdate.getCommand());
 
         return payloads;
     }

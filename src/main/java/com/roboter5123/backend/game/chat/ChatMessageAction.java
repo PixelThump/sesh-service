@@ -7,7 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 public class ChatMessageAction implements Action {
 
-    private ChatActionType type;
-
-    private String body;
+    private String message;
 }

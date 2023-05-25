@@ -2,7 +2,6 @@ package com.roboter5123.backend.messaging.model;
 import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.GameState;
 import com.roboter5123.backend.game.chat.ChatMessageAction;
-import com.roboter5123.backend.game.chat.ChatMessageCommand;
 import com.roboter5123.backend.game.chat.ChatState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ class StompMessageFactoryTest {
     @Test
     void GETMESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMANDSTOMPMESSAGE_WITH_COMMAND() {
 
-        Command command = new ChatMessageCommand(playerName, new ChatMessageAction());
+        Command command = new Command(playerName, new ChatMessageAction());
         CommandStompMessage expected = new CommandStompMessage();
         expected.setCommand(command);
         StompMessage result = messageFactory.getMessage(command);

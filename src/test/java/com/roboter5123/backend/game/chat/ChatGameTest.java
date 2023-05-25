@@ -1,4 +1,5 @@
 package com.roboter5123.backend.game.chat;
+import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.JoinUpdate;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ class ChatGameTest {
         ChatState state = new ChatState();
         state.getChatter().add(playerName);
         state.getChatLog().add(playerName + " joined the Conversation");
-        state.setLastCommand(new ChatMessageCommand("server", new ChatMessageAction(ChatActionType.JOIN, playerName)));
+        state.setLastCommand(new Command("server", new ChatJoinAction(playerName)));
 
         JoinUpdate expected = new JoinUpdate();
         expected.setGameState(state);
