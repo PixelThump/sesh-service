@@ -27,7 +27,7 @@ class ChatGameTest {
         ChatState state = new ChatState();
         state.getChatter().add(playerName);
         state.getChatLog().add(playerName + " joined the Conversation");
-        state.setLastCommand(new ChatMessageCommand("server", new ChatMessageAction("MESSAGE", playerName + " has joined the conversation!")));
+        state.setLastCommand(new ChatMessageCommand("server", new ChatMessageAction(ChatActionType.JOIN, playerName)));
 
         JoinUpdate expected = new ChatJoinUpdate();
         expected.setGameState(state);

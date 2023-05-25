@@ -6,10 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommandStompMessage extends StompMessage{
+public class CommandStompMessage implements StompMessage{
 
-    Command body;
+    Command command;
 }

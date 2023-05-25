@@ -32,7 +32,7 @@ class StompMessageFactoryTest {
 
         Exception exception = new RuntimeException(errorMessage);
         ErrorStompMessage expected = new ErrorStompMessage();
-        expected.setBody(exception.getMessage());
+        expected.setError(exception.getMessage());
         StompMessage result = messageFactory.getMessage(exception);
         assertEquals(expected, result);
     }
@@ -42,7 +42,7 @@ class StompMessageFactoryTest {
 
         Command command = new ChatMessageCommand(playerName, new ChatMessageAction());
         CommandStompMessage expected = new CommandStompMessage();
-        expected.setBody(command);
+        expected.setCommand(command);
         StompMessage result = messageFactory.getMessage(command);
         assertEquals(expected, result);
     }
@@ -52,7 +52,7 @@ class StompMessageFactoryTest {
 
         GameState state = new ChatState();
         StateStompMessage expected = new StateStompMessage();
-        expected.setBody(state.getState());
+        expected.setState(state);
         StompMessage result = messageFactory.getMessage(state);
         assertEquals(expected, result);
     }

@@ -1,7 +1,6 @@
 package com.roboter5123.backend.messaging;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;
 import com.roboter5123.backend.messaging.model.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.StompMessageType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,7 @@ class MessageBroadcasterImplTest {
         RuntimeException exception = new RuntimeException("this is an error");
 
         ErrorStompMessage expected = new ErrorStompMessage();
-        expected.setMessageType(StompMessageType.ERROR);
-        expected.setBody(exception.getMessage());
+        expected.setError(exception.getMessage());
         when(factory.getMessage(any(Object.class))).thenReturn(expected);
 
         messageBroadcaster.broadcastGameUpdate(sessioncode, exception);
