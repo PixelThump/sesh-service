@@ -33,24 +33,21 @@ public class StompMessageFactory {
     private CommandStompMessage getMessage(Command command) {
 
         CommandStompMessage message = new CommandStompMessage();
-        message.setMessageType(StompMessageType.COMMAND);
-        message.setBody(command);
+        message.setCommand(command);
         return message;
     }
 
     private StateStompMessage getMessage(GameState gameState) {
 
         StateStompMessage message = new StateStompMessage();
-        message.setMessageType(StompMessageType.STATE);
-        message.setBody(gameState.getState());
+        message.setState(gameState);
         return message;
     }
 
     private ErrorStompMessage getMessage(RuntimeException exception) {
 
         ErrorStompMessage message = new ErrorStompMessage();
-        message.setMessageType(StompMessageType.ERROR);
-        message.setBody(exception.getMessage());
+        message.setError(exception.getMessage());
         return message;
     }
 }

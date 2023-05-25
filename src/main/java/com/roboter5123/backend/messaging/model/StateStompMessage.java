@@ -1,16 +1,15 @@
 package com.roboter5123.backend.messaging.model;
+import com.roboter5123.backend.game.GameState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class StateStompMessage extends StompMessage {
+public class StateStompMessage implements StompMessage {
 
-    Map<String, Object> body;
+    GameState state;
 }

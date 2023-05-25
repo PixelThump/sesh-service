@@ -22,7 +22,7 @@ public class ChatGame implements Game {
     public JoinUpdate joinGame(String playerName) {
 
         this.chatState.join(playerName);
-        Command joinCommand = new ChatMessageCommand("Server", new ChatMessageAction(ChatActionType.JOIN, playerName));
+        Command joinCommand = new ChatMessageCommand("server", new ChatMessageAction(ChatActionType.JOIN, playerName));
 
         JoinUpdate joinUpdate = new ChatJoinUpdate();
         joinUpdate.setGameState(this.chatState);

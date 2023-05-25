@@ -5,10 +5,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericStompMessage extends StompMessage {
+public class GenericStompMessage implements StompMessage {
 
-    private Object body;
+    private Object object;
 }

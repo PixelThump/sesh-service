@@ -5,11 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorStompMessage extends StompMessage{
+public class ErrorStompMessage implements StompMessage{
 
-    private String body;
+    private String error;
 
 }
