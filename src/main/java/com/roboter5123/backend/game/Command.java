@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Command {
+public class Command {
 
     private String player;
-
+    private Action action;
 }

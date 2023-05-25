@@ -1,7 +1,7 @@
 package com.roboter5123.backend.messaging;
+import com.roboter5123.backend.game.Command;
 import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.chat.ChatMessageAction;
-import com.roboter5123.backend.game.chat.ChatMessageCommand;
 import com.roboter5123.backend.game.chat.ChatState;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;
 import com.roboter5123.backend.messaging.model.StompMessage;
@@ -59,7 +59,7 @@ class MessagingControllerImplTest {
     @Test
     void joinSession_should_call_broadcaster_with_join_message_and_return_current_state() {
 
-        ChatMessageCommand broadcast = new ChatMessageCommand("server", new ChatMessageAction());
+        Command broadcast = new Command("server", new ChatMessageAction());
         ChatState reply = new ChatState();
         JoinPayloads joinPayloads = new JoinPayloads();
         joinPayloads.setReply(reply);
