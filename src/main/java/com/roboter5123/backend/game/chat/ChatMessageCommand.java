@@ -1,14 +1,18 @@
 package com.roboter5123.backend.game.chat;
 import com.roboter5123.backend.game.Command;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageCommand implements Command {
+public class ChatMessageCommand extends Command {
 
-    private String player;
     private ChatMessageAction action;
+
+    public ChatMessageCommand(String player, ChatMessageAction action) {
+
+        super(player);
+        this.action = action;
+    }
 }
