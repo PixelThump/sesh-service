@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -24,14 +22,5 @@ public class ChatState implements GameState {
         this.chatter.add(playerName);
         this.chatLog.add(playerName + " joined the Conversation");
         this.lastCommand = new ChatMessageCommand("server", new ChatMessageAction(ChatActionType.JOIN, playerName));
-    }
-
-    @Override
-    public Map<String, Object> getState() {
-
-        Map<String, Object> state = new HashMap<>();
-        state.put("chatlog", this.chatLog);
-        state.put("chatters", this.chatter);
-        return state;
     }
 }

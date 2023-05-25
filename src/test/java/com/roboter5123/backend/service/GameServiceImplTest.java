@@ -3,7 +3,6 @@ import com.roboter5123.backend.game.Game;
 import com.roboter5123.backend.game.GameMode;
 import com.roboter5123.backend.game.JoinUpdate;
 import com.roboter5123.backend.game.chat.ChatGame;
-import com.roboter5123.backend.game.chat.ChatJoinUpdate;
 import com.roboter5123.backend.messaging.MessageBroadcaster;
 import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
@@ -53,12 +52,12 @@ class GameServiceImplTest {
     @Test
     void joinGame() {
 
-        JoinUpdate chatJoinUpdate = new ChatJoinUpdate();
+        JoinUpdate chatJoinUpdate = new JoinUpdate();
         when(sessionManager.getGameSession(sessioncode)).thenReturn(chat);
         when(chat.joinGame(playerName)).thenReturn(chatJoinUpdate);
 
         JoinPayloads expected = new JoinPayloads();
-        expected.setBroadcast(chatJoinUpdate.getJoinCommand());
+        expected.setBroadcast(chatJoinUpdate.getCommand());
         expected.setReply(chatJoinUpdate.getGameState());
 
         JoinPayloads result = gameService.joinGame(sessioncode,playerName);

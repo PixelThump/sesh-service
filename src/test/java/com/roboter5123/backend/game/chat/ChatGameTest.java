@@ -29,11 +29,11 @@ class ChatGameTest {
         state.getChatLog().add(playerName + " joined the Conversation");
         state.setLastCommand(new ChatMessageCommand("server", new ChatMessageAction(ChatActionType.JOIN, playerName)));
 
-        JoinUpdate expected = new ChatJoinUpdate();
+        JoinUpdate expected = new JoinUpdate();
         expected.setGameState(state);
-        expected.setJoinCommand(state.getLastCommand());
+        expected.setCommand(state.getLastCommand());
         JoinUpdate result = chat.joinGame(playerName);
         assertEquals(expected.getGameState(), result.getGameState());
-        assertEquals(expected.getJoinCommand(),result.getJoinCommand());
+        assertEquals(expected.getCommand(),result.getCommand());
     }
 }

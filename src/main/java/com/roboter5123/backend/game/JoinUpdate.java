@@ -1,8 +1,14 @@
 package com.roboter5123.backend.game;
-public interface JoinUpdate {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    GameState getGameState();
-    void setGameState(GameState state);
-    Command getJoinCommand();
-    void setJoinCommand(Command command);
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class JoinUpdate {
+
+    GameState gameState;
+
+    Command command;
 }
