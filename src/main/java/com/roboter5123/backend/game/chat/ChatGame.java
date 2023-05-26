@@ -19,12 +19,12 @@ public class ChatGame implements Game {
     }
 
     @Override
-    public JoinUpdate joinGame(String playerName) {
+    public JoinUpdate joinGame(final String playerName) {
 
         this.chatState.join(playerName);
-        Command joinCommand = new Command("server", new ChatJoinAction(playerName));
+        final Command joinCommand = new Command("server", new ChatJoinAction(playerName));
 
-        JoinUpdate joinUpdate = new JoinUpdate();
+        final JoinUpdate joinUpdate = new JoinUpdate();
         joinUpdate.setGameState(this.chatState);
         joinUpdate.setCommand(joinCommand);
 

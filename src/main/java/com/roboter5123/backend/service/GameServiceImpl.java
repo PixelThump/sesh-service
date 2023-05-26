@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameServiceImpl implements GameService {
 
-    GameSessionManager gameSessionManager;
+    private final GameSessionManager gameSessionManager;
 
     private final MessageBroadcaster broadcaster;
 
@@ -32,11 +32,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public JoinPayloads joinGame(String sessionCode, String playerName) throws NoSuchSessionException {
 
-        Game game = this.gameSessionManager.getGameSession(sessionCode);
+        final Game game = this.gameSessionManager.getGameSession(sessionCode);
 
-        JoinUpdate joinUpdate = game.joinGame(playerName);
+        final JoinUpdate joinUpdate = game.joinGame(playerName);
 
-        JoinPayloads payloads = new JoinPayloads();
+        final JoinPayloads payloads = new JoinPayloads();
         payloads.setReply(joinUpdate.getGameState());
         payloads.setBroadcast(joinUpdate.getCommand());
 

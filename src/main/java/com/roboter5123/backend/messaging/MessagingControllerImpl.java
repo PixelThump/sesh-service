@@ -23,22 +23,22 @@ public class MessagingControllerImpl implements MessagingController {
 
     private final GameService gameService;
     private final MessageBroadcaster broadcaster;
-    Logger logger;
-    StompMessageFactory messageFactory;
+    private final Logger logger;
+    private final StompMessageFactory messageFactory;
 
     @Autowired
-    public MessagingControllerImpl(GameService gameService, MessageBroadcaster broadcaster, StompMessageFactory messageFactory) {
+    public MessagingControllerImpl(final GameService gameService, final MessageBroadcaster broadcaster, final StompMessageFactory messageFactory) {
 
         this.gameService = gameService;
         this.broadcaster = broadcaster;
         this.messageFactory = messageFactory;
-        logger = LoggerFactory.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
     @PostMapping("/sessions")
     @ResponseBody
-    public String createSession(@RequestBody GameMode gameMode) throws TooManySessionsException {
+    public String createSession(@RequestBody final GameMode gameMode) throws TooManySessionsException {
 
         return this.gameService.createSession(gameMode);
 
@@ -46,9 +46,9 @@ public class MessagingControllerImpl implements MessagingController {
 
     @Override
     @SubscribeMapping("/topic/game/{sessionCode}")
-    public StompMessage joinSession(@Header String playerName, @DestinationVariable String sessionCode) {
+    public StompMessage joinSession(@Header final String playerName, @DestinationVariable final String sessionCode) {
 
-        JoinPayloads payloads;
+        final JoinPayloads payloads;
 
         try {
 
@@ -59,14 +59,14 @@ public class MessagingControllerImpl implements MessagingController {
             return messageFactory.getMessage(e);
         }
 
-        Command broadcast = payloads.getBroadcast();
+        final Command broadcast = payloads.getBroadcast();
         broadcast(sessionCode, broadcast);
 
         return messageFactory.getMessage(payloads.getReply());
     }
 
     @Override
-    public void broadcast(String sessionCode, Object payload) {
+    public void broadcast(final String sessionCode, final Object payload) {
 
         this.broadcaster.broadcastGameUpdate(sessionCode, payload);
     }

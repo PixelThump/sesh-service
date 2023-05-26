@@ -8,26 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageBroadcasterImpl implements MessageBroadcaster {
 
-    SimpMessagingTemplate messagingTemplate;
-    StompMessageFactory factory;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final StompMessageFactory factory;
 
     @Autowired
-    public MessageBroadcasterImpl(SimpMessagingTemplate messagingTemplate, StompMessageFactory factory) {
+    public MessageBroadcasterImpl(final SimpMessagingTemplate messagingTemplate, final StompMessageFactory factory) {
 
         this.messagingTemplate = messagingTemplate;
         this.factory = factory;
     }
 
-    public void broadcast(String destination, StompMessage message) {
+    public void broadcast(final String destination, final StompMessage message) {
 
         this.messagingTemplate.convertAndSend(destination, message);
     }
 
     @Override
-    public void broadcastGameUpdate(String sessionCode, Object payload) {
+    public void broadcastGameUpdate(final String sessionCode, final Object payload) {
 
-        String destination = "/topic/game/"+sessionCode;
-        StompMessage message = factory.getMessage(payload);
+        final String destination = "/topic/game/"+sessionCode;
+        final StompMessage message = factory.getMessage(payload);
         broadcast(destination, message);
     }
 }
