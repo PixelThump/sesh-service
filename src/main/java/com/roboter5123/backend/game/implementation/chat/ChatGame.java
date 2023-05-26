@@ -25,7 +25,7 @@ public class ChatGame implements Game {
         final Command joinCommand = new Command("server", new ChatJoinAction(playerName));
 
         final JoinUpdate joinUpdate = new JoinUpdate();
-        joinUpdate.setGameState(this.chatState);
+        joinUpdate.setGameState(this.chatState.getState());
         joinUpdate.setCommand(joinCommand);
 
         return joinUpdate;

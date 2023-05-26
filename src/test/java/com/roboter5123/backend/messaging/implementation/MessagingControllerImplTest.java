@@ -8,11 +8,10 @@ import com.roboter5123.backend.messaging.api.MessagingController;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;
 import com.roboter5123.backend.messaging.model.StompMessage;
-import com.roboter5123.backend.messaging.implementation.StompMessageFactoryImpl;
 import com.roboter5123.backend.service.api.GameService;
+import com.roboter5123.backend.service.model.JoinPayloads;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
-import com.roboter5123.backend.service.model.JoinPayloads;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -65,7 +64,7 @@ class MessagingControllerImplTest {
         Command broadcast = new Command("server", new ChatMessageAction());
         ChatState reply = new ChatState();
         JoinPayloads joinPayloads = new JoinPayloads();
-        joinPayloads.setReply(reply);
+        joinPayloads.setReply(reply.getState());
         joinPayloads.setBroadcast(broadcast);
 
         when(gameServiceMock.joinGame(eq(sessionCode), any())).thenReturn(joinPayloads);
