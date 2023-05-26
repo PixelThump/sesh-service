@@ -1,5 +1,5 @@
 package com.roboter5123.backend.messaging.model;
-import com.roboter5123.backend.game.GameState;
+import com.roboter5123.backend.game.api.GameState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
