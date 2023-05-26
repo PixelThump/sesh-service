@@ -7,8 +7,6 @@ import com.roboter5123.backend.service.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -23,7 +21,6 @@ public class MessagingControllerImpl implements MessagingController {
 
     private final GameService gameService;
     private final MessageBroadcaster broadcaster;
-    private final Logger logger;
     private final StompMessageFactory messageFactory;
 
     @Autowired
@@ -32,7 +29,6 @@ public class MessagingControllerImpl implements MessagingController {
         this.gameService = gameService;
         this.broadcaster = broadcaster;
         this.messageFactory = messageFactory;
-        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
