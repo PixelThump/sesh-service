@@ -8,7 +8,7 @@ public class StompMessageFactory {
 
     public StompMessage getMessage(Object payload) throws UnsupportedOperationException {
 
-        StompMessage message;
+        final StompMessage message;
 
         if (payload instanceof Command command) {
 
@@ -32,21 +32,21 @@ public class StompMessageFactory {
 
     private CommandStompMessage getMessage(Command command) {
 
-        CommandStompMessage message = new CommandStompMessage();
+        final CommandStompMessage message = new CommandStompMessage();
         message.setCommand(command);
         return message;
     }
 
     private StateStompMessage getMessage(GameState gameState) {
 
-        StateStompMessage message = new StateStompMessage();
+        final StateStompMessage message = new StateStompMessage();
         message.setState(gameState);
         return message;
     }
 
     private ErrorStompMessage getMessage(RuntimeException exception) {
 
-        ErrorStompMessage message = new ErrorStompMessage();
+        final ErrorStompMessage message = new ErrorStompMessage();
         message.setError(exception.getMessage());
         return message;
     }

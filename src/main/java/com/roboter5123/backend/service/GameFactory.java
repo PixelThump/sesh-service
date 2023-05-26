@@ -9,7 +9,7 @@ public class GameFactory{
 
     public Game createGame(GameMode gameMode, GameService service) throws UnsupportedOperationException {
 
-        Game game;
+        final Game game;
 
         if (gameMode == GameMode.CHAT) {
 

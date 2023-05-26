@@ -13,10 +13,10 @@ import java.util.Random;
 public class GameSessionManagerImpl implements GameSessionManager {
 
     private final Map<String, Game> games;
-    Random random;
+    private final Random random;
     private final GameFactory gameFactory;
 
-    public GameSessionManagerImpl(GameFactory gameFactory, Random random) {
+    public GameSessionManagerImpl(final GameFactory gameFactory, final Random random) {
 
         this.games = new HashMap<>();
         this.gameFactory = gameFactory;
@@ -25,10 +25,10 @@ public class GameSessionManagerImpl implements GameSessionManager {
     }
 
     @Override
-    public Game getGameSession(String sessionCode) throws NoSuchSessionException {
+    public Game getGameSession(final String sessionCode) throws NoSuchSessionException {
 
         try {
-            Game game = this.games.get(sessionCode);
+            final Game game = this.games.get(sessionCode);
 
             if (game == null) {
 
@@ -45,9 +45,9 @@ public class GameSessionManagerImpl implements GameSessionManager {
     }
 
     @Override
-    public String createGameSession(GameMode gameMode, GameService service) throws TooManySessionsException {
+    public String createGameSession(final GameMode gameMode, final GameService service) throws TooManySessionsException {
 
-        Game game = gameFactory.createGame(gameMode, service);
+        final Game game = gameFactory.createGame(gameMode, service);
         String sessionCode = createSessionCode();
         this.games.put(sessionCode, game);
 
