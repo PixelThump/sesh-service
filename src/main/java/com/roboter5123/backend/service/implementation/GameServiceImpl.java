@@ -5,6 +5,7 @@ import com.roboter5123.backend.game.api.JoinUpdate;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
 import com.roboter5123.backend.service.model.JoinPayloads;
+import com.roboter5123.backend.service.model.ServiceCommand;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.slf4j.Logger;
@@ -60,6 +61,11 @@ public class GameServiceImpl implements GameService {
 
         final JoinPayloads payloads = new JoinPayloads();
         payloads.setReply(joinUpdate.getGameState());
+
+        final ServiceCommand broadcast = new ServiceCommand();
+        broadcast.setPlayer(joinUpdate.getCommand().getPlayer());
+        broadcast.setAction(joinUpdate.getCommand().getAction());
+
         payloads.setBroadcast(joinUpdate.getCommand());
 
         return payloads;
