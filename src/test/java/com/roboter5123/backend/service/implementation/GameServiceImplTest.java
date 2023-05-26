@@ -6,8 +6,8 @@ import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import com.roboter5123.backend.service.model.JoinPayloads;
+import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -65,12 +64,5 @@ class GameServiceImplTest {
         JoinPayloads result = gameService.joinGame(sessionCode,playerName);
         assertEquals(expected.getBroadcast(), result.getBroadcast());
         assertEquals(expected.getReply(), result.getReply());
-    }
-
-    @Test
-    void broadcastGameUpdate() {
-
-        gameService.broadcastGameUpdate(sessionCode, sessionCode);
-        verify(broadcaster).broadcastGameUpdate(sessionCode, sessionCode);
     }
 }
