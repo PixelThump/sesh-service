@@ -1,6 +1,6 @@
 package com.roboter5123.backend.service.model;
-import com.roboter5123.backend.game.Command;
-import com.roboter5123.backend.game.GameState;
+import com.roboter5123.backend.game.api.Command;
+import com.roboter5123.backend.game.api.GameState;
 import lombok.*;
 
 @Data
