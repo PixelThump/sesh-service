@@ -36,13 +36,13 @@ class MessagingControllerImplTest {
     MessagingController messagingController;
 
     String sessionCode;
-    String playername;
+    String playerName;
 
     @BeforeEach
     void setUp() {
 
         sessionCode = "abcd";
-        playername = "roboter5123";
+        playerName = "roboter5123";
     }
 
     @Test
@@ -84,7 +84,7 @@ class MessagingControllerImplTest {
         when(factoryMock.getMessage(exception)).thenReturn(expected);
 
 
-        StompMessage result = messagingController.joinSession(playername,sessionCode);
+        StompMessage result = messagingController.joinSession(playerName,sessionCode);
 
         assertEquals(expected, result);
     }
@@ -92,7 +92,7 @@ class MessagingControllerImplTest {
     @Test
     void broadcast_should_call_broadcaster(){
 
-        messagingController.broadcast(sessionCode,playername);
+        messagingController.broadcast(sessionCode, playerName);
         verify(broadcasterMock).broadcastGameUpdate(any(),any());
     }
 }

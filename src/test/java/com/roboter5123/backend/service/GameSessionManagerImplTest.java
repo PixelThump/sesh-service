@@ -50,7 +50,7 @@ class GameSessionManagerImplTest {
 
     @Test
     @Order(2)
-    void GETGAMESESSION_SHOULD_THROW_EXCEPTION_WHEN_NO_SUCH_SESSION_EXISTS() throws TooManySessionsException {
+    void GET_GAME_SESSION_SHOULD_THROW_EXCEPTION_WHEN_NO_SUCH_SESSION_EXISTS() throws TooManySessionsException {
 
         String sessionCode ="1234";
         assertThrows(NoSuchSessionException.class, ()->sessionManager.getGameSession(sessionCode));
@@ -58,7 +58,7 @@ class GameSessionManagerImplTest {
 
     @Test
     @Order(3)
-    void CREATEGAMESESSION_SHOULD_THROW_EXCEPTION_WHEN_TOO_MANY_SESSIONS() throws TooManySessionsException {
+    void CREATE_GAME_SESSION_SHOULD_THROW_EXCEPTION_WHEN_TOO_MANY_SESSIONS() throws TooManySessionsException {
 
 
         double maxSessionCount = Math.pow(26,4)+1;

@@ -21,16 +21,16 @@ class MessageBroadcasterImplTest {
     SimpMessagingTemplate messagingTemplate;
     @Autowired
     MessageBroadcaster messageBroadcaster;
-    String sessioncode;
+    String sessionCode;
 
     @BeforeEach
     void setUp() {
 
-        sessioncode = "abcd";
+        sessionCode = "abcd";
     }
 
     @Test
-    void broadcasterrormessage_should_call_convertandsend_with_correct_message() {
+    void broadcast_error_message_should_call_convert_and_send_with_correct_message() {
 
         RuntimeException exception = new RuntimeException("this is an error");
 
@@ -38,8 +38,8 @@ class MessageBroadcasterImplTest {
         expected.setError(exception.getMessage());
         when(factory.getMessage(any(Object.class))).thenReturn(expected);
 
-        messageBroadcaster.broadcastGameUpdate(sessioncode, exception);
+        messageBroadcaster.broadcastGameUpdate(sessionCode, exception);
 
-        verify(messagingTemplate).convertAndSend("/topic/game/"+sessioncode,expected);
+        verify(messagingTemplate).convertAndSend("/topic/game/"+ sessionCode,expected);
     }
 }
