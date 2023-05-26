@@ -1,10 +1,10 @@
 package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.CommandStompMessage;
+import com.roboter5123.backend.messaging.model.ServiceCommandStompMessage;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;
 import com.roboter5123.backend.messaging.model.StateStompMessage;
 import com.roboter5123.backend.messaging.model.StompMessage;
+import com.roboter5123.backend.service.model.ServiceCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
 
         final StompMessage message;
 
-        if (payload instanceof Command command) {
+        if (payload instanceof ServiceCommand command) {
 
             message = getMessage(command);
 
@@ -32,9 +32,9 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         return message;
     }
 
-    private CommandStompMessage getMessage(Command command) {
+    private ServiceCommandStompMessage getMessage(ServiceCommand command) {
 
-        final CommandStompMessage message = new CommandStompMessage();
+        final ServiceCommandStompMessage message = new ServiceCommandStompMessage();
         message.setCommand(command);
         return message;
     }

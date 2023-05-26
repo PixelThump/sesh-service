@@ -1,5 +1,5 @@
 package com.roboter5123.backend.messaging.model;
-import com.roboter5123.backend.game.api.Command;
+import com.roboter5123.backend.service.model.ServiceCommand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommandStompMessage implements StompMessage{
+public class ServiceCommandStompMessage implements StompMessage{
 
-    Command command;
+    ServiceCommand command;
 }

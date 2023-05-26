@@ -1,12 +1,12 @@
 package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.implementation.chat.ChatMessageAction;
 import com.roboter5123.backend.game.implementation.chat.ChatState;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.CommandStompMessage;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;
+import com.roboter5123.backend.messaging.model.ServiceCommandStompMessage;
 import com.roboter5123.backend.messaging.model.StateStompMessage;
 import com.roboter5123.backend.messaging.model.StompMessage;
+import com.roboter5123.backend.service.model.ServiceCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,8 @@ class StompMessageFactoryImplTest {
     @Test
     void GET_MESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
-        Command command = new Command(playerName, new ChatMessageAction());
-        CommandStompMessage expected = new CommandStompMessage();
+        ServiceCommand command = new ServiceCommand(playerName, new ChatMessageAction());
+        ServiceCommandStompMessage expected = new ServiceCommandStompMessage();
         expected.setCommand(command);
         StompMessage result = messageFactory.getMessage(command);
         assertEquals(expected, result);
