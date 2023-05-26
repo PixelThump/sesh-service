@@ -26,7 +26,7 @@ class GameServiceImplTest {
     GameSessionManager sessionManager;
     @Autowired
     GameService gameService;
-    String sessioncode;
+    String sessionCode;
 
     Game chat;
     private String playerName;
@@ -34,7 +34,7 @@ class GameServiceImplTest {
     @BeforeEach
     void setup() {
 
-        this.sessioncode = "abcd";
+        this.sessionCode = "abcd";
         this.playerName = "roboter5123";
         chat = Mockito.mock(ChatGame.class);
 
@@ -43,24 +43,24 @@ class GameServiceImplTest {
     @Test
     void createSession() throws TooManySessionsException {
 
-        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(sessioncode);
+        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(sessionCode);
 
         String result = gameService.createSession(GameMode.CHAT);
-        assertEquals(sessioncode, result);
+        assertEquals(sessionCode, result);
     }
 
     @Test
     void joinGame() {
 
         JoinUpdate chatJoinUpdate = new JoinUpdate();
-        when(sessionManager.getGameSession(sessioncode)).thenReturn(chat);
+        when(sessionManager.getGameSession(sessionCode)).thenReturn(chat);
         when(chat.joinGame(playerName)).thenReturn(chatJoinUpdate);
 
         JoinPayloads expected = new JoinPayloads();
         expected.setBroadcast(chatJoinUpdate.getCommand());
         expected.setReply(chatJoinUpdate.getGameState());
 
-        JoinPayloads result = gameService.joinGame(sessioncode,playerName);
+        JoinPayloads result = gameService.joinGame(sessionCode,playerName);
         assertEquals(expected.getBroadcast(), result.getBroadcast());
         assertEquals(expected.getReply(), result.getReply());
     }
@@ -68,7 +68,7 @@ class GameServiceImplTest {
     @Test
     void broadcastGameUpdate() {
 
-        gameService.broadcastGameUpdate(sessioncode, sessioncode);
-        verify(broadcaster).broadcastGameUpdate(sessioncode,sessioncode);
+        gameService.broadcastGameUpdate(sessionCode, sessionCode);
+        verify(broadcaster).broadcastGameUpdate(sessionCode, sessionCode);
     }
 }

@@ -27,7 +27,7 @@ class StompMessageFactoryTest {
     }
 
     @Test
-    void GETMESSAGE_WITH_EXCEPTION_SHOULD_RETURN_ERRORSTOMPMESSAGE_WITH_EXCEPTION_MESSAGE() {
+    void GET_MESSAGE_WITH_EXCEPTION_SHOULD_RETURN_ERROR_STOMP_MESSAGE_WITH_EXCEPTION_MESSAGE() {
 
         Exception exception = new RuntimeException(errorMessage);
         ErrorStompMessage expected = new ErrorStompMessage();
@@ -37,7 +37,7 @@ class StompMessageFactoryTest {
     }
 
     @Test
-    void GETMESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMANDSTOMPMESSAGE_WITH_COMMAND() {
+    void GET_MESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
         Command command = new Command(playerName, new ChatMessageAction());
         CommandStompMessage expected = new CommandStompMessage();
@@ -47,7 +47,7 @@ class StompMessageFactoryTest {
     }
 
     @Test
-    void GETMESSAGE_WITH_GAMESTATE_SHOULD_RETURN_GAMESTATESTOMPMESSAGE_WITH_GAMESTATE() {
+    void GET_MESSAGE_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
 
         GameState state = new ChatState();
         StateStompMessage expected = new StateStompMessage();
@@ -57,7 +57,7 @@ class StompMessageFactoryTest {
     }
 
     @Test
-    void GETMESSAGE_WITH_NONSUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
+    void GET_MESSAGE_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
 
         Object o = new Object();
         assertThrows(UnsupportedOperationException.class, () -> messageFactory.getMessage(o));

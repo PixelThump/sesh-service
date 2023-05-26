@@ -40,7 +40,7 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
         }catch (UnsupportedOperationException e){
 
             logger.error("Could not broadcast message with payload {}", payload);
-            logger.error("No messagetype available in message factory for type {}", payload.getClass());
+            logger.error("No message type available in message factory for type {}", payload.getClass());
             throw e;
         }
 
