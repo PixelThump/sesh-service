@@ -1,6 +1,6 @@
 package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.messaging.api.MessagingController;
+import com.roboter5123.backend.messaging.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.StompMessageFactory;
@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class MessagingControllerImplTest {
+class StompControllerImplTest {
 
     @MockBean
     GameService gameServiceMock;
@@ -33,7 +33,7 @@ class MessagingControllerImplTest {
     @MockBean
     StompMessageFactory factoryMock;
     @Autowired
-    MessagingController messagingController;
+    StompController stompController;
 
     String sessionCode;
     String playerName;
@@ -51,7 +51,7 @@ class MessagingControllerImplTest {
         when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(sessionCode);
 
         String expected = sessionCode;
-        String result = messagingController.createSession(GameMode.CHAT);
+        String result = stompController.createSession(GameMode.CHAT);
 
         assertEquals(expected, result);
     }
@@ -67,7 +67,7 @@ class MessagingControllerImplTest {
         when(factoryMock.getMessage(exception)).thenReturn(expected);
 
 
-        StompMessage result = messagingController.joinSession(playerName,sessionCode);
+        StompMessage result = stompController.joinSession(playerName,sessionCode);
 
         assertEquals(expected, result);
     }
@@ -83,7 +83,7 @@ class MessagingControllerImplTest {
         StompMessage expected = new StateStompMessage(state);
         when(factoryMock.getMessage(state)).thenReturn(expected);
 
-        StompMessage result = messagingController.joinSession(playerName,sessionCode);
+        StompMessage result = stompController.joinSession(playerName,sessionCode);
 
         assertEquals(expected,result);
     }
