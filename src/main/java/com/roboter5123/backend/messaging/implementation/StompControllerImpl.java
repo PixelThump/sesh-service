@@ -1,19 +1,14 @@
 package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.messaging.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.StompMessage;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -30,14 +25,7 @@ public class StompControllerImpl implements StompController {
         this.messageFactory = messageFactory;
     }
 
-    @Override
-    @PostMapping("/sessions")
-    @ResponseBody
-    public String createSession(@RequestBody final GameMode gameMode) throws TooManySessionsException {
 
-        return this.gameService.createSession(gameMode);
-
-    }
 
     @Override
     @SubscribeMapping("/topic/game/{sessionCode}")
