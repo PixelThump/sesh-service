@@ -1,6 +1,6 @@
 package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.messaging.api.MessagingController;
+import com.roboter5123.backend.messaging.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.StompMessage;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
 
 @Controller
-public class MessagingControllerImpl implements MessagingController {
+public class StompControllerImpl implements StompController {
 
     private final GameService gameService;
     private final StompMessageFactory messageFactory;
 
     @Autowired
-    public MessagingControllerImpl(final GameService gameService, final StompMessageFactory messageFactory) {
+    public StompControllerImpl(final GameService gameService, final StompMessageFactory messageFactory) {
 
         this.gameService = gameService;
         this.messageFactory = messageFactory;
