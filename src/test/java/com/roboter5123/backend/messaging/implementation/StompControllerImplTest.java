@@ -1,5 +1,4 @@
 package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.messaging.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.MessageBroadcaster;
@@ -8,7 +7,6 @@ import com.roboter5123.backend.service.model.ErrorStompMessage;
 import com.roboter5123.backend.service.model.StateStompMessage;
 import com.roboter5123.backend.service.model.StompMessage;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +42,6 @@ class StompControllerImplTest {
         sessionCode = "abcd";
         playerName = "roboter5123";
     }
-
-    @Test
-    void createSession_should_return_session_code() throws TooManySessionsException {
-
-        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(sessionCode);
-
-        String expected = sessionCode;
-        String result = stompController.createSession(GameMode.CHAT);
-
-        assertEquals(expected, result);
-    }
-
 
     @Test
     void joinSession_should_return_error_message_when_called_with_non_existent_session() {
