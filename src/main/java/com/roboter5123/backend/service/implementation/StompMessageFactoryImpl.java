@@ -1,9 +1,10 @@
-package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.ServiceCommandStompMessage;
-import com.roboter5123.backend.messaging.model.ErrorStompMessage;
-import com.roboter5123.backend.messaging.model.StateStompMessage;
-import com.roboter5123.backend.messaging.model.StompMessage;
+package com.roboter5123.backend.service.implementation;
+import com.roboter5123.backend.game.api.Command;
+import com.roboter5123.backend.service.api.StompMessageFactory;
+import com.roboter5123.backend.service.model.ServiceCommandStompMessage;
+import com.roboter5123.backend.service.model.ErrorStompMessage;
+import com.roboter5123.backend.service.model.StateStompMessage;
+import com.roboter5123.backend.service.model.StompMessage;
 import com.roboter5123.backend.service.model.ServiceCommand;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
 
         final StompMessage message;
 
-        if (payload instanceof ServiceCommand command) {
+        if (payload instanceof Command command) {
 
             message = getMessage(command);
 
@@ -32,10 +33,14 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         return message;
     }
 
-    private ServiceCommandStompMessage getMessage(ServiceCommand command) {
+    private ServiceCommandStompMessage getMessage(Command command) {
+
+        final ServiceCommand serviceCommand = new ServiceCommand();
+        serviceCommand.setAction(command.getAction());
+        serviceCommand.setPlayer(command.getPlayer());
 
         final ServiceCommandStompMessage message = new ServiceCommandStompMessage();
-        message.setCommand(command);
+        message.setCommand(serviceCommand);
         return message;
     }
 

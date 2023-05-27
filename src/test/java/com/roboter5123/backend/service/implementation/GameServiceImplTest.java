@@ -5,7 +5,7 @@ import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.game.api.JoinUpdate;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.backend.game.implementation.chat.ChatJoinAction;
-import com.roboter5123.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
 import com.roboter5123.backend.service.model.JoinPayloads;
@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -68,8 +69,7 @@ class GameServiceImplTest {
         expected.setBroadcast(chatJoinUpdate.getCommand());
         expected.setReply(chatJoinUpdate.getGameState());
 
-        JoinPayloads result = gameService.joinGame(sessionCode,playerName);
-        assertEquals(expected.getBroadcast(), result.getBroadcast());
-        assertEquals(expected.getReply(), result.getReply());
+        Map<String,Object> result = gameService.joinGame(sessionCode,playerName);
+        assertEquals(expected.getReply(), result);
     }
 }
