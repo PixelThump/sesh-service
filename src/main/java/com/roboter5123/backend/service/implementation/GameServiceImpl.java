@@ -4,8 +4,7 @@ import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.game.api.JoinUpdate;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.model.JoinPayloads;
-import com.roboter5123.backend.service.model.ServiceCommand;
+import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.slf4j.Logger;
@@ -13,16 +12,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class GameServiceImpl implements GameService {
 
     private final GameSessionManager gameSessionManager;
+
+    private final MessageBroadcaster broadcaster;
     private final Logger logger;
 
     @Autowired
-    public GameServiceImpl(GameSessionManager gameSessionManager) {
+    public GameServiceImpl(GameSessionManager gameSessionManager, MessageBroadcaster broadcaster) {
 
         this.gameSessionManager = gameSessionManager;
+        this.broadcaster = broadcaster;
         logger = LoggerFactory.getLogger(this.getClass());
 
         final String debugSessionCode = createSession(GameMode.CHAT);
@@ -43,7 +47,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public JoinPayloads joinGame(String sessionCode, String playerName) throws NoSuchSessionException {
+    public Map<String, Object> joinGame(String sessionCode, String playerName) throws NoSuchSessionException {
 
         final Game game;
 
@@ -59,15 +63,13 @@ public class GameServiceImpl implements GameService {
 
         final JoinUpdate joinUpdate = game.joinGame(playerName);
 
-        final JoinPayloads payloads = new JoinPayloads();
-        payloads.setReply(joinUpdate.getGameState());
+        this.broadcast(sessionCode, joinUpdate.getCommand());
+        return joinUpdate.getGameState();
+    }
 
-        final ServiceCommand broadcast = new ServiceCommand();
-        broadcast.setPlayer(joinUpdate.getCommand().getPlayer());
-        broadcast.setAction(joinUpdate.getCommand().getAction());
+    @Override
+    public void broadcast(String sessionCode, Object payload) {
 
-        payloads.setBroadcast(joinUpdate.getCommand());
-
-        return payloads;
+        this.broadcaster.broadcastGameUpdate(sessionCode, payload);
     }
 }

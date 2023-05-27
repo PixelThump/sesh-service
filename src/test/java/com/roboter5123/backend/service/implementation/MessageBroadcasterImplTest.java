@@ -1,8 +1,7 @@
-package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.messaging.api.MessageBroadcaster;
-import com.roboter5123.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.ErrorStompMessage;
-import com.roboter5123.backend.messaging.implementation.StompMessageFactoryImpl;
+package com.roboter5123.backend.service.implementation;
+import com.roboter5123.backend.service.api.MessageBroadcaster;
+import com.roboter5123.backend.service.api.StompMessageFactory;
+import com.roboter5123.backend.service.model.ErrorStompMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

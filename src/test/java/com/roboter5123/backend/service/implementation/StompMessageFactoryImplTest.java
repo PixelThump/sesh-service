@@ -1,11 +1,12 @@
-package com.roboter5123.backend.messaging.implementation;
+package com.roboter5123.backend.service.implementation;
+import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.implementation.chat.ChatMessageAction;
 import com.roboter5123.backend.game.implementation.chat.ChatState;
-import com.roboter5123.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.backend.messaging.model.ErrorStompMessage;
-import com.roboter5123.backend.messaging.model.ServiceCommandStompMessage;
-import com.roboter5123.backend.messaging.model.StateStompMessage;
-import com.roboter5123.backend.messaging.model.StompMessage;
+import com.roboter5123.backend.service.api.StompMessageFactory;
+import com.roboter5123.backend.service.model.ErrorStompMessage;
+import com.roboter5123.backend.service.model.ServiceCommandStompMessage;
+import com.roboter5123.backend.service.model.StateStompMessage;
+import com.roboter5123.backend.service.model.StompMessage;
 import com.roboter5123.backend.service.model.ServiceCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,9 +44,14 @@ class StompMessageFactoryImplTest {
     @Test
     void GET_MESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
-        ServiceCommand command = new ServiceCommand(playerName, new ChatMessageAction());
+        ServiceCommand serviceCommand= new ServiceCommand(playerName, new ChatMessageAction());
+
+        Command command = new Command();
+        command.setAction(new ChatMessageAction());
+        command.setPlayer(playerName);
+
         ServiceCommandStompMessage expected = new ServiceCommandStompMessage();
-        expected.setCommand(command);
+        expected.setCommand(serviceCommand);
         StompMessage result = messageFactory.getMessage(command);
         assertEquals(expected, result);
     }
