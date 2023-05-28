@@ -19,7 +19,6 @@ import java.util.Optional;
 public class GameServiceImpl implements GameService {
 
     private final GameSessionManager gameSessionManager;
-
     private final MessageBroadcaster broadcaster;
     private final Logger logger;
 
@@ -29,9 +28,6 @@ public class GameServiceImpl implements GameService {
         this.gameSessionManager = gameSessionManager;
         this.broadcaster = broadcaster;
         logger = LoggerFactory.getLogger(this.getClass());
-
-        final String debugSessionCode = createSession(GameMode.CHAT);
-        logger.debug("Created debug chat session with code: {}", debugSessionCode);
     }
 
     @Override
@@ -40,7 +36,9 @@ public class GameServiceImpl implements GameService {
         try {
 
             return this.gameSessionManager.createGameSession(gameMode, this);
+
         } catch (TooManySessionsException e) {
+
             logger.error("Unable to create session because there were too many sessions");
             throw e;
         }
@@ -69,14 +67,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Optional<Game> getGame(String sessionCode){
+    public Optional<Game> getGame(String sessionCode) {
 
-        try{
+        try {
 
             Game game = this.gameSessionManager.getGameSession(sessionCode);
             return Optional.of(game);
 
-        }catch (NoSuchSessionException e){
+        } catch (NoSuchSessionException e) {
 
             this.logger.warn("No session with code {} exists!", sessionCode);
             return Optional.empty();

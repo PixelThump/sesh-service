@@ -14,6 +14,10 @@ public class ChatGame implements Game {
     @Setter
     private GameMode gameMode;
 
+    @Getter
+    @Setter
+    private String sessionCode;
+
     public ChatGame() {
 
         this.chatState = new ChatState();
