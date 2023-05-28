@@ -63,6 +63,7 @@ class GameSessionManagerImplTest {
     @Order(3)
     void CREATE_GAME_SESSION_SHOULD_THROW_EXCEPTION_WHEN_TOO_MANY_SESSIONS() throws TooManySessionsException {
 
+        when(factory.createGame(any(),any())).thenReturn(chat);
 
         double maxSessionCount = Math.pow(26,4)+1;
         assertThrows(TooManySessionsException.class, ()-> {
