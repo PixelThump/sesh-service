@@ -4,13 +4,15 @@ import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.game.api.JoinUpdate;
 import lombok.Getter;
+import lombok.Setter;
 
 public class ChatGame implements Game {
 
     private final ChatState chatState;
 
     @Getter
-    private final GameMode gameMode;
+    @Setter
+    private GameMode gameMode;
 
     public ChatGame() {
 
