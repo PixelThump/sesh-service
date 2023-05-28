@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -65,6 +66,21 @@ public class GameServiceImpl implements GameService {
 
         this.broadcast(sessionCode, joinUpdate.getCommand());
         return joinUpdate.getGameState();
+    }
+
+    @Override
+    public Optional<Game> getGame(String sessionCode){
+
+        try{
+
+            Game game = this.gameSessionManager.getGameSession(sessionCode);
+            return Optional.of(game);
+
+        }catch (NoSuchSessionException e){
+
+            this.logger.warn("No session with code {} exists!", sessionCode);
+            return Optional.empty();
+        }
     }
 
     @Override
