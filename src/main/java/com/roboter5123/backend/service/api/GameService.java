@@ -12,7 +12,7 @@ public interface GameService {
     String createSession(GameMode gameMode) throws TooManySessionsException;
     Map<String, Object> joinGame(String sessionCode, String playerName) throws NoSuchSessionException;
 
-    Optional<Game> getGame(String sessionCode) throws NoSuchSessionException;
+    Optional<Game> getGame(String sessionCode);
 
     void broadcast(String sessionCode, Object payload);
 

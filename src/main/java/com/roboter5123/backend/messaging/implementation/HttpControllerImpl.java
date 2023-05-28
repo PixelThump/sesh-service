@@ -7,8 +7,6 @@ import com.roboter5123.backend.messaging.model.exception.NoSuchSessionHttpExcept
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +18,11 @@ public class HttpControllerImpl implements HttpController {
     private final GameService gameService;
     private final ModelMapper modelMapper;
 
-    private final Logger logger;
-
     @Autowired
     public HttpControllerImpl(GameService gameService, ModelMapper modelMapper) {
 
         this.gameService = gameService;
         this.modelMapper = modelMapper;
-        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -47,7 +42,6 @@ public class HttpControllerImpl implements HttpController {
 
         if (game.isEmpty()){
 
-            this.logger.error("No session with code {} exists!", sessionCode);
             throw new NoSuchSessionHttpException("No session with code " + sessionCode + " exists!");
         }
 
