@@ -1,14 +1,18 @@
 package com.roboter5123.backend.service.api;
+import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface GameService {
 
     String createSession(GameMode gameMode) throws TooManySessionsException;
-    Map<String, Object> joinGame(String gameCode, String playerName) throws NoSuchSessionException;
+    Map<String, Object> joinGame(String sessionCode, String playerName) throws NoSuchSessionException;
+
+    Optional<Game> getGame(String sessionCode) throws NoSuchSessionException;
 
     void broadcast(String sessionCode, Object payload);
 
