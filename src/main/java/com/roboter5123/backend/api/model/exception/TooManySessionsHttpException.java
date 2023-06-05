@@ -1,9 +1,9 @@
-package com.roboter5123.backend.publicapi.model.exception;
+package com.roboter5123.backend.api.model.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.GONE)
-public class NoSuchSessionHttpException extends RuntimeException {
+@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+public class TooManySessionsHttpException extends RuntimeException {
 
     /**
      * Constructs a new runtime exception with the specified detail message.
@@ -13,7 +13,7 @@ public class NoSuchSessionHttpException extends RuntimeException {
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public NoSuchSessionHttpException(String message) {
+    public TooManySessionsHttpException(String message) {
 
         super(message);
     }

@@ -1,10 +1,10 @@
-package com.roboter5123.backend.publicapi.implementation;
+package com.roboter5123.backend.api.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.publicapi.api.HttpController;
-import com.roboter5123.backend.publicapi.model.HttpGameDTO;
-import com.roboter5123.backend.publicapi.model.exception.NoSuchSessionHttpException;
-import com.roboter5123.backend.publicapi.model.exception.TooManySessionsHttpException;
+import com.roboter5123.backend.api.api.HttpController;
+import com.roboter5123.backend.api.model.HttpGameDTO;
+import com.roboter5123.backend.api.model.exception.NoSuchSessionHttpException;
+import com.roboter5123.backend.api.model.exception.TooManySessionsHttpException;
 import com.roboter5123.backend.service.api.GameService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

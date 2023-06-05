@@ -1,10 +1,10 @@
-package com.roboter5123.backend.publicapi.implementation;
+package com.roboter5123.backend.api.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
-import com.roboter5123.backend.publicapi.api.HttpController;
-import com.roboter5123.backend.publicapi.model.HttpGameDTO;
+import com.roboter5123.backend.api.api.HttpController;
+import com.roboter5123.backend.api.model.HttpGameDTO;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.backend.service.exception.TooManySessionsException;

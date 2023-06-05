@@ -1,4 +1,4 @@
-package com.roboter5123.backend.service.implementation;
+package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.backend.messaging.model.ErrorStompMessage;

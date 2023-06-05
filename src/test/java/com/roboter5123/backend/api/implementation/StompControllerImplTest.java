@@ -1,5 +1,5 @@
-package com.roboter5123.backend.publicapi.implementation;
-import com.roboter5123.backend.publicapi.api.StompController;
+package com.roboter5123.backend.api.implementation;
+import com.roboter5123.backend.api.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;

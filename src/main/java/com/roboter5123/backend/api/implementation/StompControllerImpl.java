@@ -1,7 +1,7 @@
-package com.roboter5123.backend.publicapi.implementation;
+package com.roboter5123.backend.api.implementation;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.backend.messaging.model.StompMessage;
-import com.roboter5123.backend.publicapi.api.StompController;
+import com.roboter5123.backend.api.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
