@@ -1,5 +1,5 @@
-package com.roboter5123.backend.service.api;
-import com.roboter5123.backend.service.model.StompMessage;
+package com.roboter5123.backend.messaging.api;
+import com.roboter5123.backend.messaging.model.StompMessage;
 
 import java.util.Map;
 

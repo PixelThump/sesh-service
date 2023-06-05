@@ -1,11 +1,11 @@
 package com.roboter5123.backend.service.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.game.api.MessageBroadcaster;
+import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

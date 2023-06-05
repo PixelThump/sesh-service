@@ -3,8 +3,8 @@ import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
+import com.roboter5123.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.TooManySessionsException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

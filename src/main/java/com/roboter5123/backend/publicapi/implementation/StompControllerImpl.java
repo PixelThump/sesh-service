@@ -1,9 +1,9 @@
-package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.messaging.api.StompController;
+package com.roboter5123.backend.publicapi.implementation;
+import com.roboter5123.backend.messaging.api.StompMessageFactory;
+import com.roboter5123.backend.messaging.model.StompMessage;
+import com.roboter5123.backend.publicapi.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
-import com.roboter5123.backend.service.api.StompMessageFactory;
-import com.roboter5123.backend.service.model.StompMessage;
-import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
+import com.roboter5123.backend.service.exception.NoSuchSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -17,6 +17,7 @@ public class StompControllerImpl implements StompController {
 
     private final GameService gameService;
     private final StompMessageFactory messageFactory;
+
 
     @Autowired
     public StompControllerImpl(final GameService gameService, final StompMessageFactory messageFactory) {

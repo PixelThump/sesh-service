@@ -1,4 +1,4 @@
-package com.roboter5123.backend.service.model;
+package com.roboter5123.backend.messaging.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceCommandStompMessage implements StompMessage {
+public class ErrorStompMessage implements StompMessage {
 
-    ServiceCommand command;
+    private String error;
 }

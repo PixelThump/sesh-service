@@ -1,14 +1,16 @@
-package com.roboter5123.backend.service.model;
+package com.roboter5123.backend.messaging.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericStompMessage implements StompMessage {
+public class StateStompMessage implements StompMessage {
 
-    private Object object;
+    Map<String, Object> state;
 }
