@@ -1,11 +1,11 @@
 package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.backend.messaging.api.HttpController;
 import com.roboter5123.backend.messaging.model.HttpGameDTO;
 import com.roboter5123.backend.service.api.GameService;
-import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -31,17 +31,13 @@ class HttpControllerImplTest {
     StompMessageFactory factoryMock;
     @Autowired
     HttpController httpController;
-
     String sessionCode;
-    String playerName;
-
     Game game;
 
     @BeforeEach
     void setUp() {
 
         sessionCode = "abcd";
-        playerName = "roboter5123";
         this.game = new ChatGame(broadcasterMock);
         this.game.setGameMode(GameMode.CHAT);
         this.game.setSessionCode(sessionCode);
@@ -52,19 +48,18 @@ class HttpControllerImplTest {
 
         when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(Optional.of(game));
 
-
-        HttpGameDTO expected = new HttpGameDTO(game.getGameMode(),game.getSessionCode());
+        HttpGameDTO expected = new HttpGameDTO(game.getGameMode(), game.getSessionCode());
         HttpGameDTO result = httpController.createSession(GameMode.CHAT);
 
         assertEquals(expected, result);
     }
 
     @Test
-    void get_game_should_return_game(){
+    void get_game_should_return_game() {
 
         when(gameServiceMock.getGame(any())).thenReturn(Optional.of(game));
 
-        HttpGameDTO expected = new HttpGameDTO(GameMode.CHAT,sessionCode);
+        HttpGameDTO expected = new HttpGameDTO(GameMode.CHAT, sessionCode);
         HttpGameDTO result = httpController.getGame(sessionCode);
 
         assertEquals(expected, result);
