@@ -11,6 +11,5 @@ import java.util.Map;
 public class JoinUpdate {
 
     Map<String, Object> gameState;
-
     Command command;
 }

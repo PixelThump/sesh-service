@@ -7,5 +7,6 @@ import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 public interface GameSessionManager {
 
     Game getGameSession(String sessionCode) throws NoSuchSessionException;
-    String createGameSession(GameMode gameMode, GameService service) throws TooManySessionsException;
+
+    Game createGameSession(GameMode gameMode, GameService service) throws TooManySessionsException;
 }

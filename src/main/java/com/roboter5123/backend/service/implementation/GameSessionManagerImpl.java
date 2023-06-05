@@ -1,6 +1,6 @@
 package com.roboter5123.backend.service.implementation;
-import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.Game;
+import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
@@ -24,38 +24,31 @@ public class GameSessionManagerImpl implements GameSessionManager {
         this.games = new HashMap<>();
         this.gameFactory = gameFactory;
         this.random = random;
-
     }
 
     @Override
     public Game getGameSession(final String sessionCode) throws NoSuchSessionException {
 
-        try {
-            final Game game = this.games.get(sessionCode);
+        final Game game = this.games.get(sessionCode);
 
-            if (game == null) {
-
-                throw new NullPointerException();
-            }
-
-            return game;
-
-        } catch (NullPointerException e) {
+        if (game == null) {
 
             throw new NoSuchSessionException("So Session with code " + sessionCode + "exists.");
         }
 
+        return game;
     }
 
     @Override
-    public String createGameSession(final GameMode gameMode, final GameService service) throws TooManySessionsException {
+    public Game createGameSession(final GameMode gameMode, final GameService service) throws TooManySessionsException {
 
         final Game game = gameFactory.createGame(gameMode, service);
+
         String sessionCode = createSessionCode();
         game.setSessionCode(sessionCode);
-        this.games.put(sessionCode, game);
 
-        return sessionCode;
+        this.games.put(sessionCode, game);
+        return game;
     }
 
     private String createSessionCode() throws TooManySessionsException {
@@ -64,17 +57,17 @@ public class GameSessionManagerImpl implements GameSessionManager {
         final int LETTER_Z_NUMBER = 122;
         final int codeLength = 4;
 
-        if (games.size() >= (Math.pow(LETTER_Z_NUMBER - (double)LETTER_A_NUMBER, codeLength))){
+        if (games.size() >= (Math.pow(LETTER_Z_NUMBER - (double) LETTER_A_NUMBER, codeLength))) {
 
             throw new TooManySessionsException();
         }
 
-            String sessionCode;
+        String sessionCode;
+
         do {
-            sessionCode = random.ints(LETTER_A_NUMBER, LETTER_Z_NUMBER + 1)
-                    .limit(codeLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
+
+            sessionCode = random.ints(LETTER_A_NUMBER, LETTER_Z_NUMBER + 1).limit(codeLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+
         } while (this.games.containsKey(sessionCode));
 
         return sessionCode;

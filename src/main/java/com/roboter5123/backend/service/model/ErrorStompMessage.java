@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorStompMessage implements StompMessage{
+public class ErrorStompMessage implements StompMessage {
 
     private String error;
-
 }

@@ -6,5 +6,6 @@ import java.util.Map;
 public interface StompMessageFactory {
 
     StompMessage getMessage(Object payload) throws UnsupportedOperationException;
+
     StompMessage getMessage(Map<String, Object> payload) throws UnsupportedOperationException;
 }

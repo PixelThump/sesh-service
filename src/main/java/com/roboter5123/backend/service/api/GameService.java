@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface GameService {
 
-    String createSession(GameMode gameMode) throws TooManySessionsException;
+    Optional<Game> createSession(GameMode gameMode) throws TooManySessionsException;
+
     Map<String, Object> joinGame(String sessionCode, String playerName) throws NoSuchSessionException;
 
     Optional<Game> getGame(String sessionCode);

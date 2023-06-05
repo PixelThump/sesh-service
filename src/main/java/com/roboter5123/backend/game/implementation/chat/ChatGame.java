@@ -9,11 +9,9 @@ import lombok.Setter;
 public class ChatGame implements Game {
 
     private final ChatState chatState;
-
     @Getter
     @Setter
     private GameMode gameMode;
-
     @Getter
     @Setter
     private String sessionCode;

@@ -25,13 +25,11 @@ public class StompControllerImpl implements StompController {
         this.messageFactory = messageFactory;
     }
 
-
-
     @Override
     @SubscribeMapping("/topic/game/{sessionCode}")
     public StompMessage joinSession(@Header final String playerName, @DestinationVariable final String sessionCode) {
 
-        final Map<String,Object> reply;
+        final Map<String, Object> reply;
 
         try {
 
@@ -41,7 +39,6 @@ public class StompControllerImpl implements StompController {
 
             return messageFactory.getMessage(e);
         }
-
 
         return messageFactory.getMessage(reply);
     }

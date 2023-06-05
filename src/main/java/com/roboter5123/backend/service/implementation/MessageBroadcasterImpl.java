@@ -13,7 +13,6 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final StompMessageFactory factory;
-
     private final Logger logger;
 
     @Autowired
@@ -21,7 +20,7 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
         this.messagingTemplate = messagingTemplate;
         this.factory = factory;
-        logger = LoggerFactory.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     public void broadcast(final String destination, final StompMessage message) {
@@ -32,19 +31,19 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     @Override
     public void broadcastGameUpdate(final String sessionCode, final Object payload) throws UnsupportedOperationException {
 
-        final String destination = "/topic/game/"+sessionCode;
+        final String destination = "/topic/game/" + sessionCode;
 
         try {
 
             final StompMessage message = factory.getMessage(payload);
             broadcast(destination, message);
-        }catch (UnsupportedOperationException e){
+
+        } catch (UnsupportedOperationException e) {
 
             logger.error("Could not broadcast message with payload {}", payload);
             logger.error("No message type available in message factory for type {}", payload.getClass());
+
             throw e;
         }
-
-
     }
 }

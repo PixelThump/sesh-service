@@ -43,11 +43,12 @@ class GameSessionManagerImplTest {
     @Order(1)
     void ALL_METHODS_SHOULD_CREATE_AND_RETURN_CHAT_GAME() throws TooManySessionsException {
 
+        chat.setGameMode(GameMode.CHAT);
         when(factory.createGame(eq(GameMode.CHAT), any())).thenReturn(chat);
-        String sessionCode = sessionManager.createGameSession(GameMode.CHAT, service);
+        Game game = sessionManager.createGameSession(GameMode.CHAT, service);
 
         Game expected = chat;
-        Game result = sessionManager.getGameSession(sessionCode);
+        Game result = sessionManager.getGameSession(game.getSessionCode());
         assertEquals(expected, result);
     }
 

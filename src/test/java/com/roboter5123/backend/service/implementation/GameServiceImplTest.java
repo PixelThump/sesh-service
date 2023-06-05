@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -49,10 +50,11 @@ class GameServiceImplTest {
     @Test
     void createSession() throws TooManySessionsException {
 
-        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(sessionCode);
+        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(chat);
 
-        String result = gameService.createSession(GameMode.CHAT);
-        assertEquals(sessionCode, result);
+        Optional<Game> expected = Optional.of(chat);
+        Optional<Game> result = gameService.createSession(GameMode.CHAT);
+        assertEquals(expected, result);
     }
 
     @Test
