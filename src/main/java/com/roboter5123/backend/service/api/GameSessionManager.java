@@ -8,5 +8,5 @@ public interface GameSessionManager {
 
     Game getGameSession(String sessionCode) throws NoSuchSessionException;
 
-    Game createGameSession(GameMode gameMode, GameService service) throws TooManySessionsException;
+    Game createGameSession(GameMode gameMode) throws TooManySessionsException;
 }

@@ -1,7 +1,9 @@
 package com.roboter5123.backend.game.api;
+import java.util.Map;
+
 public interface Game {
 
-    JoinUpdate joinGame(String playerName);
+    Map<String, Object> joinGame(String playerName);
 
     GameMode getGameMode();
 
@@ -10,4 +12,6 @@ public interface Game {
     void setSessionCode(String sessionCode);
 
     String getSessionCode();
+
+    void broadcast(Object joinCommand);
 }

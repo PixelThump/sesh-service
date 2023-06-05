@@ -22,14 +22,14 @@ class GameFactoryImplTest {
     @Test
     void CREATE_GAME_WHEN_SUPPORTED_GAME_WITH_SERVICE_SHOULD_RETURN_GAME() {
 
-        Game result = gameFactory.createGame(GameMode.CHAT, service);
+        Game result = gameFactory.createGame(GameMode.CHAT);
         assertEquals(ChatGame.class, result.getClass());
     }
 
     @Test
     void CREATE_GAME_WHEN_NOT_SUPPORTED_GAME_WITH_SERVICE_SHOULD_THROW_EXCEPTION() {
 
-        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.UNKNOWN,service));
+        assertThrows(UnsupportedOperationException.class, () -> gameFactory.createGame(GameMode.UNKNOWN));
     }
 
 }

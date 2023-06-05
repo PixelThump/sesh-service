@@ -1,10 +1,8 @@
 package com.roboter5123.backend.service.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.game.api.JoinUpdate;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.slf4j.Logger;
@@ -19,14 +17,12 @@ import java.util.Optional;
 public class GameServiceImpl implements GameService {
 
     private final GameSessionManager gameSessionManager;
-    private final MessageBroadcaster broadcaster;
     private final Logger logger;
 
     @Autowired
-    public GameServiceImpl(GameSessionManager gameSessionManager, MessageBroadcaster broadcaster) {
+    public GameServiceImpl(GameSessionManager gameSessionManager) {
 
         this.gameSessionManager = gameSessionManager;
-        this.broadcaster = broadcaster;
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -35,7 +31,7 @@ public class GameServiceImpl implements GameService {
 
         try {
 
-            Game game = this.gameSessionManager.createGameSession(gameMode, this);
+            Game game = this.gameSessionManager.createGameSession(gameMode);
             return Optional.of(game);
 
         } catch (TooManySessionsException e) {
@@ -76,15 +72,6 @@ public class GameServiceImpl implements GameService {
             throw e;
         }
 
-        final JoinUpdate joinUpdate = game.joinGame(playerName);
-
-        this.broadcast(sessionCode, joinUpdate.getCommand());
-        return joinUpdate.getGameState();
-    }
-
-    @Override
-    public void broadcast(String sessionCode, Object payload) {
-
-        this.broadcaster.broadcastGameUpdate(sessionCode, payload);
+        return game.joinGame(playerName);
     }
 }

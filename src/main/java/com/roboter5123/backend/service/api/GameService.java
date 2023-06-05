@@ -15,6 +15,4 @@ public interface GameService {
 
     Optional<Game> getGame(String sessionCode);
 
-    void broadcast(String sessionCode, Object payload);
-
 }

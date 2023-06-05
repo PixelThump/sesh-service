@@ -1,7 +1,7 @@
 package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.messaging.api.StompController;
 import com.roboter5123.backend.service.api.GameService;
-import com.roboter5123.backend.service.api.MessageBroadcaster;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.ErrorStompMessage;
 import com.roboter5123.backend.service.model.StateStompMessage;

@@ -2,20 +2,28 @@ package com.roboter5123.backend.game.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
-import com.roboter5123.backend.service.api.GameService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GameFactoryImpl implements GameFactory {
 
-    public Game createGame(GameMode gameMode, GameService service) throws UnsupportedOperationException {
+    private final MessageBroadcaster broadcaster;
+
+    public GameFactoryImpl(MessageBroadcaster broadcaster) {
+
+        this.broadcaster = broadcaster;
+    }
+
+    @Override
+    public Game createGame(GameMode gameMode) throws UnsupportedOperationException {
 
         final Game game;
 
         if (gameMode == GameMode.CHAT) {
 
-            game = new ChatGame();
+            game = new ChatGame(broadcaster);
 
         } else {
 
@@ -24,4 +32,5 @@ public class GameFactoryImpl implements GameFactory {
 
         return game;
     }
+
 }

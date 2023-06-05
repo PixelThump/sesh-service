@@ -2,8 +2,8 @@ package com.roboter5123.backend.service.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
-import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -26,7 +25,7 @@ class GameSessionManagerImplTest {
     @MockBean
     GameFactory factory;
     @Mock
-    GameService service;
+    MessageBroadcaster broadcaster;
 
     @Autowired
     GameSessionManager sessionManager;
@@ -36,7 +35,7 @@ class GameSessionManagerImplTest {
     @BeforeEach
     void setUp() {
 
-        chat = new ChatGame();
+        chat = new ChatGame(broadcaster);
     }
 
     @Test
@@ -44,8 +43,8 @@ class GameSessionManagerImplTest {
     void ALL_METHODS_SHOULD_CREATE_AND_RETURN_CHAT_GAME() throws TooManySessionsException {
 
         chat.setGameMode(GameMode.CHAT);
-        when(factory.createGame(eq(GameMode.CHAT), any())).thenReturn(chat);
-        Game game = sessionManager.createGameSession(GameMode.CHAT, service);
+        when(factory.createGame(GameMode.CHAT)).thenReturn(chat);
+        Game game = sessionManager.createGameSession(GameMode.CHAT);
 
         Game expected = chat;
         Game result = sessionManager.getGameSession(game.getSessionCode());
@@ -64,14 +63,14 @@ class GameSessionManagerImplTest {
     @Order(3)
     void CREATE_GAME_SESSION_SHOULD_THROW_EXCEPTION_WHEN_TOO_MANY_SESSIONS() throws TooManySessionsException {
 
-        when(factory.createGame(any(),any())).thenReturn(chat);
+        when(factory.createGame(any())).thenReturn(chat);
 
         double maxSessionCount = Math.pow(26,4)+1;
         assertThrows(TooManySessionsException.class, ()-> {
 
             for (int i = 0; i < maxSessionCount; i++) {
 
-                sessionManager.createGameSession(GameMode.CHAT,service);
+                sessionManager.createGameSession(GameMode.CHAT);
             }
         });
     }

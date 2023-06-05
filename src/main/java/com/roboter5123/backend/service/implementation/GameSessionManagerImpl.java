@@ -2,7 +2,6 @@ package com.roboter5123.backend.service.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
 import com.roboter5123.backend.service.model.exception.NoSuchSessionException;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
@@ -40,9 +39,9 @@ public class GameSessionManagerImpl implements GameSessionManager {
     }
 
     @Override
-    public Game createGameSession(final GameMode gameMode, final GameService service) throws TooManySessionsException {
+    public Game createGameSession(final GameMode gameMode) throws TooManySessionsException {
 
-        final Game game = gameFactory.createGame(gameMode, service);
+        final Game game = gameFactory.createGame(gameMode);
 
         String sessionCode = createSessionCode();
         game.setSessionCode(sessionCode);

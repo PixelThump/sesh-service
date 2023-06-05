@@ -1,5 +1,4 @@
-package com.roboter5123.backend.service.implementation;
-import com.roboter5123.backend.service.api.MessageBroadcaster;
+package com.roboter5123.backend.game.api;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.StompMessage;
 import org.slf4j.Logger;
