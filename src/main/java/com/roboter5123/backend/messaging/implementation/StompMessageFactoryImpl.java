@@ -1,7 +1,7 @@
-package com.roboter5123.backend.service.implementation;
+package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.game.api.Command;
-import com.roboter5123.backend.service.api.StompMessageFactory;
-import com.roboter5123.backend.service.model.*;
+import com.roboter5123.backend.messaging.model.*;
+import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

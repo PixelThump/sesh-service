@@ -1,6 +1,7 @@
-package com.roboter5123.backend.game.api;
-import com.roboter5123.backend.service.api.StompMessageFactory;
-import com.roboter5123.backend.service.model.StompMessage;
+package com.roboter5123.backend.messaging.implementation;
+import com.roboter5123.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.backend.messaging.api.StompMessageFactory;
+import com.roboter5123.backend.messaging.model.StompMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

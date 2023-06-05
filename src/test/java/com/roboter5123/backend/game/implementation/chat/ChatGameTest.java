@@ -1,7 +1,7 @@
 package com.roboter5123.backend.game.implementation.chat;
 import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.api.Game;
-import com.roboter5123.backend.game.api.MessageBroadcaster;
+import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

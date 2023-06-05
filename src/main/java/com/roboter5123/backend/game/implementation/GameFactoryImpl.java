@@ -2,7 +2,7 @@ package com.roboter5123.backend.game.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameFactory;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.game.api.MessageBroadcaster;
+import com.roboter5123.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import org.springframework.stereotype.Component;
 
