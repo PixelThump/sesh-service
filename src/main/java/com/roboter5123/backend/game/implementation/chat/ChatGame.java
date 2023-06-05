@@ -2,9 +2,11 @@ package com.roboter5123.backend.game.implementation.chat;
 import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.game.api.JoinUpdate;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Map;
 
 public class ChatGame implements Game {
 
@@ -15,23 +17,28 @@ public class ChatGame implements Game {
     @Getter
     @Setter
     private String sessionCode;
+    private final MessageBroadcaster broadcaster;
 
-    public ChatGame() {
+    public ChatGame(MessageBroadcaster broadcaster) {
 
+        this.broadcaster = broadcaster;
         this.chatState = new ChatState();
         this.gameMode = GameMode.CHAT;
     }
 
     @Override
-    public JoinUpdate joinGame(final String playerName) {
+    public Map<String, Object> joinGame(final String playerName) {
 
         this.chatState.join(playerName);
         final Command joinCommand = new Command("server", new ChatJoinAction(playerName));
+        this.broadcast(joinCommand);
 
-        final JoinUpdate joinUpdate = new JoinUpdate();
-        joinUpdate.setGameState(this.chatState.getState());
-        joinUpdate.setCommand(joinCommand);
+        return this.chatState.getState();
+    }
 
-        return joinUpdate;
+    @Override
+    public void broadcast(Object payload){
+
+        this.broadcaster.broadcastGameUpdate(this.sessionCode, payload);
     }
 }

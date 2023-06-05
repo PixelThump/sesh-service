@@ -1,14 +1,10 @@
 package com.roboter5123.backend.service.implementation;
-import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
-import com.roboter5123.backend.game.api.JoinUpdate;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
-import com.roboter5123.backend.game.implementation.chat.ChatJoinAction;
-import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.GameSessionManager;
-import com.roboter5123.backend.service.model.JoinPayloads;
 import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +46,7 @@ class GameServiceImplTest {
     @Test
     void createSession() throws TooManySessionsException {
 
-        when(sessionManager.createGameSession(GameMode.CHAT,gameService)).thenReturn(chat);
+        when(sessionManager.createGameSession(GameMode.CHAT)).thenReturn(chat);
 
         Optional<Game> expected = Optional.of(chat);
         Optional<Game> result = gameService.createSession(GameMode.CHAT);
@@ -60,18 +56,12 @@ class GameServiceImplTest {
     @Test
     void joinGame() {
 
-        JoinUpdate chatJoinUpdate = new JoinUpdate();
-        chatJoinUpdate.setCommand(new Command(playerName, new ChatJoinAction()));
-        chatJoinUpdate.setGameState(new HashMap<>());
+        Map<String, Object> expected = new HashMap<>();
 
         when(sessionManager.getGameSession(sessionCode)).thenReturn(chat);
-        when(chat.joinGame(playerName)).thenReturn(chatJoinUpdate);
-
-        JoinPayloads expected = new JoinPayloads();
-        expected.setBroadcast(chatJoinUpdate.getCommand());
-        expected.setReply(chatJoinUpdate.getGameState());
+        when(chat.joinGame(playerName)).thenReturn(expected);
 
         Map<String,Object> result = gameService.joinGame(sessionCode,playerName);
-        assertEquals(expected.getReply(), result);
+        assertEquals(expected, result);
     }
 }

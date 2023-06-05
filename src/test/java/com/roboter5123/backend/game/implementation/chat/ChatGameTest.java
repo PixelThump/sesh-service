@@ -1,12 +1,15 @@
 package com.roboter5123.backend.game.implementation.chat;
 import com.roboter5123.backend.game.api.Command;
 import com.roboter5123.backend.game.api.Game;
-import com.roboter5123.backend.game.api.JoinUpdate;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ChatGameTest {
@@ -15,10 +18,13 @@ class ChatGameTest {
 
     String playerName;
 
+    @MockBean
+    MessageBroadcaster broadcaster;
+
     @BeforeEach
     void setUp() {
 
-        chat = new ChatGame();
+        chat = new ChatGame(broadcaster);
         playerName = "roboter5123";
     }
 
@@ -30,11 +36,9 @@ class ChatGameTest {
         state.getChatLog().add(playerName + " joined the Conversation");
         state.setLastCommand(new Command("server", new ChatJoinAction(playerName)));
 
-        JoinUpdate expected = new JoinUpdate();
-        expected.setGameState(state.getState());
-        expected.setCommand(state.getLastCommand());
-        JoinUpdate result = chat.joinGame(playerName);
-        assertEquals(expected.getGameState(), result.getGameState());
-        assertEquals(expected.getCommand(),result.getCommand());
+        Map<String, Object> expected = state.getState();
+        Map<String, Object> result = chat.joinGame(playerName);
+        assertEquals(expected, result);
+
     }
 }

@@ -1,5 +1,5 @@
 package com.roboter5123.backend.service.implementation;
-import com.roboter5123.backend.service.api.MessageBroadcaster;
+import com.roboter5123.backend.game.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.StompMessageFactory;
 import com.roboter5123.backend.service.model.ErrorStompMessage;
 import org.junit.jupiter.api.BeforeEach;
