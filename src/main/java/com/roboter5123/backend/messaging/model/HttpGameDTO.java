@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HttpGame {
+public class HttpGameDTO {
 
     private GameMode gameMode;
     private String sessionCode;

@@ -27,22 +27,38 @@ public class GameServiceImpl implements GameService {
 
         this.gameSessionManager = gameSessionManager;
         this.broadcaster = broadcaster;
-        logger = LoggerFactory.getLogger(this.getClass());
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
-    public String createSession(GameMode gameMode) throws TooManySessionsException {
+    public Optional<Game> createSession(GameMode gameMode) {
 
         try {
 
-            return this.gameSessionManager.createGameSession(gameMode, this);
+            Game game = this.gameSessionManager.createGameSession(gameMode, this);
+            return Optional.of(game);
 
         } catch (TooManySessionsException e) {
 
             logger.error("Unable to create session because there were too many sessions");
-            throw e;
+            return Optional.empty();
         }
 
+    }
+
+    @Override
+    public Optional<Game> getGame(String sessionCode) {
+
+        try {
+
+            Game game = this.gameSessionManager.getGameSession(sessionCode);
+            return Optional.of(game);
+
+        } catch (NoSuchSessionException e) {
+
+            this.logger.warn("No session with code {} exists!", sessionCode);
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -64,21 +80,6 @@ public class GameServiceImpl implements GameService {
 
         this.broadcast(sessionCode, joinUpdate.getCommand());
         return joinUpdate.getGameState();
-    }
-
-    @Override
-    public Optional<Game> getGame(String sessionCode) {
-
-        try {
-
-            Game game = this.gameSessionManager.getGameSession(sessionCode);
-            return Optional.of(game);
-
-        } catch (NoSuchSessionException e) {
-
-            this.logger.warn("No session with code {} exists!", sessionCode);
-            return Optional.empty();
-        }
     }
 
     @Override

@@ -12,5 +12,5 @@ import java.util.Map;
 @NoArgsConstructor
 public class StateStompMessage implements StompMessage {
 
-    Map<String,Object> state;
+    Map<String, Object> state;
 }

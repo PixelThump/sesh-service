@@ -3,7 +3,7 @@ import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.backend.messaging.api.HttpController;
-import com.roboter5123.backend.messaging.model.HttpGame;
+import com.roboter5123.backend.messaging.model.HttpGameDTO;
 import com.roboter5123.backend.service.api.GameService;
 import com.roboter5123.backend.service.api.MessageBroadcaster;
 import com.roboter5123.backend.service.api.StompMessageFactory;
@@ -35,20 +35,26 @@ class HttpControllerImplTest {
     String sessionCode;
     String playerName;
 
+    Game game;
+
     @BeforeEach
     void setUp() {
 
         sessionCode = "abcd";
         playerName = "roboter5123";
+        this.game = new ChatGame();
+        this.game.setGameMode(GameMode.CHAT);
+        this.game.setSessionCode(sessionCode);
     }
 
     @Test
-    void create_Session_should_return_session_code() throws TooManySessionsException {
+    void create_Session_should_return_http_game() throws TooManySessionsException {
 
-        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(sessionCode);
+        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(Optional.of(game));
 
-        String expected = sessionCode;
-        String result = httpController.createSession(GameMode.CHAT);
+
+        HttpGameDTO expected = new HttpGameDTO(game.getGameMode(),game.getSessionCode());
+        HttpGameDTO result = httpController.createSession(GameMode.CHAT);
 
         assertEquals(expected, result);
     }
@@ -56,13 +62,10 @@ class HttpControllerImplTest {
     @Test
     void get_game_should_return_game(){
 
-        Game game = new ChatGame();
-        game.setGameMode(GameMode.CHAT);
-        game.setSessionCode(sessionCode);
         when(gameServiceMock.getGame(any())).thenReturn(Optional.of(game));
 
-        HttpGame expected = new HttpGame(GameMode.CHAT,sessionCode);
-        HttpGame result = httpController.getGame(sessionCode);
+        HttpGameDTO expected = new HttpGameDTO(GameMode.CHAT,sessionCode);
+        HttpGameDTO result = httpController.getGame(sessionCode);
 
         assertEquals(expected, result);
     }

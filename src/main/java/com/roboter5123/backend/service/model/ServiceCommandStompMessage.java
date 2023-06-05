@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceCommandStompMessage implements StompMessage{
+public class ServiceCommandStompMessage implements StompMessage {
 
     ServiceCommand command;
 }

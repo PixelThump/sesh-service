@@ -2,10 +2,10 @@ package com.roboter5123.backend.messaging.implementation;
 import com.roboter5123.backend.game.api.Game;
 import com.roboter5123.backend.game.api.GameMode;
 import com.roboter5123.backend.messaging.api.HttpController;
-import com.roboter5123.backend.messaging.model.HttpGame;
+import com.roboter5123.backend.messaging.model.HttpGameDTO;
 import com.roboter5123.backend.messaging.model.exception.NoSuchSessionHttpException;
+import com.roboter5123.backend.messaging.model.exception.TooManySessionsHttpException;
 import com.roboter5123.backend.service.api.GameService;
-import com.roboter5123.backend.service.model.exception.TooManySessionsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,24 +28,29 @@ public class HttpControllerImpl implements HttpController {
     @Override
     @PostMapping("/sessions")
     @ResponseBody
-    public String createSession(@RequestBody final GameMode gameMode) throws TooManySessionsException {
+    public HttpGameDTO createSession(@RequestBody final GameMode gameMode) throws TooManySessionsHttpException {
 
-        return this.gameService.createSession(gameMode);
+        Optional<Game> game = this.gameService.createSession(gameMode);
 
+        if (game.isEmpty()) {
+
+            throw new TooManySessionsHttpException("Unable to create session because there were too many sessions!");
+        }
+
+        return modelMapper.map(game, HttpGameDTO.class);
     }
 
     @Override
     @GetMapping("sessions/{sessionCode}")
-    public HttpGame getGame(@PathVariable String sessionCode) throws NoSuchSessionHttpException {
+    public HttpGameDTO getGame(@PathVariable String sessionCode) throws NoSuchSessionHttpException {
 
-        Optional<Game> game =this.gameService.getGame(sessionCode);
+        Optional<Game> game = this.gameService.getGame(sessionCode);
 
-        if (game.isEmpty()){
+        if (game.isEmpty()) {
 
             throw new NoSuchSessionHttpException("No session with code " + sessionCode + " exists!");
         }
 
-        return modelMapper.map(game.get(),HttpGame.class);
-
+        return modelMapper.map(game.get(), HttpGameDTO.class);
     }
 }
