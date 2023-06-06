@@ -29,10 +29,12 @@ jobs:
       - name: maven-settings
         uses: s4u/maven-settings-action@v2
         with:
-          servers: '[{"id": "github", "username": "dummy", "password": "${PACKAGES_GITHUB_KEY}"}]'
+          servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Build with Maven
         run: mvn -B clean test jacoco:check package --file pom.xml
+        env:
+          GITHUB_TOKEN_REF: ${{ secrets.PACKAGES_GITHUB_KEY }}
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
@@ -51,10 +53,12 @@ jobs:
       - name: maven-settings
         uses: s4u/maven-settings-action@v2
         with:
-          servers: '[{"id": "github", "username": "dummy", "password": "${PACKAGES_GITHUB_KEY}"}]'
+          servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
-      - name: Build with Maven
+      - name: Test with Maven
         run: mvn -B clean test jacoco:report --file pom.xml
+        env:
+          GITHUB_TOKEN_REF: ${{ secrets.PACKAGES_GITHUB_KEY }}
 
       - name: Add coverage to PR
         if: always()
