@@ -1,5 +1,5 @@
 package com.roboter5123.backend.messaging.implementation;
-import com.roboter5123.backend.game.api.Command;
+import com.roboter5123.backend.messaging.model.Command;
 import com.roboter5123.backend.messaging.model.*;
 import com.roboter5123.backend.messaging.api.StompMessageFactory;
 import org.springframework.stereotype.Component;
