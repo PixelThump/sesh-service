@@ -1,5 +1,5 @@
 package com.roboter5123.backend.game.implementation.chat;
-import com.roboter5123.backend.game.api.Command;
+import com.roboter5123.backend.messaging.model.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
