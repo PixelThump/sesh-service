@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.roboter5123</groupId>
-    <artifactId>backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>play_backend</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
     <name>backend</name>
     <description>backend</description>
     <properties>
@@ -66,8 +66,12 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.roboter5123.play</groupId>
+            <artifactId>messaging</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -149,5 +153,11 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub roboter5123 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/roboter5123/play_backend</url>
+        </repository>
+    </distributionManagement>
 </project>
