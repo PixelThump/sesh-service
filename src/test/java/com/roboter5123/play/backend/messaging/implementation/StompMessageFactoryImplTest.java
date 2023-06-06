@@ -1,13 +1,8 @@
 package com.roboter5123.play.backend.messaging.implementation;
-import com.roboter5123.play.backend.messaging.model.Command;
 import com.roboter5123.play.backend.game.implementation.chat.ChatMessageAction;
 import com.roboter5123.play.backend.game.implementation.chat.ChatState;
-import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.messaging.model.ErrorStompMessage;
-import com.roboter5123.play.backend.messaging.model.ServiceCommandStompMessage;
-import com.roboter5123.play.backend.messaging.model.StateStompMessage;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
-import com.roboter5123.play.backend.messaging.model.ServiceCommand;
+import com.roboter5123.play.messaging.api.StompMessageFactory;
+import com.roboter5123.play.messaging.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

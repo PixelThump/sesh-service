@@ -1,8 +1,8 @@
 package com.roboter5123.play.backend.game.implementation.chat;
-import com.roboter5123.play.backend.messaging.model.Command;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
-import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.messaging.model.Command;
 import lombok.Getter;
 import lombok.Setter;
 

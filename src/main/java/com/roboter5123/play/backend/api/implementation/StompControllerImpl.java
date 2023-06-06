@@ -1,9 +1,9 @@
 package com.roboter5123.play.backend.api.implementation;
-import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
 import com.roboter5123.play.backend.api.api.StompController;
 import com.roboter5123.play.backend.service.api.GameService;
 import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.play.messaging.api.StompMessageFactory;
+import com.roboter5123.play.messaging.model.StompMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
