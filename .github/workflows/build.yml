@@ -29,7 +29,7 @@ jobs:
       - name: maven-settings
         uses: s4u/maven-settings-action@v2
         with:
-          servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
+          servers: '[{"id": "github", "username": "roboter5123", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Build with Maven
         run: mvn -B clean test jacoco:check package --file pom.xml
@@ -53,7 +53,7 @@ jobs:
       - name: maven-settings
         uses: s4u/maven-settings-action@v2
         with:
-          servers: '[{"id": "github", "username": "dummy", "password": "${GITHUB_TOKEN_REF}"}]'
+          servers: '[{"id": "github", "username": "roboter5123", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Test with Maven
         run: mvn -B clean test jacoco:report --file pom.xml
