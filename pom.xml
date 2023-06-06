@@ -66,6 +66,11 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.roboter5123.play</groupId>
+            <artifactId>messaging</artifactId>
+            <version>0.1.0-snapshot</version>
+        </dependency>
     </dependencies>
 
     <build>
