@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B clean test jacoco:check package --file pom.xml
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:check package --file pom.xml
         env:
           ACCESS_TOKEN: ${{ secrets.PACKAGES_GITHUB_KEY }}
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
@@ -50,7 +50,7 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B clean test jacoco:report --file pom.xml
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:report --file pom.xml
         env:
           ACCESS_TOKEN: ${{ secrets.PACKAGES_GITHUB_KEY }}
 
