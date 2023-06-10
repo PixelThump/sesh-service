@@ -1,13 +1,14 @@
 package com.roboter5123.play.backend.webinterface.api.implementation;
-import com.roboter5123.play.backend.webinterface.api.api.HttpController;
-import com.roboter5123.play.backend.webinterface.api.model.HttpGameDTO;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.game.implementation.chat.ChatGame;
+import com.roboter5123.play.backend.webinterface.api.api.HttpController;
+import com.roboter5123.play.backend.webinterface.api.model.HttpGameDTO;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
+import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
-import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
+import com.roboter5123.play.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.messaging.api.StompMessageFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ class HttpControllerImplTest {
     MessageBroadcaster broadcasterMock;
     @MockBean
     StompMessageFactory factoryMock;
+
+    @MockBean
+    GameSessionManager gameSessionManager;
     @Autowired
     HttpController httpController;
     String sessionCode;

@@ -5,19 +5,21 @@ import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
 import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@Component
+@Service
 public class GameSessionManagerImpl implements GameSessionManager {
 
     private final Map<String, Game> games;
     private final Random random;
     private final GameFactory gameFactory;
 
+    @Autowired
     public GameSessionManagerImpl(final GameFactory gameFactory, final Random random) {
 
         this.games = new HashMap<>();

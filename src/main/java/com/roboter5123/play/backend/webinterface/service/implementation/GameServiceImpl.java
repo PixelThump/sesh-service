@@ -39,7 +39,6 @@ public class GameServiceImpl implements GameService {
             logger.error("Unable to create session because there were too many sessions");
             return Optional.empty();
         }
-
     }
 
     @Override
