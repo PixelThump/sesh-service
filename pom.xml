@@ -8,11 +8,11 @@
         <version>3.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.roboter5123</groupId>
-    <artifactId>play_backend</artifactId>
+    <groupId>com.roboter5123.play.backend</groupId>
+    <artifactId>webinterface</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>backend</name>
-    <description>backend</description>
+    <name>webinterface</name>
+    <description>webinterface</description>
     <properties>
         <java.version>17</java.version>
     </properties>
