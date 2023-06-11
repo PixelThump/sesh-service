@@ -1,9 +1,9 @@
 package com.roboter5123.play.backend.webinterface.service.implementation;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
-import com.roboter5123.play.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
+import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
 import com.roboter5123.play.messaging.api.MessageBroadcaster;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -31,7 +33,7 @@ class GameServiceImplTest {
     GameService gameService;
     String sessionCode;
 
-    Game chat;
+    Game game;
     private String playerName;
 
     @BeforeEach
@@ -39,29 +41,68 @@ class GameServiceImplTest {
 
         this.sessionCode = "abcd";
         this.playerName = "roboter5123";
-        chat = Mockito.mock(ChatGame.class);
+        game = Mockito.mock(Game.class);
 
     }
 
     @Test
-    void createSession() throws TooManySessionsException {
+    void create_session_should_return_game() throws TooManySessionsException {
 
-        when(sessionManager.createGameSession(GameMode.CHAT)).thenReturn(chat);
+        when(sessionManager.createGameSession(any())).thenReturn(game);
 
-        Optional<Game> expected = Optional.of(chat);
-        Optional<Game> result = gameService.createSession(GameMode.CHAT);
+        Optional<Game> expected = Optional.of(game);
+        Optional<Game> result = gameService.createSession(GameMode.UNKNOWN);
         assertEquals(expected, result);
     }
 
     @Test
-    void joinGame() {
+    void create_session_should_return_empty_optional() throws TooManySessionsException {
+
+        when(sessionManager.createGameSession(any())).thenThrow(new TooManySessionsException());
+
+        Optional<Game> expected = Optional.empty();
+        Optional<Game> result = gameService.createSession(GameMode.UNKNOWN);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void get_game_should_return_optional_of_game() throws TooManySessionsException {
+
+        when(sessionManager.getGameSession(any())).thenReturn(game);
+
+        Optional<Game> expected = Optional.of(game);
+        Optional<Game> result = gameService.getGame(sessionCode);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void get_game_should_return_empty_optional() throws TooManySessionsException {
+
+        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("So Session with code " + sessionCode + "exists."));
+
+        Optional<Game> expected = Optional.empty();
+        Optional<Game> result = gameService.getGame(sessionCode);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void joinGame_should_return_state() {
 
         Map<String, Object> expected = new HashMap<>();
 
-        when(sessionManager.getGameSession(sessionCode)).thenReturn(chat);
-        when(chat.joinGame(playerName)).thenReturn(expected);
+        when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
+        when(game.joinGame(playerName)).thenReturn(expected);
 
         Map<String,Object> result = gameService.joinGame(sessionCode,playerName);
         assertEquals(expected, result);
+    }
+
+    @Test
+    void joinGame_should_throw_no_such_session_exception() {
+
+        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("So Session with code " + sessionCode + "exists."));
+
+        assertThrows(NoSuchSessionException.class, ()-> gameService.joinGame(sessionCode,playerName));
     }
 }
