@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +25,13 @@ public class HttpControllerImpl implements HttpController {
 
         this.gameService = gameService;
         this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public List<GameMode> getGameModes() {
+
+        GameMode[] gameModes = GameMode.values();
+        return Arrays.stream(gameModes).filter(gameMode -> gameMode!= GameMode.UNKNOWN).toList();
     }
 
     @Override
