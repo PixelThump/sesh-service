@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +47,14 @@ class HttpControllerImplTest {
         this.game = new ChatGame(broadcasterMock);
         this.game.setGameMode(GameMode.CHAT);
         this.game.setSessionCode(sessionCode);
+    }
+
+    @Test
+    void get_Game_Modes_should_return_all_game_modes_but_unknown(){
+
+        List<GameMode> expected = Arrays.stream(GameMode.values()).filter(gameMode -> gameMode!=GameMode.UNKNOWN).toList();
+        List<GameMode> result = httpController.getGameModes();
+        assertEquals(expected, result);
     }
 
     @Test
