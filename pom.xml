@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.roboter5123.play.backend</groupId>
             <artifactId>game</artifactId>
-            <version>0.1.0-snapshot</version>
+            <version>0.2.0-snapshot</version>
         </dependency>
     </dependencies>
     <build>
