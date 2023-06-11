@@ -28,6 +28,8 @@ public class HttpControllerImpl implements HttpController {
     }
 
     @Override
+    @GetMapping("/gamemodes")
+    @ResponseBody
     public List<GameMode> getGameModes() {
 
         GameMode[] gameModes = GameMode.values();
