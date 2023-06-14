@@ -21,7 +21,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -35,7 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
@@ -65,16 +63,6 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.roboter5123.play.backend</groupId>
-            <artifactId>messaging</artifactId>
-            <version>0.2.0-snapshot</version>
-        </dependency>
-        <dependency>
-            <groupId>com.roboter5123.play.backend</groupId>
-            <artifactId>game</artifactId>
-            <version>0.3.1-snapshot</version>
         </dependency>
     </dependencies>
     <build>
