@@ -51,7 +51,8 @@ public class StompControllerImpl implements StompController {
 
         try {
 
-            return this.gameService.sendCommandToGame(message, sessionCode);
+            this.gameService.sendCommandToGame(message, sessionCode);
+            return messageFactory.getAckMessage();
 
         }catch (NoSuchSessionException e){
 

@@ -2,7 +2,6 @@ package com.roboter5123.play.backend.service.implementation;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
 import com.roboter5123.play.backend.service.api.GameService;
 import com.roboter5123.play.backend.service.api.GameSessionManager;
 import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
@@ -60,7 +59,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public StompMessage sendCommandToGame(final CommandStompMessage message, final String sessionCode) throws NoSuchSessionException {
+    public void sendCommandToGame(final CommandStompMessage message, final String sessionCode) throws NoSuchSessionException {
 
         Optional<Game> gameOptional = getGame(sessionCode);
 
@@ -70,7 +69,7 @@ public class GameServiceImpl implements GameService {
         }
 
         final Game game = gameOptional.get();
-        return game.addCommand(message.getCommand());
+        game.addCommand(message.getCommand());
     }
 
     @Override

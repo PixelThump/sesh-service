@@ -2,8 +2,8 @@ package com.roboter5123.play.backend.game.implementation.chat;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.messaging.model.Action;
 import com.roboter5123.play.backend.messaging.model.Command;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,13 +38,25 @@ public class ChatGame implements Game {
     }
 
     @Override
-    public void broadcast(Object payload){
+    public void broadcast(final Object payload){
 
         this.broadcaster.broadcastGameUpdate(this.sessionCode, payload);
     }
 
     @Override
-    public StompMessage addCommand(Command command) {
-        throw new UnsupportedOperationException();
+    public void addCommand(final Command command) {
+
+        Action action = command.getAction();
+
+        if (action instanceof ChatMessageAction chatMessageAction){
+
+            addMessage(command.getPlayer(), chatMessageAction);
+        }
+    }
+
+    private void addMessage(String playerName, ChatMessageAction action) {
+
+        final String message = this.chatState.addMessage(playerName, action.getMessage());
+        this.broadcast(message);
     }
 }

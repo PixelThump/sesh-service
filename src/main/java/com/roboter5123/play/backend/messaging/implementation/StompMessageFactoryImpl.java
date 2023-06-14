@@ -42,6 +42,12 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         return message;
     }
 
+    @Override
+    public StompMessage getAckMessage() {
+
+        return new GenericStompMessage();
+    }
+
     private ErrorStompMessage getMessage(RuntimeException exception) {
 
         final ErrorStompMessage message = new ErrorStompMessage();

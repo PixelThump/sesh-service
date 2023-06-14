@@ -21,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -110,16 +111,14 @@ class GameServiceImplTest {
     @Test
     void sendCommandToGame_should_return_Acknowledment_Message() {
 
-        StompMessage expected = new GenericStompMessage();
+        when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
 
         Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
-
-        when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
-        when(game.addCommand(incomingCommand)).thenReturn(expected);
-
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
-        StompMessage result = gameService.sendCommandToGame(incomingMessage, sessionCode);
-        assertEquals(expected, result);
+
+        gameService.sendCommandToGame(incomingMessage, sessionCode);
+
+        verify(game).addCommand(incomingCommand);
     }
 
     @Test

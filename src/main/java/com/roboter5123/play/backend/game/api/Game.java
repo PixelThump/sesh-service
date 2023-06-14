@@ -1,6 +1,5 @@
 package com.roboter5123.play.backend.game.api;
 import com.roboter5123.play.backend.messaging.model.Command;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
 
 import java.util.Map;
 
@@ -18,5 +17,5 @@ public interface Game {
 
     void broadcast(Object joinCommand);
 
-    StompMessage addCommand(Command command);
+    void addCommand(Command command);
 }

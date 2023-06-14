@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class StompControllerImplTest {
@@ -76,23 +76,24 @@ class StompControllerImplTest {
     }
 
     @Test
-    void sendCommandToGame_Should_Return_Acknowledgement_Message(){
-
-        when(gameServiceMock.sendCommandToGame(any(),eq(sessionCode))).thenReturn( new GenericStompMessage());
+    void sendCommandToGame_Should_not_thow_exception_and_call_game_add_command(){
 
         StompMessage expected = new GenericStompMessage();
+
+        when(factoryMock.getAckMessage()).thenReturn(new GenericStompMessage());
 
         Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
         StompMessage result = stompController.sendCommandToGame(incomingMessage, sessionCode);
         assertEquals(expected, result);
+        verify(gameServiceMock).sendCommandToGame(incomingMessage, sessionCode);
     }
 
     @Test
     void sendCommandToGame_Should_Return_ErrorMessage(){
 
         NoSuchSessionException exception = new NoSuchSessionException("No Session with code " + sessionCode + " exists");
-        when(gameServiceMock.sendCommandToGame(any(),eq(sessionCode))).thenThrow(exception);
+        doThrow(exception).when(gameServiceMock).sendCommandToGame(any(),eq(sessionCode));
         when(factoryMock.getMessage(exception)).thenReturn(new ErrorStompMessage(exception.getMessage()));
 
         StompMessage expected = new ErrorStompMessage(exception.getMessage());

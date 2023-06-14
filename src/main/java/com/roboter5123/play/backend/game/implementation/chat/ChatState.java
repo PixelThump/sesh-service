@@ -32,4 +32,11 @@ public class ChatState {
         state.put("chatLog", this.chatLog);
         return state;
     }
+
+    public String addMessage(String playerName, String message) {
+
+        String addedMessage = playerName + ": " + message;
+        this.chatLog.add(addedMessage);
+        return addedMessage;
+    }
 }
