@@ -6,6 +6,8 @@ import com.roboter5123.play.backend.messaging.model.Action;
 import com.roboter5123.play.backend.messaging.model.Command;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -20,11 +22,14 @@ public class ChatGame implements Game {
     private String sessionCode;
     private final MessageBroadcaster broadcaster;
 
+    Logger logger;
+
     public ChatGame(MessageBroadcaster broadcaster) {
 
         this.broadcaster = broadcaster;
         this.chatState = new ChatState();
         this.gameMode = GameMode.CHAT;
+        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -38,19 +43,25 @@ public class ChatGame implements Game {
     }
 
     @Override
-    public void broadcast(final Object payload){
+    public void broadcast(final Object payload) {
 
         this.broadcaster.broadcastGameUpdate(this.sessionCode, payload);
     }
 
     @Override
-    public void addCommand(final Command command) {
+    public void addCommand(final Command command) throws UnsupportedOperationException {
 
         Action action = command.getAction();
 
-        if (action instanceof ChatMessageAction chatMessageAction){
+        if (action instanceof ChatMessageAction chatMessageAction) {
 
             addMessage(command.getPlayer(), chatMessageAction);
+
+        } else {
+
+            String errorMessage = "Could not execute action. Unsupported action type";
+            logger.error(errorMessage);
+            throw new UnsupportedOperationException(errorMessage);
         }
     }
 

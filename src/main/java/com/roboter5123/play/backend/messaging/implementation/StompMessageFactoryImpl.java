@@ -1,12 +1,21 @@
 package com.roboter5123.play.backend.messaging.implementation;
 import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.messaging.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
 public class StompMessageFactoryImpl implements StompMessageFactory {
+
+    Logger logger;
+
+    public StompMessageFactoryImpl() {
+
+        this.logger = LoggerFactory.getLogger(this.getClass());
+    }
 
     public StompMessage getMessage(Object payload) throws UnsupportedOperationException {
 
@@ -22,7 +31,9 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
 
         } else {
 
-            throw new UnsupportedOperationException();
+            String errorMessage = "Could not create StompMessage. Unsupported payload type";
+            logger.error(errorMessage);
+            throw new UnsupportedOperationException(errorMessage);
         }
 
         return message;

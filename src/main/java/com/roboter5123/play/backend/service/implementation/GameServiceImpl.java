@@ -28,7 +28,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game getGame(String sessionCode) throws NoSuchSessionException {
+    public Game getGame(String sessionCode) throws NoSuchSessionException, UnsupportedOperationException {
 
         return this.gameSessionManager.getGameSession(sessionCode);
     }

@@ -15,5 +15,5 @@ public interface GameService {
 
     Game getGame(String sessionCode) throws NoSuchSessionException;
 
-    void sendCommandToGame(CommandStompMessage message, String sessionCode) throws NoSuchSessionException;
+    void sendCommandToGame(CommandStompMessage message, String sessionCode) throws NoSuchSessionException, UnsupportedOperationException;
 }
