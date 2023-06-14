@@ -1,10 +1,13 @@
 package com.roboter5123.play.backend.webinterface.service.implementation;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
+import com.roboter5123.play.backend.messaging.model.CommandStompMessage;
+import com.roboter5123.play.backend.messaging.model.StompMessage;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
 import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +57,20 @@ public class GameServiceImpl implements GameService {
             this.logger.warn("No session with code {} exists!", sessionCode);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public StompMessage sendCommandToGame(final CommandStompMessage message, final String sessionCode) throws NoSuchSessionException {
+
+        Optional<Game> gameOptional = getGame(sessionCode);
+
+        if (gameOptional.isEmpty()){
+
+            throw new NoSuchSessionException("No session with code " + sessionCode +" exists!");
+        }
+
+        final Game game = gameOptional.get();
+        return game.addCommand(message.getCommand());
     }
 
     @Override

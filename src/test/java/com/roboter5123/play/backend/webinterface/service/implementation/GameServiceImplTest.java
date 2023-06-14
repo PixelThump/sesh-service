@@ -1,11 +1,12 @@
 package com.roboter5123.play.backend.webinterface.service.implementation;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
+import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.messaging.model.*;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
 import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
-import com.roboter5123.play.messaging.api.MessageBroadcaster;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -104,5 +105,31 @@ class GameServiceImplTest {
         when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("So Session with code " + sessionCode + "exists."));
 
         assertThrows(NoSuchSessionException.class, ()-> gameService.joinGame(sessionCode,playerName));
+    }
+
+    @Test
+    void sendCommandToGame_should_return_Acknowledment_Message() {
+
+        StompMessage expected = new GenericStompMessage();
+
+        Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
+
+        when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
+        when(game.addCommand(incomingCommand)).thenReturn(expected);
+
+        CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
+        StompMessage result = gameService.sendCommandToGame(incomingMessage, sessionCode);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void sendCommandToGame_should_log_error_and_throw_no_such_session_exception() {
+
+        NoSuchSessionException exception = new NoSuchSessionException("No Session with code " + sessionCode + " exists");
+        when(sessionManager.getGameSession(any())).thenThrow(exception);
+
+        Command incomingCommand = new Command(playerName, new BasicAction(playerName,"Chat message"));
+        CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
+        assertThrows(NoSuchSessionException.class, ()-> gameService.sendCommandToGame(incomingMessage,sessionCode));
     }
 }

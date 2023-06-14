@@ -3,10 +3,10 @@ import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameFactory;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.game.implementation.chat.ChatGame;
+import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
 import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.webinterface.service.exception.TooManySessionsException;
-import com.roboter5123.play.messaging.api.MessageBroadcaster;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +74,4 @@ class GameSessionManagerImplTest {
             }
         });
     }
-
 }
