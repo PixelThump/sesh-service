@@ -67,4 +67,12 @@ class StompMessageFactoryImplTest {
         Object o = new Object();
         assertThrows(UnsupportedOperationException.class, () -> messageFactory.getMessage(o));
     }
+
+    @Test
+    void GET_ACK_MESSAGE_SHOULD_RETURN_ACK_MESSAGE(){
+
+        StompMessage expected = new GenericStompMessage();
+        StompMessage result = messageFactory.getAckMessage();
+        assertEquals(expected, result);
+    }
 }
