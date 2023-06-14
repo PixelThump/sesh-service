@@ -5,6 +5,8 @@ import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.service.api.GameSessionManager;
 import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.service.exception.TooManySessionsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class GameSessionManagerImpl implements GameSessionManager {
     private final Map<String, Game> games;
     private final Random random;
     private final GameFactory gameFactory;
+    private final Logger logger;
 
     @Autowired
     public GameSessionManagerImpl(final GameFactory gameFactory, final Random random) {
@@ -25,6 +28,7 @@ public class GameSessionManagerImpl implements GameSessionManager {
         this.games = new HashMap<>();
         this.gameFactory = gameFactory;
         this.random = random;
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -34,7 +38,9 @@ public class GameSessionManagerImpl implements GameSessionManager {
 
         if (game == null) {
 
-            throw new NoSuchSessionException("So Session with code " + sessionCode + "exists.");
+            String errorMessage = "Could not join session with code " + sessionCode + ".Session not found.";
+            logger.error(errorMessage);
+            throw new NoSuchSessionException(errorMessage);
         }
 
         return game;
@@ -60,7 +66,9 @@ public class GameSessionManagerImpl implements GameSessionManager {
 
         if (games.size() >= (Math.pow(LETTER_Z_NUMBER - (double) LETTER_A_NUMBER, codeLength))) {
 
-            throw new TooManySessionsException();
+            String errorMessage = "Unable to create session because there were too many sessions";
+            logger.error(errorMessage);
+            throw new TooManySessionsException(errorMessage);
         }
 
         String sessionCode;

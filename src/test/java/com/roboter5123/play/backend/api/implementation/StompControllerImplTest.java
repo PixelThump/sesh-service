@@ -80,7 +80,7 @@ class StompControllerImplTest {
 
         StompMessage expected = new GenericStompMessage();
 
-        when(factoryMock.getAckMessage()).thenReturn(new GenericStompMessage());
+        when(factoryMock.getAckMessage()).thenReturn(expected);
 
         Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
