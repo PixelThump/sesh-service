@@ -1,12 +1,14 @@
 package com.roboter5123.play.backend.webinterface.api.implementation;
+import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
+import com.roboter5123.play.backend.messaging.model.CommandStompMessage;
+import com.roboter5123.play.backend.messaging.model.StompMessage;
 import com.roboter5123.play.backend.webinterface.api.api.StompController;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
 import com.roboter5123.play.backend.webinterface.service.exception.NoSuchSessionException;
-import com.roboter5123.play.messaging.api.StompMessageFactory;
-import com.roboter5123.play.messaging.model.StompMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
@@ -17,7 +19,6 @@ public class StompControllerImpl implements StompController {
 
     private final GameService gameService;
     private final StompMessageFactory messageFactory;
-
 
     @Autowired
     public StompControllerImpl(final GameService gameService, final StompMessageFactory messageFactory) {
@@ -43,4 +44,19 @@ public class StompControllerImpl implements StompController {
 
         return messageFactory.getMessage(reply);
     }
+
+    @Override
+    @MessageMapping("/topic/game/{sessionCode}")
+    public StompMessage sendCommandToGame(final CommandStompMessage message, @DestinationVariable final String sessionCode){
+
+        try {
+
+            return this.gameService.sendCommandToGame(message, sessionCode);
+
+        }catch (NoSuchSessionException e){
+
+            return messageFactory.getMessage(e);
+        }
+    }
+
 }
