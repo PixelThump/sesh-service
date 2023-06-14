@@ -1,9 +1,7 @@
 package com.roboter5123.play.backend.webinterface.api.implementation;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.messaging.model.ErrorStompMessage;
-import com.roboter5123.play.backend.messaging.model.StateStompMessage;
-import com.roboter5123.play.backend.messaging.model.StompMessage;
+import com.roboter5123.play.backend.messaging.model.*;
 import com.roboter5123.play.backend.webinterface.api.api.StompController;
 import com.roboter5123.play.backend.webinterface.service.api.GameService;
 import com.roboter5123.play.backend.webinterface.service.api.GameSessionManager;
@@ -20,6 +18,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -74,5 +73,33 @@ class StompControllerImplTest {
         StompMessage result = stompController.joinSession(playerName,sessionCode);
 
         assertEquals(expected,result);
+    }
+
+    @Test
+    void sendCommandToGame_Should_Return_Acknowledgement_Message(){
+
+        when(gameServiceMock.sendCommandToGame(any(),eq(sessionCode))).thenReturn( new GenericStompMessage());
+
+        StompMessage expected = new GenericStompMessage();
+
+        Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
+        CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
+        StompMessage result = stompController.sendCommandToGame(incomingMessage, sessionCode);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void sendCommandToGame_Should_Return_ErrorMessage(){
+
+        NoSuchSessionException exception = new NoSuchSessionException("No Session with code " + sessionCode + " exists");
+        when(gameServiceMock.sendCommandToGame(any(),eq(sessionCode))).thenThrow(exception);
+        when(factoryMock.getMessage(exception)).thenReturn(new ErrorStompMessage(exception.getMessage()));
+
+        StompMessage expected = new ErrorStompMessage(exception.getMessage());
+
+        Command incomingCommand = new Command(playerName, new BasicAction(playerName,"Chat message"));
+        CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
+        StompMessage result = stompController.sendCommandToGame(incomingMessage, sessionCode);
+        assertEquals(expected, result);
     }
 }
