@@ -69,12 +69,12 @@
         <dependency>
             <groupId>com.roboter5123.play.backend</groupId>
             <artifactId>messaging</artifactId>
-            <version>0.1.0-snapshot</version>
+            <version>0.2.0-snapshot</version>
         </dependency>
         <dependency>
             <groupId>com.roboter5123.play.backend</groupId>
             <artifactId>game</artifactId>
-            <version>0.2.0-snapshot</version>
+            <version>0.3.1-snapshot</version>
         </dependency>
     </dependencies>
     <build>
