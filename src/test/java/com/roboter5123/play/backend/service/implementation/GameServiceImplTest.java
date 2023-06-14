@@ -2,7 +2,9 @@ package com.roboter5123.play.backend.service.implementation;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.messaging.model.*;
+import com.roboter5123.play.backend.messaging.model.BasicAction;
+import com.roboter5123.play.backend.messaging.model.Command;
+import com.roboter5123.play.backend.messaging.model.CommandStompMessage;
 import com.roboter5123.play.backend.service.api.GameService;
 import com.roboter5123.play.backend.service.api.GameSessionManager;
 import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
@@ -16,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,7 +35,6 @@ class GameServiceImplTest {
     @Autowired
     GameService gameService;
     String sessionCode;
-
     Game game;
     private String playerName;
 
@@ -52,40 +52,33 @@ class GameServiceImplTest {
 
         when(sessionManager.createGameSession(any())).thenReturn(game);
 
-        Optional<Game> expected = Optional.of(game);
-        Optional<Game> result = gameService.createSession(GameMode.UNKNOWN);
+        Game expected = game;
+        Game result = gameService.createSession(GameMode.UNKNOWN);
         assertEquals(expected, result);
     }
 
     @Test
-    void create_session_should_return_empty_optional() throws TooManySessionsException {
+    void create_session_should_throw_TooManySessionsException() {
 
-        when(sessionManager.createGameSession(any())).thenThrow(new TooManySessionsException());
-
-        Optional<Game> expected = Optional.empty();
-        Optional<Game> result = gameService.createSession(GameMode.UNKNOWN);
-        assertEquals(expected, result);
+        when(sessionManager.createGameSession(any())).thenThrow(new TooManySessionsException("Unable to create session because there were too many sessions"));
+        assertThrows(TooManySessionsException.class, () -> gameService.createSession(GameMode.UNKNOWN));
     }
 
     @Test
-    void get_game_should_return_optional_of_game() throws TooManySessionsException {
+    void get_game_should_return_optional_of_game() {
 
         when(sessionManager.getGameSession(any())).thenReturn(game);
 
-        Optional<Game> expected = Optional.of(game);
-        Optional<Game> result = gameService.getGame(sessionCode);
+        Game expected = game;
+        Game result = gameService.getGame(sessionCode);
         assertEquals(expected, result);
     }
 
     @Test
-    void get_game_should_return_empty_optional() throws TooManySessionsException {
+    void get_game_should_return_empty_optional() {
 
-        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("So Session with code " + sessionCode + "exists."));
-
-        Optional<Game> expected = Optional.empty();
-        Optional<Game> result = gameService.getGame(sessionCode);
-
-        assertEquals(expected, result);
+        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("Could not join session with code " + sessionCode + ".Session not found."));
+        assertThrows(NoSuchSessionException.class, () -> gameService.getGame(sessionCode));
     }
 
     @Test
@@ -96,16 +89,16 @@ class GameServiceImplTest {
         when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
         when(game.joinGame(playerName)).thenReturn(expected);
 
-        Map<String,Object> result = gameService.joinGame(sessionCode,playerName);
+        Map<String, Object> result = gameService.joinGame(sessionCode, playerName);
         assertEquals(expected, result);
     }
 
     @Test
     void joinGame_should_throw_no_such_session_exception() {
 
-        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("So Session with code " + sessionCode + "exists."));
+        when(sessionManager.getGameSession(any())).thenThrow(new NoSuchSessionException("Could not join session with code " + sessionCode + ".Session not found."));
 
-        assertThrows(NoSuchSessionException.class, ()-> gameService.joinGame(sessionCode,playerName));
+        assertThrows(NoSuchSessionException.class, () -> gameService.joinGame(sessionCode, playerName));
     }
 
     @Test
@@ -113,7 +106,7 @@ class GameServiceImplTest {
 
         when(sessionManager.getGameSession(sessionCode)).thenReturn(game);
 
-        Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
+        Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 
         gameService.sendCommandToGame(incomingMessage, sessionCode);
@@ -124,11 +117,11 @@ class GameServiceImplTest {
     @Test
     void sendCommandToGame_should_log_error_and_throw_no_such_session_exception() {
 
-        NoSuchSessionException exception = new NoSuchSessionException("No Session with code " + sessionCode + " exists");
+        NoSuchSessionException exception = new NoSuchSessionException("Could not join session with code " + sessionCode + ".Session not found.");
         when(sessionManager.getGameSession(any())).thenThrow(exception);
 
-        Command incomingCommand = new Command(playerName, new BasicAction(playerName,"Chat message"));
+        Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
-        assertThrows(NoSuchSessionException.class, ()-> gameService.sendCommandToGame(incomingMessage,sessionCode));
+        assertThrows(NoSuchSessionException.class, () -> gameService.sendCommandToGame(incomingMessage, sessionCode));
     }
 }

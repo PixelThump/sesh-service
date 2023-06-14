@@ -17,5 +17,5 @@ public interface Game {
 
     void broadcast(Object joinCommand);
 
-    void addCommand(Command command);
+    void addCommand(Command command) throws UnsupportedOperationException;
 }

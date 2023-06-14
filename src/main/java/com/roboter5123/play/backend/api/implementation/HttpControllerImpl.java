@@ -1,18 +1,19 @@
 package com.roboter5123.play.backend.api.implementation;
-import com.roboter5123.play.backend.game.api.Game;
-import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.api.api.HttpController;
 import com.roboter5123.play.backend.api.model.HttpGameDTO;
 import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
 import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
+import com.roboter5123.play.backend.game.api.Game;
+import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.service.api.GameService;
+import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.play.backend.service.exception.TooManySessionsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class HttpControllerImpl implements HttpController {
@@ -33,7 +34,7 @@ public class HttpControllerImpl implements HttpController {
     public List<GameMode> getGameModes() {
 
         GameMode[] gameModes = GameMode.values();
-        return Arrays.stream(gameModes).filter(gameMode -> gameMode!= GameMode.UNKNOWN).toList();
+        return Arrays.stream(gameModes).filter(gameMode -> gameMode != GameMode.UNKNOWN).toList();
     }
 
     @Override
@@ -41,27 +42,30 @@ public class HttpControllerImpl implements HttpController {
     @ResponseBody
     public HttpGameDTO createSession(@RequestBody final GameMode gameMode) throws TooManySessionsHttpException {
 
-        Optional<Game> game = this.gameService.createSession(gameMode);
+        try {
 
-        if (game.isEmpty()) {
+            Game game = this.gameService.createSession(gameMode);
+            return modelMapper.map(game, HttpGameDTO.class);
 
-            throw new TooManySessionsHttpException("Unable to create session because there were too many sessions!");
+        } catch (TooManySessionsException e) {
+
+            throw new TooManySessionsHttpException(e.getMessage());
         }
 
-        return modelMapper.map(game, HttpGameDTO.class);
     }
 
     @Override
     @GetMapping("sessions/{sessionCode}")
     public HttpGameDTO getGame(@PathVariable String sessionCode) throws NoSuchSessionHttpException {
 
-        Optional<Game> game = this.gameService.getGame(sessionCode);
+        try {
 
-        if (game.isEmpty()) {
+            Game game = this.gameService.getGame(sessionCode);
+            return modelMapper.map(game, HttpGameDTO.class);
 
-            throw new NoSuchSessionHttpException("No session with code " + sessionCode + " exists!");
+        } catch (NoSuchSessionException e) {
+
+            throw new NoSuchSessionHttpException(e.getMessage());
         }
-
-        return modelMapper.map(game.get(), HttpGameDTO.class);
     }
 }

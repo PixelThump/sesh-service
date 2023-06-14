@@ -1,15 +1,16 @@
 package com.roboter5123.play.backend.api.implementation;
+import com.roboter5123.play.backend.api.api.HttpController;
+import com.roboter5123.play.backend.api.model.HttpGameDTO;
+import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
+import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
 import com.roboter5123.play.backend.game.api.Game;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.game.implementation.chat.ChatGame;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.api.api.HttpController;
-import com.roboter5123.play.backend.api.model.HttpGameDTO;
-import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
-import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
 import com.roboter5123.play.backend.service.api.GameService;
 import com.roboter5123.play.backend.service.api.GameSessionManager;
+import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
 import com.roboter5123.play.backend.service.exception.TooManySessionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -57,13 +57,14 @@ class HttpControllerImplTest {
 
         List<GameMode> expected = Arrays.stream(GameMode.values()).filter(gameMode -> gameMode!=GameMode.UNKNOWN).toList();
         List<GameMode> result = httpController.getGameModes();
+
         assertEquals(expected, result);
     }
 
     @Test
     void create_Session_should_return_http_game() throws TooManySessionsException {
 
-        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(Optional.of(game));
+        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(game);
 
         HttpGameDTO expected = new HttpGameDTO(game.getGameMode(), game.getSessionCode());
         HttpGameDTO result = httpController.createSession(GameMode.CHAT);
@@ -74,15 +75,14 @@ class HttpControllerImplTest {
     @Test
     void create_Session_with_too_many_sessions_should_throw_too_many_sessions_exception() throws TooManySessionsException{
 
-        when(gameServiceMock.createSession(any())).thenReturn(Optional.empty());
-
+        when(gameServiceMock.createSession(any())).thenThrow(new TooManySessionsException("Unable to create session because there were too many sessions"));
         assertThrows(TooManySessionsHttpException.class, ()-> httpController.createSession(GameMode.UNKNOWN));
     }
 
     @Test
     void get_game_should_return_game() {
 
-        when(gameServiceMock.getGame(any())).thenReturn(Optional.of(game));
+        when(gameServiceMock.getGame(any())).thenReturn(game);
 
         HttpGameDTO expected = new HttpGameDTO(GameMode.CHAT, sessionCode);
         HttpGameDTO result = httpController.getGame(sessionCode);
@@ -93,8 +93,7 @@ class HttpControllerImplTest {
     @Test
     void get_game_should_throw_so_such_session_exception() {
 
-        when(gameServiceMock.getGame(any())).thenReturn(Optional.empty());
-
+        when(gameServiceMock.getGame(any())).thenThrow(new NoSuchSessionException("No session with code " + sessionCode + " exists"));
         assertThrows(NoSuchSessionHttpException.class, ()-> httpController.getGame(sessionCode));
     }
 }
