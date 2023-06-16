@@ -60,8 +60,8 @@ public class GameSessionManagerImpl implements GameSessionManager {
 
     private String createSessionCode() throws TooManySessionsException {
 
-        final int LETTER_A_NUMBER = 97;
-        final int LETTER_Z_NUMBER = 122;
+        final int LETTER_A_NUMBER = 65;
+        final int LETTER_Z_NUMBER = 90;
         final int codeLength = 4;
 
         if (games.size() >= (Math.pow(LETTER_Z_NUMBER - (double) LETTER_A_NUMBER, codeLength))) {
