@@ -1,6 +1,7 @@
 package com.roboter5123.play.backend.api.implementation;
 import com.roboter5123.play.backend.api.api.HttpController;
 import com.roboter5123.play.backend.api.model.HttpGameDTO;
+import com.roboter5123.play.backend.api.model.exception.BadRequestException;
 import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
 import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
 import com.roboter5123.play.backend.game.api.Game;
@@ -78,6 +79,13 @@ class HttpControllerImplTest {
         when(gameServiceMock.createSession(any())).thenThrow(new TooManySessionsException("Unable to create session because there were too many sessions"));
         String gameMode = GameMode.UNKNOWN.name();
         assertThrows(TooManySessionsHttpException.class, ()-> httpController.createSession(gameMode));
+    }
+
+    @Test
+    void create_Session_with_too_many_sessions_should_throw_bad_request_exception() throws TooManySessionsException{
+        String gameMode = "LOL";
+        when(gameServiceMock.createSession(any())).thenThrow(new BadRequestException("No Gamemode with name '" + gameMode + "' exists"));
+        assertThrows(BadRequestException.class, ()-> httpController.createSession(gameMode));
     }
 
     @Test
