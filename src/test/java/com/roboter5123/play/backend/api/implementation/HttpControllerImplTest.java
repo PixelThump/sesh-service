@@ -67,7 +67,7 @@ class HttpControllerImplTest {
         when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(game);
 
         HttpGameDTO expected = new HttpGameDTO(game.getGameMode(), game.getSessionCode());
-        HttpGameDTO result = httpController.createSession(GameMode.CHAT);
+        HttpGameDTO result = httpController.createSession(GameMode.CHAT.name());
 
         assertEquals(expected, result);
     }
@@ -76,7 +76,8 @@ class HttpControllerImplTest {
     void create_Session_with_too_many_sessions_should_throw_too_many_sessions_exception() throws TooManySessionsException{
 
         when(gameServiceMock.createSession(any())).thenThrow(new TooManySessionsException("Unable to create session because there were too many sessions"));
-        assertThrows(TooManySessionsHttpException.class, ()-> httpController.createSession(GameMode.UNKNOWN));
+        String gameMode = GameMode.UNKNOWN.name();
+        assertThrows(TooManySessionsHttpException.class, ()-> httpController.createSession(gameMode));
     }
 
     @Test

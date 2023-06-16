@@ -1,6 +1,7 @@
 package com.roboter5123.play.backend.api.implementation;
 import com.roboter5123.play.backend.api.api.HttpController;
 import com.roboter5123.play.backend.api.model.HttpGameDTO;
+import com.roboter5123.play.backend.api.model.exception.BadRequestException;
 import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
 import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
 import com.roboter5123.play.backend.game.api.Game;
@@ -40,16 +41,21 @@ public class HttpControllerImpl implements HttpController {
     @Override
     @PostMapping("/sessions")
     @ResponseBody
-    public HttpGameDTO createSession(@RequestBody final GameMode gameMode) throws TooManySessionsHttpException {
+    public HttpGameDTO createSession(@RequestBody final String gameModeString) throws TooManySessionsHttpException {
 
         try {
 
+            GameMode gameMode = GameMode.valueOf(gameModeString);
             Game game = this.gameService.createSession(gameMode);
             return modelMapper.map(game, HttpGameDTO.class);
 
         } catch (TooManySessionsException e) {
 
             throw new TooManySessionsHttpException(e.getMessage());
+
+        }catch (IllegalArgumentException e){
+
+            throw new BadRequestException("No Gamemode with name '" + gameModeString + "' exists");
         }
 
     }

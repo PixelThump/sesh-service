@@ -1,4 +1,5 @@
 package com.roboter5123.play.backend.api.api;
+import com.roboter5123.play.backend.api.model.exception.BadRequestException;
 import com.roboter5123.play.backend.game.api.GameMode;
 import com.roboter5123.play.backend.api.model.HttpGameDTO;
 import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
@@ -10,7 +11,7 @@ public interface HttpController {
 
     List<GameMode> getGameModes();
 
-    HttpGameDTO createSession(GameMode gameMode) throws TooManySessionsHttpException;
+    HttpGameDTO createSession(String gameModeString) throws TooManySessionsHttpException, BadRequestException;
 
     HttpGameDTO getGame(String sessionCode) throws NoSuchSessionHttpException;
 }
