@@ -65,8 +65,7 @@ public class HttpControllerImpl implements HttpController {
     public HttpGameDTO getGame(@PathVariable String sessionCode) throws NoSuchSessionHttpException {
 
         try {
-
-            Game game = this.gameService.getGame(sessionCode);
+            Game game = this.gameService.getGame(sessionCode.toUpperCase());
             return modelMapper.map(game, HttpGameDTO.class);
 
         } catch (NoSuchSessionException e) {
