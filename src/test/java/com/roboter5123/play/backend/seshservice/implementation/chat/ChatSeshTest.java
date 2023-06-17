@@ -1,8 +1,7 @@
 package com.roboter5123.play.backend.seshservice.implementation.chat;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatJoinAction;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatMessageAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatState;
@@ -39,8 +38,7 @@ class ChatSeshTest {
 
         ChatState state = new ChatState();
         state.getChatters().add(playerName);
-        state.getChatLog().add(playerName + " joined the Conversation");
-        state.setLastCommand(new Command("server", new ChatJoinAction(playerName)));
+        state.getChatLog().add(playerName + " joined the conversation");
 
         Map<String, Object> expected = state.getState();
         Map<String, Object> result = chat.joinSesh(playerName);
@@ -48,10 +46,10 @@ class ChatSeshTest {
     }
 
     @Test
-    void addCommand_should_broadcast_message_and_add_message_to_log(){
+    void addCommand_should_broadcast_message_and_add_message_to_log() {
 
         ChatMessageAction incomingAction = new ChatMessageAction("Hello World!");
-        Command incomingCommand = new Command(playerName,incomingAction);
+        Command incomingCommand = new Command(playerName, incomingAction);
         chat.addCommand(incomingCommand);
         verify(broadcaster).broadcastSeshUpdate(sessioncode, playerName + ": " + incomingAction.getMessage());
     }
