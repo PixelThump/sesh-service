@@ -28,7 +28,7 @@ public class StompControllerImpl implements StompController {
     }
 
     @Override
-    @SubscribeMapping("/topic/sesh/{sessionCode}")
+    @SubscribeMapping("/topic/sesh/{seshCode}")
     public StompMessage joinSesh(@Header final String playerName, @DestinationVariable final String seshCode) {
 
         final Map<String, Object> reply;
@@ -46,7 +46,7 @@ public class StompControllerImpl implements StompController {
     }
 
     @Override
-    @MessageMapping("/topic/sesh/{sessionCode}")
+    @MessageMapping("/topic/sesh/{seshCode}")
     public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode){
 
         try {
