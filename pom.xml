@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.roboter5123.pixelvibe.backend</groupId>
-    <artifactId>sesh_service</artifactId>
+    <artifactId>seshservice</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <name>PixelVibe Sesh Service</name>
     <description>The sesh component for the pixelvibe gaming platform</description>
@@ -145,7 +145,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>sesh_service</finalName>
+        <finalName>seshservice</finalName>
     </build>
     <distributionManagement>
         <repository>
