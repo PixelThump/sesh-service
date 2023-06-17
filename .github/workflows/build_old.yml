@@ -10,9 +10,9 @@ name: Build main
 
 on:
   push:
-    branches: [ "old" ]
+    branches: [ "" ]
   pull_request:
-    branches: [ "old" ]
+    branches: [ "" ]
     
 jobs:
   build_and_test:
