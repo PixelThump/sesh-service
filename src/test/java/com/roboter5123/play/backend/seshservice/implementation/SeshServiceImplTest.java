@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.service.implementation;
+package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;

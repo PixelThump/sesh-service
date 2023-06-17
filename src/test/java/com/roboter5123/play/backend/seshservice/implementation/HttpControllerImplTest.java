@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.api.implementation;
+package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.api.api.HttpController;
 import com.roboter5123.play.backend.seshservice.api.model.HttpSeshDTO;
 import com.roboter5123.play.backend.seshservice.api.model.exception.BadRequestException;

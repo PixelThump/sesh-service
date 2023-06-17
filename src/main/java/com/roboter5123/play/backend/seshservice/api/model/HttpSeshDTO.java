@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class HttpSeshDTO {
 
     private SeshType seshType;
-    private String sessionCode;
+    private String seshCode;
 }

@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.api.implementation;
+package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.api.api.StompController;
