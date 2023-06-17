@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build main
+name: On push to branch and pull request to master
 
 on:
   push:
