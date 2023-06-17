@@ -1,5 +1,4 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.chat;
-import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,13 +15,13 @@ public class ChatState {
 
     private List<String> chatters = new ArrayList<>();
     private List<String> chatLog = new ArrayList<>();
-    private Command lastCommand;
 
-    public void join(String playerName) {
+    public String join(String playerName) {
 
         this.chatters.add(playerName);
-        this.chatLog.add(playerName + " joined the Conversation");
-        this.lastCommand = new Command("server", new ChatJoinAction(playerName));
+        String message = playerName + " joined the conversation";
+        this.chatLog.add(message);
+        return message;
     }
 
     public Map<String, Object> getState() {

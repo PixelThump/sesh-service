@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class ChatJoinAction implements Action {
 
     private String joiningPlayer;
+
+    private String message;
 }

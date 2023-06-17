@@ -35,9 +35,10 @@ public class ChatSesh implements Sesh {
     @Override
     public Map<String, Object> joinSesh(final String playerName) {
 
-        this.chatState.join(playerName);
-        final Command joinCommand = new Command("server", new ChatJoinAction(playerName));
-        this.broadcast(joinCommand);
+        String message = this.chatState.join(playerName);
+        ChatJoinAction action = new ChatJoinAction(playerName, message);
+        final Command joinMessageCommand = new Command("server", action);
+        this.broadcast(joinMessageCommand);
 
         return this.chatState.getState();
     }
