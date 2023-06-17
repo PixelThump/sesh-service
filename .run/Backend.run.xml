@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Backend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" />
-    <module name="backend" />
+    <module name="pixelvibe_seshservice" />
     <option name="SHORTEN_COMMAND_LINE" value="MANIFEST" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.roboter5123.play.backend.seshservice.BackendApplication" />
     <method v="2">
