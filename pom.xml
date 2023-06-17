@@ -8,11 +8,11 @@
         <version>3.0.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.roboter5123.play</groupId>
-    <artifactId>backend</artifactId>
+    <groupId>com.roboter5123.pixelvibe.backend</groupId>
+    <artifactId>sesh_service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>play backend</name>
-    <description>backend</description>
+    <name>PixelVibe Sesh Service</name>
+    <description>The sesh component for the pixelvibe gaming platform</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -145,7 +145,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>PixelVibe_Backend</finalName>
+        <finalName>sesh_service</finalName>
     </build>
     <distributionManagement>
         <repository>

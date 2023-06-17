@@ -1,6 +1,7 @@
 package com.roboter5123.play.backend.messaging.implementation;
-import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
+import com.roboter5123.play.backend.seshservice.messaging.implementation.StompMessageFactoryImpl;
+import com.roboter5123.play.backend.seshservice.messaging.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

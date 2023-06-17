@@ -1,9 +1,10 @@
 package com.roboter5123.play.backend.sesh.implementation;
-import com.roboter5123.play.backend.sesh.api.Sesh;
-import com.roboter5123.play.backend.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.sesh.api.SeshType;
-import com.roboter5123.play.backend.sesh.implementation.chat.ChatSesh;
-import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.SeshFactoryImpl;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
+import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
