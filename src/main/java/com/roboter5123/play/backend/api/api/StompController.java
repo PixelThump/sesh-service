@@ -4,7 +4,7 @@ import com.roboter5123.play.backend.messaging.model.StompMessage;
 
 public interface StompController {
 
-    StompMessage joinSession(final String playerName, final String sessionCode);
+    StompMessage joinSesh(final String playerName, final String seshCode);
 
-    StompMessage sendCommandToGame(final CommandStompMessage message, final String sessionCode);
+    StompMessage sendCommandToSesh(final CommandStompMessage message, final String seshCode);
 }

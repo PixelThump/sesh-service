@@ -1,18 +1,18 @@
 package com.roboter5123.play.backend.api.implementation;
 import com.roboter5123.play.backend.api.api.HttpController;
-import com.roboter5123.play.backend.api.model.HttpGameDTO;
+import com.roboter5123.play.backend.api.model.HttpSeshDTO;
 import com.roboter5123.play.backend.api.model.exception.BadRequestException;
-import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
-import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
-import com.roboter5123.play.backend.game.api.Game;
-import com.roboter5123.play.backend.game.api.GameMode;
-import com.roboter5123.play.backend.game.implementation.chat.ChatGame;
+import com.roboter5123.play.backend.api.model.exception.NoSuchSeshHttpException;
+import com.roboter5123.play.backend.api.model.exception.TooManySeshsHttpException;
+import com.roboter5123.play.backend.sesh.api.Sesh;
+import com.roboter5123.play.backend.sesh.api.SeshType;
+import com.roboter5123.play.backend.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.service.api.GameService;
-import com.roboter5123.play.backend.service.api.GameSessionManager;
-import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
-import com.roboter5123.play.backend.service.exception.TooManySessionsException;
+import com.roboter5123.play.backend.service.api.SeshService;
+import com.roboter5123.play.backend.service.api.SeshManager;
+import com.roboter5123.play.backend.service.exception.NoSuchSeshException;
+import com.roboter5123.play.backend.service.exception.TooManySeshsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,70 +31,70 @@ import static org.mockito.Mockito.when;
 class HttpControllerImplTest {
 
     @MockBean
-    GameService gameServiceMock;
+    SeshService seshServiceMock;
     @MockBean
     MessageBroadcaster broadcasterMock;
     @MockBean
     StompMessageFactory factoryMock;
 
     @MockBean
-    GameSessionManager gameSessionManager;
+    SeshManager seshManager;
     @Autowired
     HttpController httpController;
     String sessionCode;
-    Game game;
+    Sesh sesh;
 
     @BeforeEach
     void setUp() {
 
         sessionCode = "abcd";
-        this.game = new ChatGame(broadcasterMock);
-        this.game.setGameMode(GameMode.CHAT);
-        this.game.setSessionCode(sessionCode);
+        this.sesh = new ChatSesh(broadcasterMock);
+        this.sesh.setSeshType(SeshType.CHAT);
+        this.sesh.setSeshCode(sessionCode);
     }
 
     @Test
     void get_Game_Modes_should_return_all_game_modes_but_unknown(){
 
-        List<GameMode> expected = Arrays.stream(GameMode.values()).filter(gameMode -> gameMode!=GameMode.UNKNOWN).toList();
-        List<GameMode> result = httpController.getGameModes();
+        List<SeshType> expected = Arrays.stream(SeshType.values()).filter(gameMode -> gameMode!= SeshType.UNKNOWN).toList();
+        List<SeshType> result = httpController.getSeshTypes();
 
         assertEquals(expected, result);
     }
 
     @Test
-    void create_Session_should_return_http_game() throws TooManySessionsException {
+    void create_Session_should_return_http_game() throws TooManySeshsException {
 
-        when(gameServiceMock.createSession(GameMode.CHAT)).thenReturn(game);
+        when(seshServiceMock.createSesh(SeshType.CHAT)).thenReturn(sesh);
 
-        HttpGameDTO expected = new HttpGameDTO(game.getGameMode(), game.getSessionCode());
-        HttpGameDTO result = httpController.createSession(GameMode.CHAT.name());
+        HttpSeshDTO expected = new HttpSeshDTO(sesh.getSeshType(), sesh.getSeshCode());
+        HttpSeshDTO result = httpController.createSesh(SeshType.CHAT.name());
 
         assertEquals(expected, result);
     }
 
     @Test
-    void create_Session_with_too_many_sessions_should_throw_too_many_sessions_exception() throws TooManySessionsException{
+    void create_Session_with_too_many_sessions_should_throw_too_many_sessions_exception() throws TooManySeshsException {
 
-        when(gameServiceMock.createSession(any())).thenThrow(new TooManySessionsException("Unable to create session because there were too many sessions"));
-        String gameMode = GameMode.UNKNOWN.name();
-        assertThrows(TooManySessionsHttpException.class, ()-> httpController.createSession(gameMode));
+        when(seshServiceMock.createSesh(any())).thenThrow(new TooManySeshsException("Unable to create session because there were too many sessions"));
+        String gameMode = SeshType.UNKNOWN.name();
+        assertThrows(TooManySeshsHttpException.class, ()-> httpController.createSesh(gameMode));
     }
 
     @Test
-    void create_Session_with_too_many_sessions_should_throw_bad_request_exception() throws TooManySessionsException{
+    void create_Session_with_too_many_sessions_should_throw_bad_request_exception() throws TooManySeshsException {
         String gameMode = "LOL";
-        when(gameServiceMock.createSession(any())).thenThrow(new BadRequestException("No Gamemode with name '" + gameMode + "' exists"));
-        assertThrows(BadRequestException.class, ()-> httpController.createSession(gameMode));
+        when(seshServiceMock.createSesh(any())).thenThrow(new BadRequestException("No Gamemode with name '" + gameMode + "' exists"));
+        assertThrows(BadRequestException.class, ()-> httpController.createSesh(gameMode));
     }
 
     @Test
     void get_game_should_return_game() {
 
-        when(gameServiceMock.getGame(any())).thenReturn(game);
+        when(seshServiceMock.getSesh(any())).thenReturn(sesh);
 
-        HttpGameDTO expected = new HttpGameDTO(GameMode.CHAT, sessionCode);
-        HttpGameDTO result = httpController.getGame(sessionCode);
+        HttpSeshDTO expected = new HttpSeshDTO(SeshType.CHAT, sessionCode);
+        HttpSeshDTO result = httpController.getSesh(sessionCode);
 
         assertEquals(expected, result);
     }
@@ -102,7 +102,7 @@ class HttpControllerImplTest {
     @Test
     void get_game_should_throw_so_such_session_exception() {
 
-        when(gameServiceMock.getGame(any())).thenThrow(new NoSuchSessionException("No session with code " + sessionCode + " exists"));
-        assertThrows(NoSuchSessionHttpException.class, ()-> httpController.getGame(sessionCode));
+        when(seshServiceMock.getSesh(any())).thenThrow(new NoSuchSeshException("No session with code " + sessionCode + " exists"));
+        assertThrows(NoSuchSeshHttpException.class, ()-> httpController.getSesh(sessionCode));
     }
 }

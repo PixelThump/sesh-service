@@ -29,9 +29,9 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     }
 
     @Override
-    public void broadcastGameUpdate(final String sessionCode, final Object payload) throws UnsupportedOperationException {
+    public void broadcastSeshUpdate(final String seshCode, final Object payload) throws UnsupportedOperationException {
 
-        final String destination = "/topic/game/" + sessionCode;
+        final String destination = "/topic/sesh/" + seshCode;
 
         try {
 

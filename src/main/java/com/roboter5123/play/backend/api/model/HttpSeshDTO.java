@@ -1,5 +1,5 @@
 package com.roboter5123.play.backend.api.model;
-import com.roboter5123.play.backend.game.api.GameMode;
+import com.roboter5123.play.backend.sesh.api.SeshType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HttpGameDTO {
+public class HttpSeshDTO {
 
-    private GameMode gameMode;
+    private SeshType seshType;
     private String sessionCode;
 }

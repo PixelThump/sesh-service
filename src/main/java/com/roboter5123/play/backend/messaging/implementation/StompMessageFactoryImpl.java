@@ -46,10 +46,10 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         return message;
     }
 
-    public StateStompMessage getMessage(Map<String, Object> gameState) {
+    public StateStompMessage getMessage(Map<String, Object> seshState) {
 
         final StateStompMessage message = new StateStompMessage();
-        message.setState(gameState);
+        message.setState(seshState);
         return message;
     }
 

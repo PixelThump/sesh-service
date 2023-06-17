@@ -3,9 +3,9 @@ import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.messaging.model.*;
 import com.roboter5123.play.backend.api.api.StompController;
-import com.roboter5123.play.backend.service.api.GameService;
-import com.roboter5123.play.backend.service.api.GameSessionManager;
-import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
+import com.roboter5123.play.backend.service.api.SeshService;
+import com.roboter5123.play.backend.service.api.SeshManager;
+import com.roboter5123.play.backend.service.exception.NoSuchSeshException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class StompControllerImplTest {
 
     @MockBean
-    GameService gameServiceMock;
+    SeshService seshServiceMock;
     @MockBean
     MessageBroadcaster broadcasterMock;
     @MockBean
@@ -33,7 +33,7 @@ class StompControllerImplTest {
     @Autowired
     StompController stompController;
     @MockBean
-    GameSessionManager gameSessionManager;
+    SeshManager seshManager;
 
     String sessionCode;
     String playerName;
@@ -48,13 +48,13 @@ class StompControllerImplTest {
     @Test
     void joinSession_should_return_error_message_when_called_with_non_existent_session() {
 
-        NoSuchSessionException exception = new NoSuchSessionException("No session with code " + sessionCode + " exists");
-        when(gameServiceMock.joinGame(any(), any())).thenThrow(exception);
+        NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
+        when(seshServiceMock.joinSesh(any(), any())).thenThrow(exception);
 
         ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
         when(factoryMock.getMessage(exception)).thenReturn(expected);
 
-        StompMessage result = stompController.joinSession(playerName,sessionCode);
+        StompMessage result = stompController.joinSesh(playerName,sessionCode);
 
         assertEquals(expected, result);
     }
@@ -65,12 +65,12 @@ class StompControllerImplTest {
         Map<String, Object> state = new HashMap<>();
         state.put("a", new ArrayList<>());
         state.put("b", new ArrayList<>());
-        when(gameServiceMock.joinGame(any(),any())).thenReturn(state);
+        when(seshServiceMock.joinSesh(any(),any())).thenReturn(state);
 
         StompMessage expected = new StateStompMessage(state);
         when(factoryMock.getMessage(state)).thenReturn(expected);
 
-        StompMessage result = stompController.joinSession(playerName,sessionCode);
+        StompMessage result = stompController.joinSesh(playerName,sessionCode);
 
         assertEquals(expected,result);
     }
@@ -84,23 +84,23 @@ class StompControllerImplTest {
 
         Command incomingCommand = new Command(playerName,new BasicAction(playerName,"Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
-        StompMessage result = stompController.sendCommandToGame(incomingMessage, sessionCode);
+        StompMessage result = stompController.sendCommandToSesh(incomingMessage, sessionCode);
         assertEquals(expected, result);
-        verify(gameServiceMock).sendCommandToGame(incomingMessage, sessionCode);
+        verify(seshServiceMock).sendCommandToSesh(incomingMessage, sessionCode);
     }
 
     @Test
     void sendCommandToGame_Should_Return_ErrorMessage(){
 
-        NoSuchSessionException exception = new NoSuchSessionException("No Session with code " + sessionCode + " exists");
-        doThrow(exception).when(gameServiceMock).sendCommandToGame(any(),eq(sessionCode));
+        NoSuchSeshException exception = new NoSuchSeshException("No Session with code " + sessionCode + " exists");
+        doThrow(exception).when(seshServiceMock).sendCommandToSesh(any(),eq(sessionCode));
         when(factoryMock.getMessage(exception)).thenReturn(new ErrorStompMessage(exception.getMessage()));
 
         StompMessage expected = new ErrorStompMessage(exception.getMessage());
 
         Command incomingCommand = new Command(playerName, new BasicAction(playerName,"Chat message"));
         CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
-        StompMessage result = stompController.sendCommandToGame(incomingMessage, sessionCode);
+        StompMessage result = stompController.sendCommandToSesh(incomingMessage, sessionCode);
         assertEquals(expected, result);
     }
 }

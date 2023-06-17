@@ -1,17 +1,17 @@
 package com.roboter5123.play.backend.api.api;
 import com.roboter5123.play.backend.api.model.exception.BadRequestException;
-import com.roboter5123.play.backend.game.api.GameMode;
-import com.roboter5123.play.backend.api.model.HttpGameDTO;
-import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
-import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
+import com.roboter5123.play.backend.sesh.api.SeshType;
+import com.roboter5123.play.backend.api.model.HttpSeshDTO;
+import com.roboter5123.play.backend.api.model.exception.NoSuchSeshHttpException;
+import com.roboter5123.play.backend.api.model.exception.TooManySeshsHttpException;
 
 import java.util.List;
 
 public interface HttpController {
 
-    List<GameMode> getGameModes();
+    List<SeshType> getSeshTypes();
 
-    HttpGameDTO createSession(String gameModeString) throws TooManySessionsHttpException, BadRequestException;
+    HttpSeshDTO createSesh(String seShTypeString) throws TooManySeshsHttpException, BadRequestException;
 
-    HttpGameDTO getGame(String sessionCode) throws NoSuchSessionHttpException;
+    HttpSeshDTO getSesh(String seshCode) throws NoSuchSeshHttpException;
 }

@@ -1,6 +1,6 @@
-package com.roboter5123.play.backend.game.implementation.chat;
-import com.roboter5123.play.backend.game.api.Game;
-import com.roboter5123.play.backend.game.api.GameMode;
+package com.roboter5123.play.backend.sesh.implementation.chat;
+import com.roboter5123.play.backend.sesh.api.Sesh;
+import com.roboter5123.play.backend.sesh.api.SeshType;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.model.Action;
 import com.roboter5123.play.backend.messaging.model.Command;
@@ -11,29 +11,29 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class ChatGame implements Game {
+public class ChatSesh implements Sesh {
 
     private final ChatState chatState;
     @Getter
     @Setter
-    private GameMode gameMode;
+    private SeshType seshType;
     @Getter
     @Setter
-    private String sessionCode;
+    private String seshCode;
     private final MessageBroadcaster broadcaster;
 
     Logger logger;
 
-    public ChatGame(MessageBroadcaster broadcaster) {
+    public ChatSesh(MessageBroadcaster broadcaster) {
 
         this.broadcaster = broadcaster;
         this.chatState = new ChatState();
-        this.gameMode = GameMode.CHAT;
+        this.seshType = SeshType.CHAT;
         logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
-    public Map<String, Object> joinGame(final String playerName) {
+    public Map<String, Object> joinSesh(final String playerName) {
 
         this.chatState.join(playerName);
         final Command joinCommand = new Command("server", new ChatJoinAction(playerName));
@@ -45,7 +45,7 @@ public class ChatGame implements Game {
     @Override
     public void broadcast(final Object payload) {
 
-        this.broadcaster.broadcastGameUpdate(this.sessionCode, payload);
+        this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
 
     @Override

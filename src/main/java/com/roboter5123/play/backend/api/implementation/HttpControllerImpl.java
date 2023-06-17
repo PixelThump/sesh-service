@@ -1,14 +1,14 @@
 package com.roboter5123.play.backend.api.implementation;
 import com.roboter5123.play.backend.api.api.HttpController;
-import com.roboter5123.play.backend.api.model.HttpGameDTO;
+import com.roboter5123.play.backend.api.model.HttpSeshDTO;
 import com.roboter5123.play.backend.api.model.exception.BadRequestException;
-import com.roboter5123.play.backend.api.model.exception.NoSuchSessionHttpException;
-import com.roboter5123.play.backend.api.model.exception.TooManySessionsHttpException;
-import com.roboter5123.play.backend.game.api.Game;
-import com.roboter5123.play.backend.game.api.GameMode;
-import com.roboter5123.play.backend.service.api.GameService;
-import com.roboter5123.play.backend.service.exception.NoSuchSessionException;
-import com.roboter5123.play.backend.service.exception.TooManySessionsException;
+import com.roboter5123.play.backend.api.model.exception.NoSuchSeshHttpException;
+import com.roboter5123.play.backend.api.model.exception.TooManySeshsHttpException;
+import com.roboter5123.play.backend.sesh.api.Sesh;
+import com.roboter5123.play.backend.sesh.api.SeshType;
+import com.roboter5123.play.backend.service.api.SeshService;
+import com.roboter5123.play.backend.service.exception.NoSuchSeshException;
+import com.roboter5123.play.backend.service.exception.TooManySeshsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,58 +19,58 @@ import java.util.List;
 @RestController
 public class HttpControllerImpl implements HttpController {
 
-    private final GameService gameService;
+    private final SeshService seshService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public HttpControllerImpl(GameService gameService, ModelMapper modelMapper) {
+    public HttpControllerImpl(SeshService seshService, ModelMapper modelMapper) {
 
-        this.gameService = gameService;
+        this.seshService = seshService;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    @GetMapping("/gamemodes")
+    @GetMapping("/seshtypes")
     @ResponseBody
-    public List<GameMode> getGameModes() {
+    public List<SeshType> getSeshTypes() {
 
-        GameMode[] gameModes = GameMode.values();
-        return Arrays.stream(gameModes).filter(gameMode -> gameMode != GameMode.UNKNOWN).toList();
+        SeshType[] seshTypes = SeshType.values();
+        return Arrays.stream(seshTypes).filter(seshType -> seshType != SeshType.UNKNOWN).toList();
     }
 
     @Override
-    @PostMapping("/sessions")
+    @PostMapping("/seshs")
     @ResponseBody
-    public HttpGameDTO createSession(@RequestBody final String gameModeString) throws TooManySessionsHttpException {
+    public HttpSeshDTO createSesh(@RequestBody final String seshTypeString) throws TooManySeshsHttpException {
 
         try {
 
-            GameMode gameMode = GameMode.valueOf(gameModeString);
-            Game game = this.gameService.createSession(gameMode);
-            return modelMapper.map(game, HttpGameDTO.class);
+            SeshType seshType = SeshType.valueOf(seshTypeString);
+            Sesh sesh = this.seshService.createSesh(seshType);
+            return modelMapper.map(sesh, HttpSeshDTO.class);
 
-        } catch (TooManySessionsException e) {
+        } catch (TooManySeshsException e) {
 
-            throw new TooManySessionsHttpException(e.getMessage());
+            throw new TooManySeshsHttpException(e.getMessage());
 
         }catch (IllegalArgumentException e){
 
-            throw new BadRequestException("No Gamemode with name '" + gameModeString + "' exists");
+            throw new BadRequestException("No seshtype with name '" + seshTypeString + "' exists");
         }
 
     }
 
     @Override
-    @GetMapping("sessions/{sessionCode}")
-    public HttpGameDTO getGame(@PathVariable String sessionCode) throws NoSuchSessionHttpException {
+    @GetMapping("sessions/{seshCode}")
+    public HttpSeshDTO getSesh(@PathVariable String seshCode) throws NoSuchSeshHttpException {
 
         try {
-            Game game = this.gameService.getGame(sessionCode.toUpperCase());
-            return modelMapper.map(game, HttpGameDTO.class);
+            Sesh sesh = this.seshService.getSesh(seshCode.toUpperCase());
+            return modelMapper.map(sesh, HttpSeshDTO.class);
 
-        } catch (NoSuchSessionException e) {
+        } catch (NoSuchSeshException e) {
 
-            throw new NoSuchSessionHttpException(e.getMessage());
+            throw new NoSuchSeshHttpException(e.getMessage());
         }
     }
 }

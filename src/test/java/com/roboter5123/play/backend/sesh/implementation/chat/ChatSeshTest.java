@@ -1,5 +1,5 @@
-package com.roboter5123.play.backend.game.implementation.chat;
-import com.roboter5123.play.backend.game.api.Game;
+package com.roboter5123.play.backend.sesh.implementation.chat;
+import com.roboter5123.play.backend.sesh.api.Sesh;
 import com.roboter5123.play.backend.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.messaging.model.Command;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +12,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
-class ChatGameTest {
+class ChatSeshTest {
 
-    Game chat;
+    Sesh chat;
     String playerName;
     String sessioncode;
     @MockBean
@@ -24,9 +24,9 @@ class ChatGameTest {
     void setUp() {
 
         broadcaster = Mockito.mock(MessageBroadcaster.class);
-        chat = new ChatGame(broadcaster);
+        chat = new ChatSesh(broadcaster);
         sessioncode = "abcd";
-        chat.setSessionCode(sessioncode);
+        chat.setSeshCode(sessioncode);
         playerName = "roboter5123";
     }
 
@@ -39,7 +39,7 @@ class ChatGameTest {
         state.setLastCommand(new Command("server", new ChatJoinAction(playerName)));
 
         Map<String, Object> expected = state.getState();
-        Map<String, Object> result = chat.joinGame(playerName);
+        Map<String, Object> result = chat.joinSesh(playerName);
         assertEquals(expected, result);
     }
 
@@ -49,6 +49,6 @@ class ChatGameTest {
         ChatMessageAction incomingAction = new ChatMessageAction("Hello World!");
         Command incomingCommand = new Command(playerName,incomingAction);
         chat.addCommand(incomingCommand);
-        verify(broadcaster).broadcastGameUpdate(sessioncode, playerName + ": " + incomingAction.getMessage());
+        verify(broadcaster).broadcastSeshUpdate(sessioncode, playerName + ": " + incomingAction.getMessage());
     }
 }

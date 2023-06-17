@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.game.implementation.chat;
+package com.roboter5123.play.backend.sesh.implementation.chat;
 import com.roboter5123.play.backend.messaging.model.Action;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -38,15 +38,15 @@ class MessageBroadcasterImplTest {
         expected.setError(exception.getMessage());
         when(factory.getMessage(any(Object.class))).thenReturn(expected);
 
-        messageBroadcaster.broadcastGameUpdate(sessionCode, exception);
+        messageBroadcaster.broadcastSeshUpdate(sessionCode, exception);
 
-        verify(messagingTemplate).convertAndSend("/topic/game/" + sessionCode, expected);
+        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode, expected);
     }
 
     @Test
     void BROADCAST_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
 
         when(factory.getMessage(factory)).thenThrow(new UnsupportedOperationException());
-        assertThrows(UnsupportedOperationException.class, () -> messageBroadcaster.broadcastGameUpdate(sessionCode, factory));
+        assertThrows(UnsupportedOperationException.class, () -> messageBroadcaster.broadcastSeshUpdate(sessionCode, factory));
     }
 }
