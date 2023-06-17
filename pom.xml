@@ -151,7 +151,7 @@
         <repository>
             <id>github</id>
             <name>GitHub roboter5123 Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/roboter5123/play_backend</url>
+            <url>https://maven.pkg.github.com/roboter5123/pixelvibe_seshservice</url>
         </repository>
     </distributionManagement>
 </project>
