@@ -11,7 +11,7 @@ name: Deploy
 on:
   push:
     branches: [ "master" ]
-    
+
 jobs:
   build_and_test:
     permissions: write-all
@@ -32,3 +32,12 @@ jobs:
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: roboter5123/pixelvibe_server
+          tags: release
+          registry: ghcr.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.GHRC_USERNAME }}
+          password: ${{ secrets.PACKAGES_GITHUB_KEY }}
