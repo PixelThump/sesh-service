@@ -38,7 +38,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: roboter5123/seshservice
-          tags: release
+          tags: dev
           registry: ghcr.io
           dockerfile: Dockerfile
           username: ${{ secrets.GHRC_USERNAME }}
