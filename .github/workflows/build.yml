@@ -15,7 +15,7 @@ on:
     branches: [ "master" ]
     
 jobs:
-  test:
+  run_tests_and_add_coverage_to_pull_request:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
