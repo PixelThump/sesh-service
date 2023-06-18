@@ -45,7 +45,7 @@ public class HttpControllerImpl implements HttpController {
 
         try {
 
-            SeshType seshType = SeshType.valueOf(seshTypeString);
+            SeshType seshType = SeshType.valueOf(seshTypeString.replace("\"",""));
             Sesh sesh = this.seshService.createSesh(seshType);
             return modelMapper.map(sesh, HttpSeshDTO.class);
 
