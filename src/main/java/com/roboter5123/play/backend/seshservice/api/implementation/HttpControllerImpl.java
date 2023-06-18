@@ -61,7 +61,7 @@ public class HttpControllerImpl implements HttpController {
     }
 
     @Override
-    @GetMapping("sessions/{seshCode}")
+    @GetMapping("seshs/{seshCode}")
     public HttpSeshDTO getSesh(@PathVariable String seshCode) throws NoSuchSeshHttpException {
 
         try {
