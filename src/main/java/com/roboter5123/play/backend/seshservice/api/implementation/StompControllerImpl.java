@@ -1,10 +1,11 @@
 package com.roboter5123.play.backend.seshservice.api.implementation;
+import com.roboter5123.play.backend.seshservice.api.api.StompController;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
 import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
-import com.roboter5123.play.backend.seshservice.api.api.StompController;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import java.util.Map;
 
 @Controller
+@Log4j2
 public class StompControllerImpl implements StompController {
 
     private final SeshService seshService;
@@ -30,33 +32,43 @@ public class StompControllerImpl implements StompController {
     @Override
     @SubscribeMapping("/topic/sesh/{seshCode}")
     public StompMessage joinSesh(@Header final String playerName, @DestinationVariable final String seshCode) {
-
-        final Map<String, Object> reply;
+        log.info("StompControllerImpl: Entering joinSesh(playerName={} seshCode={})", playerName, seshCode);
 
         try {
 
-            reply = seshService.joinSesh(seshCode, playerName);
+            Map<String, Object> state = seshService.joinSesh(seshCode, playerName);
+            StompMessage reply = messageFactory.getMessage(state);
+
+            log.info("StompControllerImpl: Exiting joinSesh(reply={})", reply);
+            return reply;
 
         } catch (NoSuchSeshException e) {
 
-            return messageFactory.getMessage(e);
+            StompMessage reply = messageFactory.getMessage(e);
+            log.error("StompControllerImpl: Exiting joinSesh(reply={})", reply);
+            return reply;
         }
-
-        return messageFactory.getMessage(reply);
     }
 
     @Override
     @MessageMapping("/topic/sesh/{seshCode}")
-    public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode){
+    public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode) {
+        log.info("StompControllerImpl: Entering sendCommandToSesh(message={} seshCode={})", message, seshCode);
 
         try {
 
             this.seshService.sendCommandToSesh(message, seshCode);
-            return messageFactory.getAckMessage();
+            StompMessage reply =  messageFactory.getAckMessage();
 
-        }catch (NoSuchSeshException | UnsupportedOperationException e){
+            log.info("StompControllerImpl: Exiting sendCommandToSesh(reply={})", reply);
+            return reply;
 
-            return messageFactory.getMessage(e);
+        } catch (NoSuchSeshException | UnsupportedOperationException e) {
+
+            StompMessage reply = messageFactory.getMessage(e);
+
+            log.error("StompControllerImpl: Exiting sendCommandToSesh(reply={})", reply);
+            return reply;
         }
     }
 }
