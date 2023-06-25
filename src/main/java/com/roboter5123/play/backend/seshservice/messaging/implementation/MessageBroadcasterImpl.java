@@ -2,25 +2,23 @@ package com.roboter5123.play.backend.seshservice.messaging.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@Log4j2
 public class MessageBroadcasterImpl implements MessageBroadcaster {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final StompMessageFactory factory;
-    private final Logger logger;
 
     @Autowired
     public MessageBroadcasterImpl(final SimpMessagingTemplate messagingTemplate, final StompMessageFactory factory) {
 
         this.messagingTemplate = messagingTemplate;
         this.factory = factory;
-        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     public void broadcast(final String destination, final StompMessage message) {
@@ -40,8 +38,8 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
         } catch (UnsupportedOperationException e) {
 
-            logger.error("Could not broadcast message with payload {}", payload);
-            logger.error("No message type available in message factory for type {}", payload.getClass());
+            log.error("Could not broadcast message with payload {}", payload);
+            log.error("No message type available in message factory for type {}", payload.getClass());
 
             throw e;
         }

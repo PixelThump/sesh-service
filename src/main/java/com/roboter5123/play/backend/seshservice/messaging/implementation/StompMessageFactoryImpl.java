@@ -1,21 +1,14 @@
 package com.roboter5123.play.backend.seshservice.messaging.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
+@Log4j2
 public class StompMessageFactoryImpl implements StompMessageFactory {
-
-    Logger logger;
-
-    public StompMessageFactoryImpl() {
-
-        this.logger = LoggerFactory.getLogger(this.getClass());
-    }
 
     public StompMessage getMessage(Object payload) throws UnsupportedOperationException {
 
@@ -32,7 +25,7 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         } else {
 
             String errorMessage = "Could not create StompMessage. Unsupported payload type";
-            logger.error(errorMessage);
+            log.error(errorMessage);
             throw new UnsupportedOperationException(errorMessage);
         }
 

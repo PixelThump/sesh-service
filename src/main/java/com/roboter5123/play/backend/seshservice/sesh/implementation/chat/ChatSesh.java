@@ -1,16 +1,16 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.chat;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 
+@Log4j2
 public class ChatSesh implements Sesh {
 
     private final ChatState chatState;
@@ -22,14 +22,11 @@ public class ChatSesh implements Sesh {
     private String seshCode;
     private final MessageBroadcaster broadcaster;
 
-    Logger logger;
-
     public ChatSesh(MessageBroadcaster broadcaster) {
 
         this.broadcaster = broadcaster;
         this.chatState = new ChatState();
         this.seshType = SeshType.CHAT;
-        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -61,7 +58,7 @@ public class ChatSesh implements Sesh {
         } else {
 
             String errorMessage = "Could not execute action. Unsupported action type";
-            logger.error(errorMessage);
+            log.error(errorMessage);
             throw new UnsupportedOperationException(errorMessage);
         }
     }
