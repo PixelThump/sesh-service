@@ -1,12 +1,11 @@
 package com.roboter5123.play.backend.seshservice.service.implementation;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,12 @@ import java.util.Map;
 import java.util.Random;
 
 @Service
+@Log4j2
 public class SeshManagerImpl implements SeshManager {
 
     private final Map<String, Sesh> seshs;
     private final Random random;
     private final SeshFactory seshfactory;
-    private final Logger logger;
 
     @Autowired
     public SeshManagerImpl(final SeshFactory seshfactory, final Random random) {
@@ -28,7 +27,6 @@ public class SeshManagerImpl implements SeshManager {
         this.seshs = new HashMap<>();
         this.seshfactory = seshfactory;
         this.random = random;
-        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override
@@ -39,7 +37,7 @@ public class SeshManagerImpl implements SeshManager {
         if (sesh == null) {
 
             String errorMessage = "Could not join session with code " + seshCode + ".Session not found.";
-            logger.error(errorMessage);
+            log.error(errorMessage);
             throw new NoSuchSeshException(errorMessage);
         }
 
@@ -67,7 +65,7 @@ public class SeshManagerImpl implements SeshManager {
         if (seshs.size() >= (Math.pow(LETTER_Z_NUMBER - (double) LETTER_A_NUMBER, codeLength))) {
 
             String errorMessage = "Unable to create sesh because there were too many seshs";
-            logger.error(errorMessage);
+            log.error(errorMessage);
             throw new TooManySeshsException(errorMessage);
         }
 
