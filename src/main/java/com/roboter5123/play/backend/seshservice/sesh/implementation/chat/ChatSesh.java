@@ -6,12 +6,14 @@ import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 @Log4j2
+@ToString
 public class ChatSesh implements Sesh {
 
     private final ChatState chatState;
