@@ -92,14 +92,14 @@ public class SeshManagerImpl implements SeshManager {
         log.info("Checking for idle Seshs.");
         for (Map.Entry<String, Sesh> seshEntry : seshs.entrySet()) {
 
-            LocalDateTime currentTimePlusMaxIdleTime = LocalDateTime.now().plusMinutes(10L);
+            LocalDateTime currentTimePlusMaxIdleTime = LocalDateTime.now().minusMinutes(10L);
 
             LocalDateTime lastInteractionTime = seshEntry.getValue().getLastInteractionTime();
-            if (lastInteractionTime.isAfter(currentTimePlusMaxIdleTime)) {
+            if (lastInteractionTime.isBefore(currentTimePlusMaxIdleTime)) {
 
                 this.seshs.remove(seshEntry.getKey());
                 deletedSeshs += 1;
-                log.info("Deleted Sesh with code: {}", seshEntry.getKey());
+                log.info("Deleted a Sesh; Code: {} Sesh= {}", seshEntry.getKey(), seshEntry.getValue());
             }
         }
 
