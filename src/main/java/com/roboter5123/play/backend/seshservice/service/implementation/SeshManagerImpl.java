@@ -7,13 +7,18 @@ import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
+@EnableScheduling
 @Log4j2
 public class SeshManagerImpl implements SeshManager {
 
@@ -78,5 +83,26 @@ public class SeshManagerImpl implements SeshManager {
         } while (this.seshs.containsKey(seshCode));
 
         return seshCode;
+    }
+
+    @Scheduled(fixedDelay = 5L, initialDelay = 5L, timeUnit = TimeUnit.MINUTES)
+    private void deleteUnusedSeshs() {
+
+        long deletedSeshs = 0L;
+        log.info("Checking for idle Seshs.");
+        for (Map.Entry<String, Sesh> seshEntry : seshs.entrySet()) {
+
+            LocalDateTime currentTimePlusMaxIdleTime = LocalDateTime.now().minusMinutes(10L);
+
+            LocalDateTime lastInteractionTime = seshEntry.getValue().getLastInteractionTime();
+            if (lastInteractionTime.isBefore(currentTimePlusMaxIdleTime)) {
+
+                this.seshs.remove(seshEntry.getKey());
+                deletedSeshs += 1;
+                log.info("Deleted a Sesh; Code: {} Sesh= {}", seshEntry.getKey(), seshEntry.getValue());
+            }
+        }
+
+        log.info("Finished deleting idle Seshs. Deleted {} Seshs", deletedSeshs);
     }
 }
