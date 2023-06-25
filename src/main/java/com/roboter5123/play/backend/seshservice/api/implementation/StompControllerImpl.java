@@ -32,6 +32,7 @@ public class StompControllerImpl implements StompController {
     @Override
     @SubscribeMapping("/topic/sesh/{seshCode}")
     public StompMessage joinSesh(@Header final String playerName, @DestinationVariable final String seshCode) {
+
         log.info("StompControllerImpl: Entering joinSesh(playerName={} seshCode={})", playerName, seshCode);
 
         try {
@@ -53,12 +54,13 @@ public class StompControllerImpl implements StompController {
     @Override
     @MessageMapping("/topic/sesh/{seshCode}")
     public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode) {
+
         log.info("StompControllerImpl: Entering sendCommandToSesh(message={} seshCode={})", message, seshCode);
 
         try {
 
             this.seshService.sendCommandToSesh(message, seshCode);
-            StompMessage reply =  messageFactory.getAckMessage();
+            StompMessage reply = messageFactory.getAckMessage();
 
             log.info("StompControllerImpl: Exiting sendCommandToSesh(reply={})", reply);
             return reply;
