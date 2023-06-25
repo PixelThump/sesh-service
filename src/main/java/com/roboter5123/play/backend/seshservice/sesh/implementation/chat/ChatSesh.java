@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Log4j2
@@ -20,13 +21,17 @@ public class ChatSesh implements Sesh {
     @Getter
     @Setter
     private String seshCode;
+
     private final MessageBroadcaster broadcaster;
+    @Getter
+    private LocalDateTime lastInteractionTime;
 
     public ChatSesh(MessageBroadcaster broadcaster) {
 
         this.broadcaster = broadcaster;
         this.chatState = new ChatState();
         this.seshType = SeshType.CHAT;
+        this.lastInteractionTime = LocalDateTime.now();
     }
 
     @Override
@@ -36,6 +41,7 @@ public class ChatSesh implements Sesh {
         ChatJoinAction action = new ChatJoinAction(playerName, message);
         final Command joinMessageCommand = new Command("server", action);
         this.broadcast(joinMessageCommand);
+        this.lastInteractionTime = LocalDateTime.now();
 
         return this.chatState.getState();
     }
@@ -50,6 +56,7 @@ public class ChatSesh implements Sesh {
     public void addCommand(final Command command) throws UnsupportedOperationException {
 
         Action action = command.getAction();
+        this.lastInteractionTime = LocalDateTime.now();
 
         if (action instanceof ChatMessageAction chatMessageAction) {
 
