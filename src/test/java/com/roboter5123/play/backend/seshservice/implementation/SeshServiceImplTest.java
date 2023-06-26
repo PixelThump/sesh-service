@@ -1,14 +1,14 @@
 package com.roboter5123.play.backend.seshservice.implementation;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.BasicAction;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
+import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -87,6 +87,7 @@ class SeshServiceImplTest {
         Map<String, Object> expected = new HashMap<>();
 
         when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
+
         when(sesh.joinSesh(playerName)).thenReturn(expected);
 
         Map<String, Object> result = seshService.joinSesh(sessionCode, playerName);

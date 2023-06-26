@@ -2,9 +2,9 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation.chat;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
-import lombok.Getter;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
@@ -13,30 +13,19 @@ import java.util.Map;
 
 @Log4j2
 @ToString
-public class ChatSesh implements Sesh {
+public class ChatSesh extends AbstractSeshBaseClass {
 
     private final ChatState chatState;
-    @Getter
-    private final SeshType seshType;
-    @Getter
-    private final String seshCode;
-
-    private final MessageBroadcaster broadcaster;
-    @Getter
-    private LocalDateTime lastInteractionTime;
 
     public ChatSesh(String seshCode, MessageBroadcaster broadcaster) {
 
-        this.seshCode = seshCode;
-
-        this.broadcaster = broadcaster;
+        super(seshCode,broadcaster, SeshType.CHAT);
         this.chatState = new ChatState();
-        this.seshType = SeshType.CHAT;
-        this.lastInteractionTime = LocalDateTime.now();
+
     }
 
     @Override
-    public Map<String, Object> joinSesh(final String playerName) {
+    public Map<String, Object> joinSesh(final String playerName) throws PlayerAlreadyJoinedException {
 
         String message = this.chatState.join(playerName);
         ChatJoinAction action = new ChatJoinAction(playerName, message);
@@ -45,12 +34,6 @@ public class ChatSesh implements Sesh {
         this.lastInteractionTime = LocalDateTime.now();
 
         return this.chatState.getState();
-    }
-
-    @Override
-    public void broadcast(final Object payload) {
-
-        this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
 
     @Override

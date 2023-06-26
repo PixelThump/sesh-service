@@ -1,10 +1,11 @@
 package com.roboter5123.play.backend.seshservice.service.implementation;
+import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
+import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
+import com.roboter5123.play.backend.seshservice.service.api.SeshService;
+import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
-import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.seshservice.service.api.SeshService;
-import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
-import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +42,10 @@ public class SeshServiceImpl implements SeshService {
     }
 
     @Override
-    public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException {
+    public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSesh(playerName);
+
     }
 }

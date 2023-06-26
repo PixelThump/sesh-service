@@ -2,6 +2,7 @@ package com.roboter5123.play.backend.seshservice.implementation.chat;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatMessageAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatState;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 class ChatSeshTest {
@@ -40,8 +42,20 @@ class ChatSeshTest {
         state.getChatLog().add(playerName + " joined the conversation");
 
         Map<String, Object> expected = state.getState();
-        Map<String, Object> result = chat.joinSesh(playerName);
+        Map<String, Object> result;
+
+        result = chat.joinSesh(playerName);
+
         assertEquals(expected, result);
+    }
+
+    @Test
+    void joinGame_should_throw_Player_already_joined_exception_if_playerName_already_exists(){
+
+        chat.joinSesh(playerName);
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, ()->chat.joinSesh(playerName));
+        String expectedErrorMessage = "Player with name " + playerName + " is already in the Sesh";
+        assertEquals(expectedErrorMessage, exception.getMessage());
     }
 
     @Test
