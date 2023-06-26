@@ -52,10 +52,8 @@ public class SeshManagerImpl implements SeshManager {
     @Override
     public Sesh createSesh(final SeshType seshType) throws TooManySeshsException {
 
-        final Sesh sesh = seshfactory.createSesh(seshType);
-
         String seshCode = createSeshCode();
-        sesh.setSeshCode(seshCode);
+        final Sesh sesh = seshfactory.createSesh(seshCode, seshType);
 
         this.seshs.put(seshCode, sesh);
         return sesh;

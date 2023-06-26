@@ -5,7 +5,6 @@ import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
@@ -18,17 +17,17 @@ public class ChatSesh implements Sesh {
 
     private final ChatState chatState;
     @Getter
-    @Setter
-    private SeshType seshType;
+    private final SeshType seshType;
     @Getter
-    @Setter
-    private String seshCode;
+    private final String seshCode;
 
     private final MessageBroadcaster broadcaster;
     @Getter
     private LocalDateTime lastInteractionTime;
 
-    public ChatSesh(MessageBroadcaster broadcaster) {
+    public ChatSesh(String seshCode, MessageBroadcaster broadcaster) {
+
+        this.seshCode = seshCode;
 
         this.broadcaster = broadcaster;
         this.chatState = new ChatState();

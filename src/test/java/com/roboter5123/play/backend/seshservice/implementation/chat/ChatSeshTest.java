@@ -27,9 +27,8 @@ class ChatSeshTest {
     void setUp() {
 
         broadcaster = Mockito.mock(MessageBroadcaster.class);
-        chat = new ChatSesh(broadcaster);
         sessioncode = "abcd";
-        chat.setSeshCode(sessioncode);
+        chat = new ChatSesh(sessioncode, broadcaster);
         playerName = "roboter5123";
     }
 

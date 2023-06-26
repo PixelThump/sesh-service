@@ -10,10 +10,6 @@ public interface Sesh {
 
     SeshType getSeshType();
 
-    void setSeshType(SeshType seshType);
-
-    void setSeshCode(String sessionCode);
-
     String getSeshCode();
 
     void broadcast(Object joinCommand);

@@ -48,9 +48,7 @@ class HttpControllerImplTest {
     void setUp() {
 
         sessionCode = "abcd";
-        this.sesh = new ChatSesh(broadcasterMock);
-        this.sesh.setSeshType(SeshType.CHAT);
-        this.sesh.setSeshCode(sessionCode);
+        this.sesh = new ChatSesh(sessionCode, broadcasterMock);
     }
 
     @Test

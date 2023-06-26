@@ -17,13 +17,13 @@ public class SeshFactoryImpl implements SeshFactory {
     }
 
     @Override
-    public Sesh createSesh(SeshType seshType) throws UnsupportedOperationException {
+    public Sesh createSesh(String seshCode, SeshType seshType) throws UnsupportedOperationException {
 
         final Sesh sesh;
 
         if (seshType == SeshType.CHAT) {
 
-            sesh = new ChatSesh(broadcaster);
+            sesh = new ChatSesh(seshCode, broadcaster);
 
         } else {
 
