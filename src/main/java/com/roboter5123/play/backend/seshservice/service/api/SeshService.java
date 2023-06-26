@@ -4,6 +4,7 @@ import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public interface SeshService {
 
     Sesh createSesh(SeshType seshType) throws TooManySeshsException;
 
-    Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException;
+    Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 
