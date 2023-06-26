@@ -61,6 +61,12 @@ public class SeshManagerImpl implements SeshManager {
         return sesh;
     }
 
+    @Override
+    public void clearSeshs() {
+
+        this.seshs.clear();
+    }
+
     private String createSeshCode() throws TooManySeshsException {
 
         final int LETTER_A_NUMBER = 65;
