@@ -9,4 +9,6 @@ public interface SeshManager {
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 
     Sesh createSesh(SeshType seshType) throws TooManySeshsException;
+
+    void clearSeshs();
 }
