@@ -44,7 +44,6 @@ class SeshServiceImplementationTest {
         this.sessionCode = "abcd";
         this.playerName = "roboter5123";
         sesh = Mockito.mock(Sesh.class);
-
     }
 
     @Test
