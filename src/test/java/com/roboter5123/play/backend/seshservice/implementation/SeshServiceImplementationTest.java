@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class SeshServiceImplTest {
+class SeshServiceImplementationTest {
 
     @MockBean
     MessageBroadcaster broadcaster;

@@ -6,18 +6,19 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class SeshServiceImpl implements SeshService {
+public class SeshServiceImplementation implements SeshService {
 
     private final SeshManager seshManager;
 
     @Autowired
-    public SeshServiceImpl(SeshManager seshManager) {
+    public SeshServiceImplementation(final SeshManager seshManager) {
 
         this.seshManager = seshManager;
     }
@@ -42,10 +43,9 @@ public class SeshServiceImpl implements SeshService {
     }
 
     @Override
-    public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException {
+    public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshIsFullException {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSesh(playerName);
-
     }
 }
