@@ -6,14 +6,10 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -83,28 +79,28 @@ class QuizxelSeshTest {
         assertEquals(playerName, quizxelJoinAction.getJoiningPlayer());
     }
 
-    @Test
-    void joinSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
+//    @Test
+//    void joinSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
+//
+//        final String playerName = "roboter5123";
+//        this.sesh.joinSesh(playerName);
+//        Field playersField = this.sesh.getClass().getDeclaredField("players");
+//        playersField.setAccessible(true);
+//        Object playersObject = playersField.get(this.sesh);
+//
+//        List<QuizxelPlayer> playersList = (List<QuizxelPlayer>) playersObject;
+//        assertEquals(playerName, playersList.get(0).getPlayerName());
+//
+//    }
 
-        final String playerName = "roboter5123";
-        this.sesh.joinSesh(playerName);
-        Field playersField = this.sesh.getClass().getDeclaredField("players");
-        playersField.setAccessible(true);
-        Object playersObject = playersField.get(this.sesh);
-
-        List<QuizxelPlayer> playersList = (List<QuizxelPlayer>) playersObject;
-        assertEquals(playerName, playersList.get(0).getPlayerName());
-
-    }
-
-    @Test
-    void joinSesh_with_host_should_set_host_joined_to_true() throws NoSuchFieldException, IllegalAccessException {
-
-        final String playerName = "host";
-        this.sesh.joinSesh(playerName);
-        Field hostJoinedField = this.sesh.getClass().getDeclaredField("hostJoined");
-        hostJoinedField.setAccessible(true);
-        boolean hostJoined = hostJoinedField.getBoolean(this.sesh);
-        assertTrue(hostJoined);
-    }
+//    @Test
+//    void joinSesh_with_host_should_set_host_joined_to_true() throws NoSuchFieldException, IllegalAccessException {
+//
+//        final String playerName = "host";
+//        this.sesh.joinSesh(playerName);
+//        Field hostJoinedField = this.sesh.getClass().getDeclaredField("hostJoined");
+//        hostJoinedField.setAccessible(true);
+//        boolean hostJoined = hostJoinedField.getBoolean(this.sesh);
+//        assertTrue(hostJoined);
+//    }
 }

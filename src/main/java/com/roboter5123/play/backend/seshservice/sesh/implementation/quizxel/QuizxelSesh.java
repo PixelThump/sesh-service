@@ -6,86 +6,58 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 @Log4j2
 @ToString
 public class QuizxelSesh extends AbstractSeshBaseClass {
 
-    private boolean isJoinable;
     private static final Integer MAXPLAYERS = 5;
-    private final List<QuizxelPlayer> players;
-    private boolean hostJoined;
+    private final Deque<Command> unprocessedCommands = new LinkedList<>();
+    private final QuizxelPlayerManager playerManager;
 
     public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
 
         super(seshCode, broadcaster, SeshType.QUIZXEL);
-        this.isJoinable = true;
-        this.hostJoined = false;
-        this.players = new ArrayList<>();
+        this.playerManager = new QuizxelPlayerManager(MAXPLAYERS);
+
     }
 
     @Override
     public Map<String, Object> joinSesh(String playerName) throws PlayerAlreadyJoinedException, SeshIsFullException {
 
-        if (isSeshFull()){
+        if (playerManager.isSeshFull()) {
 
             throw new SeshIsFullException("A maximum of " + MAXPLAYERS + " is allowed to join this Sesh.");
         }
 
-        if ( hasPlayerAlreadyJoined(playerName)) {
+        if (playerManager.hasPlayerAlreadyJoined(playerName)) {
 
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }
 
-        if (!this.hostJoined && playerName.equals("host")){
-
-            this.hostJoined = true;
-
-        } else {
-
-            this.addPlayerToSesh(playerName);
-            this.isJoinable = isSeshFull();
-            this.broadcastJoinCommand(playerName);
-        }
-
+        this.playerManager.addPlayerToSesh(playerName);
+        broadcastJoinCommand(new QuizxelJoinAction(playerName));
         return this.getState();
     }
 
-    private void broadcastJoinCommand(String playerName) {
+    private void broadcastJoinCommand(QuizxelJoinAction action) {
 
-        Command command = new Command("Server", new QuizxelJoinAction(playerName));
+        Command command = new Command("Server", action);
         this.broadcast(command);
-    }
-
-    private void addPlayerToSesh(String playerName) {
-
-        this.players.add(new QuizxelPlayer(playerName));
-    }
-
-    private boolean hasPlayerAlreadyJoined(String playerName) {
-
-        boolean playerHasJoinedAlready = this.players.stream().anyMatch(quizxelPlayer -> quizxelPlayer.getPlayerName().equals(playerName));
-        playerHasJoinedAlready = playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
-        return playerHasJoinedAlready;
-    }
-
-    private boolean isSeshFull() {
-
-        return MAXPLAYERS <= this.players.size();
     }
 
     private Map<String, Object> getState() {
 
         Map<String, Object> state = new HashMap<>();
-        state.put("players", this.players);
+        state.put("players", this.playerManager.getPlayers());
         state.put("maxPlayers", MAXPLAYERS);
 
         return state;
@@ -94,6 +66,22 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     @Override
     public void addCommand(Command command) throws UnsupportedOperationException {
 
-//        TODO: Implement
+        this.unprocessedCommands.offer(command);
+    }
+
+    @Scheduled(fixedRate = 33)
+    private void processQueue() {
+
+        Deque<Command> queue = new LinkedList<>(this.unprocessedCommands);
+        this.unprocessedCommands.clear();
+
+        for (Command command : queue) {
+
+            processCommand(command);
+        }
+    }
+
+    private void processCommand(Command command) {
+
     }
 }
