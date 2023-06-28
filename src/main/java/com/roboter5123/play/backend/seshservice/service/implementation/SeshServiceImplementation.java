@@ -53,6 +53,5 @@ public class SeshServiceImplementation implements SeshService {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSesh(playerName);
-
     }
 }
