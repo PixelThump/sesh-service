@@ -58,17 +58,16 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     @Override
     public Map<String, Object> joinSeshAsController(String playerName) {
 
-        if (playerManager.isSeshFull()) {
+        if (this.playerManager.isSeshFull()) {
 
             throw new SeshIsFullException("A maximum of " + MAXPLAYERS + " is allowed to join this Sesh.");
         }
 
-        if (playerManager.hasPlayerAlreadyJoined(playerName)) {
+        if (!this.playerManager.addPlayerToSesh(playerName)) {
 
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }
 
-        this.playerManager.addPlayerToSesh(playerName);
         broadcastJoinCommand(new QuizxelJoinAction(playerName));
         return this.getState();
     }

@@ -4,7 +4,10 @@ import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.mode
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class QuizxelPlayerManager {
 
@@ -29,17 +32,12 @@ public class QuizxelPlayerManager {
 
         if (hasPlayerAlreadyJoined(playerName)) return false;
 
-        if (!this.hostJoined && playerName.equals("host")){
+        QuizxelPlayer player = new QuizxelPlayer(playerName);
+        player.setIsVip(players.stream().anyMatch(QuizxelPlayer::getIsVip));
+        this.players.add(player);
+        this.playerNames.add(playerName);
+        this.isJoinable = isSeshFull();
 
-            this.hostJoined = true;
-
-        } else {
-            QuizxelPlayer player = new QuizxelPlayer(playerName);
-            player.setIsVip(players.stream().anyMatch(QuizxelPlayer::getIsVip));
-            this.players.add(player);
-            this.playerNames.add(playerName);
-            this.isJoinable = isSeshFull();
-        }
         return true;
     }
 
@@ -62,7 +60,7 @@ public class QuizxelPlayerManager {
 
     public boolean joinAsHost() {
 
-        if (!hasHostJoined()){
+        if (!hasHostJoined()) {
 
             this.hostJoined = true;
         }
@@ -71,7 +69,6 @@ public class QuizxelPlayerManager {
     }
 
     public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
-
 
         return this.hostJoined;
     }

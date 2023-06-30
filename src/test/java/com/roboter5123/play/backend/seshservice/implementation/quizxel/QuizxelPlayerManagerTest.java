@@ -22,7 +22,7 @@ class QuizxelPlayerManagerTest {
     }
 
     @Test
-    void joinSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
+    void addPlayerToSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
 
         final String playerName = "roboter5123";
         this.playerManager.addPlayerToSesh(playerName);
@@ -45,8 +45,7 @@ class QuizxelPlayerManagerTest {
     @Test
     void joinSesh_with_host_should_set_host_joined_to_true() throws NoSuchFieldException, IllegalAccessException {
 
-        final String playerName = "host";
-        this.playerManager.addPlayerToSesh(playerName);
+        this.playerManager.joinAsHost();
         Field hostJoinedField = this.playerManager.getClass().getDeclaredField("hostJoined");
         hostJoinedField.setAccessible(true);
         boolean hostJoined = hostJoinedField.getBoolean(this.playerManager);
