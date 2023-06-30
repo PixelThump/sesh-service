@@ -4,7 +4,9 @@ import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
 
 public interface StompController {
 
-    StompMessage joinSesh(final String playerName, final String seshCode);
+    StompMessage joinSeshAsController(final String playerName, final String seshCode);
+
+    StompMessage joinSeshAsHost(final String seshCode);
 
     StompMessage sendCommandToSesh(final CommandStompMessage message, final String seshCode);
 }
