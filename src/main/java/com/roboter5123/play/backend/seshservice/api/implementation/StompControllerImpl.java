@@ -38,7 +38,7 @@ public class StompControllerImpl implements StompController {
 
         try {
 
-            Map<String, Object> state = seshService.joinSesh(seshCode, playerName);
+            Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSeshAsController(error={})", reply);
@@ -59,8 +59,8 @@ public class StompControllerImpl implements StompController {
         log.info("StompControllerImpl: Entering joinSeshAsHost(seshCode={})", seshCode);
 
         try {
-            String playerName = "host";
-            Map<String, Object> state = seshService.joinSesh(seshCode, playerName);
+
+            Map<String, Object> state = seshService.joinSeshAsHost(seshCode);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSesh(reply={})", reply);
