@@ -99,29 +99,4 @@ class QuizxelSeshTest {
         String expectedMessage = "Host has already joined this sesh";
         assertEquals(expectedMessage, exception.getMessage());
     }
-
-//    @Test
-//    void joinSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
-//
-//        final String playerName = "roboter5123";
-//        this.sesh.joinSesh(playerName);
-//        Field playersField = this.sesh.getClass().getDeclaredField("players");
-//        playersField.setAccessible(true);
-//        Object playersObject = playersField.get(this.sesh);
-//
-//        List<QuizxelPlayer> playersList = (List<QuizxelPlayer>) playersObject;
-//        assertEquals(playerName, playersList.get(0).getPlayerName());
-//
-//    }
-
-//    @Test
-//    void joinSesh_with_host_should_set_host_joined_to_true() throws NoSuchFieldException, IllegalAccessException {
-//
-//        final String playerName = "host";
-//        this.sesh.joinSesh(playerName);
-//        Field hostJoinedField = this.sesh.getClass().getDeclaredField("hostJoined");
-//        hostJoinedField.setAccessible(true);
-//        boolean hostJoined = hostJoinedField.getBoolean(this.sesh);
-//        assertTrue(hostJoined);
-//    }
 }
