@@ -5,6 +5,7 @@ import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMess
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public interface SeshService {
 
     Map<String, Object> joinSeshAsHost(String seshCode)throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
-    Map<String, Object> joinSeshAsController(String seshCode, String PlayerName)throws NoSuchSeshException, PlayerAlreadyJoinedException;
+    Map<String, Object> joinSeshAsController(String seshCode, String playerName)throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
 
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 
