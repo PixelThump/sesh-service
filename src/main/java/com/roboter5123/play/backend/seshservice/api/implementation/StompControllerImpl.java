@@ -31,14 +31,36 @@ public class StompControllerImpl implements StompController {
     }
 
     @Override
-    @SubscribeMapping("/topic/sesh/{seshCode}")
-    public StompMessage joinSesh(@Header final String playerName, @DestinationVariable final String seshCode) {
+    @SubscribeMapping("/topic/sesh/{seshCode}/controller")
+    public StompMessage joinSeshAsController(@Header final String playerName, @DestinationVariable final String seshCode) {
 
-        log.info("StompControllerImpl: Entering joinSesh(playerName={} seshCode={})", playerName, seshCode);
+        log.info("StompControllerImpl: Entering joinSeshAsController(playerName={} seshCode={})", playerName, seshCode);
 
         try {
 
-            Map<String, Object> state = seshService.joinSesh(seshCode, playerName);
+            Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName);
+            StompMessage reply = messageFactory.getMessage(state);
+
+            log.info("StompControllerImpl: Exiting joinSeshAsController(error={})", reply);
+            return reply;
+
+        } catch (NoSuchSeshException | PlayerAlreadyJoinedException e) {
+
+            StompMessage reply = messageFactory.getMessage(e);
+            log.error("StompControllerImpl: Exiting joinSeshAsController(reply={})", reply);
+            return reply;
+        }
+    }
+
+    @Override
+    @SubscribeMapping("/topic/sesh/{seshCode}/host")
+    public StompMessage joinSeshAsHost(@DestinationVariable final String seshCode) {
+
+        log.info("StompControllerImpl: Entering joinSeshAsHost(seshCode={})", seshCode);
+
+        try {
+
+            Map<String, Object> state = seshService.joinSeshAsHost(seshCode);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSesh(reply={})", reply);
@@ -47,7 +69,7 @@ public class StompControllerImpl implements StompController {
         } catch (NoSuchSeshException | PlayerAlreadyJoinedException e) {
 
             StompMessage reply = messageFactory.getMessage(e);
-            log.error("StompControllerImpl: Exiting joinSesh(reply={})", reply);
+            log.error("StompControllerImpl: Exiting joinSeshAsHost(reply={})", reply);
             return reply;
         }
     }
