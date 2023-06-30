@@ -22,7 +22,7 @@ public class QuizxelPlayerManager {
     public QuizxelPlayerManager(final Integer maxPlayers) {
 
         this.maxPlayers = maxPlayers;
-        this.isJoinable = true;
+        this.isJoinable = false;
         this.hostJoined = false;
         this.players = new ArrayList<>();
         this.playerNames = new HashSet<>();
@@ -36,7 +36,7 @@ public class QuizxelPlayerManager {
         player.setIsVip(players.stream().anyMatch(QuizxelPlayer::getIsVip));
         this.players.add(player);
         this.playerNames.add(playerName);
-        this.isJoinable = isSeshFull();
+        this.isJoinable = !isSeshFull();
 
         return true;
     }
@@ -60,12 +60,14 @@ public class QuizxelPlayerManager {
 
     public boolean joinAsHost() {
 
-        if (!hasHostJoined()) {
+        if (hasHostJoined()) {
 
-            this.hostJoined = true;
+            return false;
         }
 
-        return this.hostJoined;
+        this.hostJoined = true;
+        this.isJoinable = true;
+        return true;
     }
 
     public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
