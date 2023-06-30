@@ -3,7 +3,6 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
-import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
@@ -23,9 +22,14 @@ public class ChatSesh extends AbstractSeshBaseClass {
         this.chatState = new ChatState();
 
     }
+    @Override
+    public Map<String, Object> joinSeshAsHost() {
+
+        return this.chatState.getState();
+    }
 
     @Override
-    public Map<String, Object> joinSesh(final String playerName) throws PlayerAlreadyJoinedException {
+    public Map<String, Object> joinSeshAsController(String playerName) {
 
         String message = this.chatState.join(playerName);
         ChatJoinAction action = new ChatJoinAction(playerName, message);

@@ -1,4 +1,5 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,5 +58,21 @@ public class QuizxelPlayerManager {
     public List<QuizxelPlayer> getPlayers() {
 
         return this.players;
+    }
+
+    public boolean joinAsHost() {
+
+        if (!hasHostJoined()){
+
+            this.hostJoined = true;
+        }
+
+        return this.hostJoined;
+    }
+
+    public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
+
+
+        return this.hostJoined;
     }
 }

@@ -30,8 +30,33 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     }
 
+    private void broadcastJoinCommand(QuizxelJoinAction action) {
+
+        Command command = new Command("Server", action);
+        this.broadcast(command);
+    }
+
+    private Map<String, Object> getState() {
+
+        Map<String, Object> state = new HashMap<>();
+        state.put("players", this.playerManager.getPlayers());
+        state.put("maxPlayers", MAXPLAYERS);
+
+        return state;
+    }
+
     @Override
-    public Map<String, Object> joinSesh(String playerName) throws PlayerAlreadyJoinedException, SeshIsFullException {
+    public Map<String, Object> joinSeshAsHost() throws PlayerAlreadyJoinedException {
+
+        if (!playerManager.joinAsHost()) {
+
+            throw new PlayerAlreadyJoinedException("Host has already joined this sesh");
+        }
+        return this.getState();
+    }
+
+    @Override
+    public Map<String, Object> joinSeshAsController(String playerName) {
 
         if (playerManager.isSeshFull()) {
 
@@ -46,21 +71,6 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         this.playerManager.addPlayerToSesh(playerName);
         broadcastJoinCommand(new QuizxelJoinAction(playerName));
         return this.getState();
-    }
-
-    private void broadcastJoinCommand(QuizxelJoinAction action) {
-
-        Command command = new Command("Server", action);
-        this.broadcast(command);
-    }
-
-    private Map<String, Object> getState() {
-
-        Map<String, Object> state = new HashMap<>();
-        state.put("players", this.playerManager.getPlayers());
-        state.put("maxPlayers", MAXPLAYERS);
-
-        return state;
     }
 
     @Override
@@ -82,6 +92,6 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     private void processCommand(Command command) {
-
+        throw new UnsupportedOperationException();
     }
 }

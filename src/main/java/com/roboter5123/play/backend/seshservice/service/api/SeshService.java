@@ -14,7 +14,7 @@ public interface SeshService {
 
     Map<String, Object> joinSeshAsHost(String seshCode)throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
-    Map<String, Object> joinSeshAsController(String seshCode, String PlayerName)throws NoSuchSeshException, PlayerAlreadyJoinedException;
+    Map<String, Object> joinSeshAsController(String seshCode, String playerName)throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 

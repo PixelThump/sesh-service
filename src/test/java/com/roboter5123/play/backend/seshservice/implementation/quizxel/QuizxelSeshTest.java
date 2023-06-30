@@ -35,17 +35,17 @@ class QuizxelSeshTest {
     }
 
     @Test
-    void joinSesh_should_throw_player_already_joined_exception() {
+    void joinSeshAsController_should_throw_player_already_joined_exception() {
 
         final String playerName = "roboter5123";
-        this.sesh.joinSesh(playerName);
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSesh(playerName));
+        this.sesh.joinSeshAsController(playerName);
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(playerName));
         String expectedMessage = "Player with name " + playerName + " has already joined the Sesh";
         assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
-    void joinSesh_should_throw_sesh_is_full_exception() {
+    void joinSeshAsController_should_throw_sesh_is_full_exception() {
 
         final String playerName1 = "roboter5123";
         final String playerName2 = "roboter51234";
@@ -53,22 +53,22 @@ class QuizxelSeshTest {
         final String playerName4 = "roboter5123456";
         final String playerName5 = "roboter51234567";
         final String playerName6 = "roboter512345678";
-        this.sesh.joinSesh(playerName1);
-        this.sesh.joinSesh(playerName2);
-        this.sesh.joinSesh(playerName3);
-        this.sesh.joinSesh(playerName4);
-        this.sesh.joinSesh(playerName5);
-        SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSesh(playerName6));
+        this.sesh.joinSeshAsController(playerName1);
+        this.sesh.joinSeshAsController(playerName2);
+        this.sesh.joinSeshAsController(playerName3);
+        this.sesh.joinSeshAsController(playerName4);
+        this.sesh.joinSeshAsController(playerName5);
+        SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSeshAsController(playerName6));
         assertTrue(exception.getMessage().contains("A maximum of "));
         assertTrue(exception.getMessage().contains(" is allowed to join this Sesh."));
 
     }
 
     @Test
-    void joinSesh_should_broadcast_join_message_on_successful_join() {
+    void joinSeshAsController_should_broadcast_join_message_on_successful_join() {
 
         final String playerName = "roboter5123";
-        this.sesh.joinSesh(playerName);
+        this.sesh.joinSeshAsController(playerName);
         ArgumentCaptor<Command> argumentCaptor = ArgumentCaptor.forClass(Command.class);
         verify(broadcaster).broadcastSeshUpdate(eq(SESHCODE), argumentCaptor.capture());
 

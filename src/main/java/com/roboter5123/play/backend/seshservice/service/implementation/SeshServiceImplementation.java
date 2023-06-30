@@ -5,8 +5,6 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
-import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
-import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +43,13 @@ public class SeshServiceImplementation implements SeshService {
     @Override
     public Map<String, Object> joinSeshAsHost(String seshCode) {
         final Sesh sesh = this.getSesh(seshCode);
-        return sesh.joinSesh("host");
+        return sesh.joinSeshAsHost();
     }
 
     @Override
     public Map<String, Object> joinSeshAsController(String seshCode, String playerName) {
 
         final Sesh sesh = this.getSesh(seshCode);
-        return sesh.joinSesh(playerName);
+        return sesh.joinSeshAsController(playerName);
     }
 }

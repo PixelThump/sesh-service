@@ -87,7 +87,7 @@ class SeshServiceImplementationTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSesh("host")).thenReturn(expected);
+		when(sesh.joinSeshAsHost()).thenReturn(expected);
 
 		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode);
 		assertEquals(expected, result);
@@ -108,7 +108,7 @@ class SeshServiceImplementationTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSesh(playerName)).thenReturn(expected);
+		when(sesh.joinSeshAsController(playerName)).thenReturn(expected);
 
 		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName);
 		assertEquals(expected, result);

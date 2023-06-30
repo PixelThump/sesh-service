@@ -35,7 +35,7 @@ class ChatSeshTest {
     }
 
     @Test
-    void joinGame_should_return_gamestate_as_map_string_object() {
+    void joinSeshAsController_should_return_gamestate_as_map_string_object() {
 
         ChatState state = new ChatState();
         state.getChatters().add(playerName);
@@ -44,16 +44,16 @@ class ChatSeshTest {
         Map<String, Object> expected = state.getState();
         Map<String, Object> result;
 
-        result = chat.joinSesh(playerName);
+        result = chat.joinSeshAsController(playerName);
 
         assertEquals(expected, result);
     }
 
     @Test
-    void joinGame_should_throw_Player_already_joined_exception_if_playerName_already_exists(){
+    void joinSeshAsController_should_throw_Player_already_joined_exception_if_playerName_already_exists(){
 
-        chat.joinSesh(playerName);
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, ()->chat.joinSesh(playerName));
+        chat.joinSeshAsController(playerName);
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, ()->chat.joinSeshAsController(playerName));
         String expectedErrorMessage = "Player with name " + playerName + " is already in the Sesh";
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
