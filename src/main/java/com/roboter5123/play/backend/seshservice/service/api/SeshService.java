@@ -12,7 +12,12 @@ public interface SeshService {
 
     Sesh createSesh(SeshType seshType) throws TooManySeshsException;
 
+    @Deprecated
     Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException;
+    
+    Map<String, Object> joinSeshAsHost(String seshCode);
+    
+    Map<String, Object> joinSeshAsController(String seshCode, String PlayerName);
 
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 
