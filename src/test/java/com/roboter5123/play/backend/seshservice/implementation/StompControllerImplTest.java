@@ -52,7 +52,7 @@ class StompControllerImplTest {
         when(seshServiceMock.joinSeshAsHost(sessionCode)).thenThrow(exception);
 
         ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
-        when(factoryMock.getMessage(exception)).thenReturn(expected);
+        when(factoryMock.getMessage(any())).thenReturn(expected);
 
         StompMessage result = stompController.joinSeshAsHost(sessionCode);
 
