@@ -3,6 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
@@ -38,6 +39,7 @@ class QuizxelSeshTest {
     void joinSeshAsController_should_throw_player_already_joined_exception() {
 
         final String playerName = "roboter5123";
+        this.sesh.joinSeshAsHost();
         this.sesh.joinSeshAsController(playerName);
         PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(playerName));
         String expectedMessage = "Player with name " + playerName + " has already joined the Sesh";
@@ -53,6 +55,7 @@ class QuizxelSeshTest {
         final String playerName4 = "roboter5123456";
         final String playerName5 = "roboter51234567";
         final String playerName6 = "roboter512345678";
+        this.sesh.joinSeshAsHost();
         this.sesh.joinSeshAsController(playerName1);
         this.sesh.joinSeshAsController(playerName2);
         this.sesh.joinSeshAsController(playerName3);
@@ -61,13 +64,13 @@ class QuizxelSeshTest {
         SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSeshAsController(playerName6));
         assertTrue(exception.getMessage().contains("A maximum of "));
         assertTrue(exception.getMessage().contains(" is allowed to join this Sesh."));
-
     }
 
     @Test
     void joinSeshAsController_should_broadcast_join_message_on_successful_join() {
 
         final String playerName = "roboter5123";
+        this.sesh.joinSeshAsHost();
         this.sesh.joinSeshAsController(playerName);
         ArgumentCaptor<Command> argumentCaptor = ArgumentCaptor.forClass(Command.class);
         verify(broadcaster).broadcastSeshUpdate(eq(SESHCODE), argumentCaptor.capture());
@@ -77,6 +80,24 @@ class QuizxelSeshTest {
 
         QuizxelJoinAction quizxelJoinAction = (QuizxelJoinAction) sentAction;
         assertEquals(playerName, quizxelJoinAction.getJoiningPlayer());
+    }
+
+    @Test
+    void joinSeshAsController_should_throw_Sesh_currently_not_joinable_exception() {
+
+        final String playerName = "roboter5123";
+        SeshCurrentlyNotJoinableException exception = assertThrows(SeshCurrentlyNotJoinableException.class, () -> this.sesh.joinSeshAsController(playerName));
+        String expectedErrorMessage = "Host hasn't connected yet. Try again later.";
+        assertEquals(expectedErrorMessage, exception.getMessage());
+    }
+
+    @Test
+    void joinSeshAsHost_should_throw_player_already_joined_exception() {
+
+        this.sesh.joinSeshAsHost();
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsHost());
+        String expectedMessage = "Host has already joined this sesh";
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
 //    @Test

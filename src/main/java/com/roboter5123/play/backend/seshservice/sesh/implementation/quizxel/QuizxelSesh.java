@@ -3,6 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
@@ -56,7 +57,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     @Override
-    public Map<String, Object> joinSeshAsController(String playerName) {
+    public Map<String, Object> joinSeshAsController(String playerName) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException {
 
         if (this.playerManager.isSeshFull()) {
 
@@ -66,6 +67,11 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         if (!this.playerManager.addPlayerToSesh(playerName)) {
 
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
+        }
+
+        if (!this.playerManager.hasHostJoined()) {
+
+            throw new SeshCurrentlyNotJoinableException("Host hasn't connected yet. Try again later.");
         }
 
         broadcastJoinCommand(new QuizxelJoinAction(playerName));
@@ -91,6 +97,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     private void processCommand(Command command) {
+
         throw new UnsupportedOperationException();
     }
 }
