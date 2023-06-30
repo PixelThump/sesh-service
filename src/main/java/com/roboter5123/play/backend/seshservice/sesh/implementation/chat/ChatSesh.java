@@ -3,6 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
@@ -34,14 +35,14 @@ public class ChatSesh extends AbstractSeshBaseClass {
         String message = this.chatState.join(playerName);
         ChatJoinAction action = new ChatJoinAction(playerName, message);
         final Command joinMessageCommand = new Command("server", action);
-        this.broadcast(joinMessageCommand);
+        this.broadcastToAll(joinMessageCommand);
         this.lastInteractionTime = LocalDateTime.now();
 
         return this.chatState.getState();
     }
 
     @Override
-    public void addCommand(final Command command) throws UnsupportedOperationException {
+    public void addCommand(final Command command) throws PlayerNotInSeshException {
 
         Action action = command.getAction();
         this.lastInteractionTime = LocalDateTime.now();
@@ -61,6 +62,6 @@ public class ChatSesh extends AbstractSeshBaseClass {
     private void addMessage(String playerName, ChatMessageAction action) {
 
         final String message = this.chatState.addMessage(playerName, action.getMessage());
-        this.broadcast(message);
+        this.broadcastToAll(message);
     }
 }

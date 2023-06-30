@@ -1,4 +1,5 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
+import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class QuizxelPlayerManager {
+public class QuizxelPlayerManager implements PlayerManager {
 
     private final Integer maxPlayers;
     @Getter
@@ -28,7 +29,7 @@ public class QuizxelPlayerManager {
         this.playerNames = new HashSet<>();
     }
 
-    public boolean addPlayerToSesh(String playerName) {
+    public boolean joinAsPlayer(String playerName) {
 
         if (hasPlayerAlreadyJoined(playerName)) return false;
 
@@ -39,23 +40,6 @@ public class QuizxelPlayerManager {
         this.isJoinable = !isSeshFull();
 
         return true;
-    }
-
-    public boolean hasPlayerAlreadyJoined(String playerName) {
-
-        boolean playerHasJoinedAlready = this.playerNames.contains(playerName);
-        playerHasJoinedAlready = playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
-        return playerHasJoinedAlready;
-    }
-
-    public boolean isSeshFull() {
-
-        return this.players.size() >= maxPlayers;
-    }
-
-    public List<QuizxelPlayer> getPlayers() {
-
-        return this.players;
     }
 
     public boolean joinAsHost() {
@@ -70,8 +54,25 @@ public class QuizxelPlayerManager {
         return true;
     }
 
+    public boolean hasPlayerAlreadyJoined(String playerName) {
+
+        boolean playerHasJoinedAlready = this.playerNames.contains(playerName);
+        playerHasJoinedAlready = playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
+        return playerHasJoinedAlready;
+    }
+
     public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
 
         return this.hostJoined;
+    }
+
+    public boolean isSeshFull() {
+
+        return this.players.size() >= maxPlayers;
+    }
+
+    public List<QuizxelPlayer> getPlayers() {
+
+        return this.players;
     }
 }

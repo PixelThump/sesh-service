@@ -13,6 +13,9 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final StompMessageFactory factory;
+    private static final String ERROR_MESSAGE_LINE_2 = "No message type available in message factory for type {}";
+    private static final String ERROR_MESSAGE_LINE_1 = "Could not broadcast message with payload {}";
+    private static final String SESH_BASE_PATH = "/topic/sesh/";
 
     @Autowired
     public MessageBroadcasterImpl(final SimpMessagingTemplate messagingTemplate, final StompMessageFactory factory) {
@@ -27,9 +30,9 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     }
 
     @Override
-    public void broadcastSeshUpdate(final String seshCode, final Object payload) throws UnsupportedOperationException {
+    public void broadcastSeshUpdate(final String seshcode, final Object payload) throws UnsupportedOperationException {
 
-        final String destination = "/topic/sesh/" + seshCode;
+        final String destination = SESH_BASE_PATH + seshcode;
 
         try {
 
@@ -38,8 +41,46 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
         } catch (UnsupportedOperationException e) {
 
-            log.error("Could not broadcast message with payload {}", payload);
-            log.error("No message type available in message factory for type {}", payload.getClass());
+            log.error(ERROR_MESSAGE_LINE_1, payload);
+            log.error(ERROR_MESSAGE_LINE_2, payload.getClass());
+
+            throw e;
+        }
+    }
+
+    @Override
+    public void brodcastSeshUpdateToControllers(String seshcode, Object payload) {
+
+        final String destination = SESH_BASE_PATH + seshcode + "/controller";
+
+        try {
+
+            final StompMessage message = factory.getMessage(payload);
+            broadcast(destination, message);
+
+        } catch (UnsupportedOperationException e) {
+
+            log.error(ERROR_MESSAGE_LINE_1, payload);
+            log.error(ERROR_MESSAGE_LINE_2, payload.getClass());
+
+            throw e;
+        }
+    }
+
+    @Override
+    public void brodcastSeshUpdateToHost(String seshcode, Object payload) {
+
+        final String destination = SESH_BASE_PATH + seshcode + "/host";
+
+        try {
+
+            final StompMessage message = factory.getMessage(payload);
+            broadcast(destination, message);
+
+        } catch (UnsupportedOperationException e) {
+
+            log.error(ERROR_MESSAGE_LINE_1, payload);
+            log.error(ERROR_MESSAGE_LINE_2, payload.getClass());
 
             throw e;
         }

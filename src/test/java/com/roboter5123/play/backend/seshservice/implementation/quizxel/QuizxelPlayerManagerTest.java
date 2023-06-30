@@ -25,7 +25,7 @@ class QuizxelPlayerManagerTest {
     void addPlayerToSesh_should_add_player_to_players() throws NoSuchFieldException, IllegalAccessException {
 
         final String playerName = "roboter5123";
-        this.playerManager.addPlayerToSesh(playerName);
+        this.playerManager.joinAsPlayer(playerName);
 
         Field playersField = this.playerManager.getClass().getDeclaredField("players");
         playersField.setAccessible(true);

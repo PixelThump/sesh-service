@@ -1,8 +1,10 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
@@ -22,19 +24,18 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
     private final Deque<Command> unprocessedCommands = new LinkedList<>();
-    private final QuizxelPlayerManager playerManager;
+    private final PlayerManager playerManager;
 
     public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
 
         super(seshCode, broadcaster, SeshType.QUIZXEL);
         this.playerManager = new QuizxelPlayerManager(MAXPLAYERS);
-
     }
 
     private void broadcastJoinCommand(QuizxelJoinAction action) {
 
         Command command = new Command("Server", action);
-        this.broadcast(command);
+        this.broadcastToAll(command);
     }
 
     private Map<String, Object> getState() {
@@ -64,7 +65,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             throw new SeshIsFullException("A maximum of " + MAXPLAYERS + " is allowed to join this Sesh.");
         }
 
-        if (!this.playerManager.addPlayerToSesh(playerName)) {
+        if (!this.playerManager.joinAsPlayer(playerName)) {
 
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }
@@ -79,7 +80,12 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     @Override
-    public void addCommand(Command command) throws UnsupportedOperationException {
+    public void addCommand(Command command) throws PlayerNotInSeshException {
+
+        if (!this.playerManager.hasPlayerAlreadyJoined(command.getPlayer())){
+
+            throw new PlayerNotInSeshException(command.getPlayer() + " hasn't joined the sesh.");
+        }
 
         this.unprocessedCommands.offer(command);
     }
