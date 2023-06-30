@@ -43,9 +43,16 @@ public class SeshServiceImplementation implements SeshService {
     }
 
     @Override
-    public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshIsFullException {
+    public Map<String, Object> joinSeshAsHost(String seshCode) {
+        final Sesh sesh = this.getSesh(seshCode);
+        return sesh.joinSesh("host");
+    }
+
+    @Override
+    public Map<String, Object> joinSeshAsController(String seshCode, String playerName) {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSesh(playerName);
+
     }
 }
