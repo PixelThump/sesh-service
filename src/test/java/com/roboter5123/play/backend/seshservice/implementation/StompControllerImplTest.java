@@ -49,7 +49,7 @@ class StompControllerImplTest {
     void joinSessionAsHost_should_return_error_message_when_called_with_non_existent_session() {
 
         NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
-        when(seshServiceMock.joinSeshAsHost(any())).thenThrow(exception);
+        when(seshServiceMock.joinSeshAsHost(sessionCode)).thenThrow(exception);
 
         ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
         when(factoryMock.getMessage(exception)).thenReturn(expected);
@@ -65,7 +65,7 @@ class StompControllerImplTest {
         Map<String, Object> state = new HashMap<>();
         state.put("a", new ArrayList<>());
         state.put("b", new ArrayList<>());
-        when(seshServiceMock.joinSeshAsHost(any())).thenReturn(state);
+        when(seshServiceMock.joinSeshAsHost(sessionCode)).thenReturn(state);
 
         StompMessage expected = new StateStompMessage(state);
         when(factoryMock.getMessage(state)).thenReturn(expected);
