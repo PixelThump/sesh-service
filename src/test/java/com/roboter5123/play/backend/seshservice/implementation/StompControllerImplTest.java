@@ -51,7 +51,7 @@ class StompControllerImplTest {
 	void joinSessionAsHost_should_return_error_message_when_called_with_non_existent_session() {
 
 		NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
-		when(seshServiceMock.joinSeshAsHost(sessionCode)).thenThrow(exception);
+		when(seshServiceMock.joinSeshAsHost(any())).thenThrow(exception);
 
 		ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
 		when(factoryMock.getMessage(any())).thenReturn(expected);
@@ -81,7 +81,7 @@ class StompControllerImplTest {
 	void joinSessionAsController_should_return_error_message_when_called_with_non_existent_session() {
 
 		NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
-		when(seshServiceMock.joinSeshAsController(sessionCode, playerName)).thenThrow(exception);
+		when(seshServiceMock.joinSeshAsController(any(), any())).thenThrow(exception);
 
 		ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
 		when(factoryMock.getMessage(any())).thenReturn(expected);
