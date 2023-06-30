@@ -42,10 +42,24 @@ public class SeshServiceImpl implements SeshService {
     }
 
     @Override
+    @Deprecated
     public Map<String, Object> joinSesh(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSesh(playerName);
 
+    }
+
+    @Override
+    public Map<String, Object> joinSeshAsHost(String seshCode) {
+        final Sesh sesh = this.getSesh(seshCode);
+        return sesh.joinSesh("host");
+    }
+
+    @Override
+    public Map<String, Object> joinSeshAsController(String seshCode, String playerName) {
+
+        final Sesh sesh = this.getSesh(seshCode);
+        return sesh.joinSesh(playerName);
     }
 }
