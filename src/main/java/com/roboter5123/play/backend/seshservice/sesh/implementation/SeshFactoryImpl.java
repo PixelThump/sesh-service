@@ -1,9 +1,9 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.springframework.stereotype.Component;
 
 @Component

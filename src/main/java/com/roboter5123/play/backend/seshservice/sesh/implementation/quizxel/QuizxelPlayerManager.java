@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class QuizxelPlayerManager implements PlayerManager {
 
@@ -16,8 +16,7 @@ public class QuizxelPlayerManager implements PlayerManager {
     @Getter
     @Setter
     private boolean isJoinable;
-    private final List<QuizxelPlayer> players;
-    private final Set<String> playerNames;
+    private final Map<String, QuizxelPlayer> players;
     private boolean hostJoined;
 
     public QuizxelPlayerManager(final Integer maxPlayers) {
@@ -25,23 +24,10 @@ public class QuizxelPlayerManager implements PlayerManager {
         this.maxPlayers = maxPlayers;
         this.isJoinable = false;
         this.hostJoined = false;
-        this.players = new ArrayList<>();
-        this.playerNames = new HashSet<>();
+        this.players = new HashMap<>();
     }
 
-    public boolean joinAsPlayer(String playerName) {
-
-        if (hasPlayerAlreadyJoined(playerName)) return false;
-
-        QuizxelPlayer player = new QuizxelPlayer(playerName);
-        player.setIsVip(players.stream().anyMatch(QuizxelPlayer::getIsVip));
-        this.players.add(player);
-        this.playerNames.add(playerName);
-        this.isJoinable = !isSeshFull();
-
-        return true;
-    }
-
+    @Override
     public boolean joinAsHost() {
 
         if (hasHostJoined()) {
@@ -54,25 +40,56 @@ public class QuizxelPlayerManager implements PlayerManager {
         return true;
     }
 
-    public boolean hasPlayerAlreadyJoined(String playerName) {
+    @Override
+    public boolean joinAsPlayer(String playerName) {
 
-        boolean playerHasJoinedAlready = this.playerNames.contains(playerName);
-        playerHasJoinedAlready = playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
-        return playerHasJoinedAlready;
+        if (hasPlayerAlreadyJoined(playerName)) return false;
+
+        QuizxelPlayer player = new QuizxelPlayer(playerName);
+        this.players.put(playerName, player);
+        this.isJoinable = !isSeshFull();
+
+        return true;
     }
 
+    @Override
+    public boolean hasPlayerAlreadyJoined(String playerName) {
+
+        boolean playerHasJoinedAlready = this.players.containsKey(playerName);
+        return playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
+    }
+
+    @Override
     public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
 
         return this.hostJoined;
     }
 
+    @Override
     public boolean isSeshFull() {
 
         return this.players.size() >= maxPlayers;
     }
 
+    @Override
     public List<QuizxelPlayer> getPlayers() {
 
-        return this.players;
+        return new ArrayList<>(this.players.values());
     }
+
+    @Override
+    public boolean isVIP(String playerName) {
+
+        return this.players.get(playerName).getVip();
+    }
+
+    @Override
+    public boolean setVIP(String playerName) {
+
+        if (this.players.values().stream().anyMatch(QuizxelPlayer::getVip)) return false;
+
+        this.players.get(playerName).setVip(true);
+        return true;
+    }
+
 }

@@ -6,9 +6,11 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelStageName;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,6 +60,7 @@ class QuizxelSeshTest {
         Map<String, Object> expected = new HashMap<>();
         expected.put("players", new ArrayList<QuizxelPlayer>());
         expected.put("maxPlayers", 5);
+        expected.put("currentStage", QuizxelStageName.LOBBY);
         Map<String, Object> result = this.sesh.joinSeshAsHost();
         assertEquals(expected, result);
     }
@@ -137,7 +140,7 @@ class QuizxelSeshTest {
         Command command = new Command(playerName, new QuizxelJoinAction(playerName));
         this.sesh.addCommand(command);
 
-        Field queueField = this.sesh.getClass().getDeclaredField("unprocessedCommands");
+        Field queueField = AbstractSeshBaseClass.class.getDeclaredField("unprocessedCommands");
         queueField.setAccessible(true);
         Object queueObject = queueField.get(this.sesh);
         Deque<Command> queue = (Deque<Command>) queueObject;

@@ -4,6 +4,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 
 import java.time.LocalDateTime;
 import java.util.Map;

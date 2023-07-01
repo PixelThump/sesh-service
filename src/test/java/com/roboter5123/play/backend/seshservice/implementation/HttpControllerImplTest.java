@@ -5,7 +5,7 @@ import com.roboter5123.play.backend.seshservice.api.model.exception.BadRequestEx
 import com.roboter5123.play.backend.seshservice.api.model.exception.NoSuchSeshHttpException;
 import com.roboter5123.play.backend.seshservice.api.model.exception.TooManySeshsHttpException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;

@@ -17,4 +17,8 @@ public interface PlayerManager {
     boolean isSeshFull();
 
     List<QuizxelPlayer> getPlayers();
+
+    boolean isVIP(String playerName);
+
+    boolean setVIP(String playerName);
 }

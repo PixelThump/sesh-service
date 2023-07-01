@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,9 +14,9 @@ class QuizxelPlayerManagerTest {
 
     QuizxelPlayerManager playerManager;
 
-
     @BeforeEach
     void setUp() {
+
         playerManager = new QuizxelPlayerManager(5);
     }
 
@@ -27,19 +26,9 @@ class QuizxelPlayerManagerTest {
         final String playerName = "roboter5123";
         this.playerManager.joinAsPlayer(playerName);
 
-        Field playersField = this.playerManager.getClass().getDeclaredField("players");
-        playersField.setAccessible(true);
-        Object playersObject = playersField.get(this.playerManager);
 
-        List<QuizxelPlayer> playersList = (List<QuizxelPlayer>) playersObject;
+        List<QuizxelPlayer> playersList = this.playerManager.getPlayers();
         assertEquals(playerName, playersList.get(0).getPlayerName());
-
-        Field playerNamesField = this.playerManager.getClass().getDeclaredField("playerNames");
-        playerNamesField.setAccessible(true);
-        Object playerNamesObject = playerNamesField.get(this.playerManager);
-
-        Set<String> playerNamesList = (Set<String>) playerNamesObject;
-        assertTrue(playerNamesList.contains(playerName));
     }
 
     @Test

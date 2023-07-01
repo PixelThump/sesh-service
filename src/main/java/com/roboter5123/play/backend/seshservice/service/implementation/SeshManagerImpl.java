@@ -4,7 +4,7 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;

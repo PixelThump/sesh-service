@@ -3,13 +3,16 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.MakeVIPAction;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelStageName;
+import com.roboter5123.play.backend.seshservice.sesh.model.StartSeshAction;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,10 +28,13 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
     private final PlayerManager playerManager;
+    private QuizxelStageName currentStageName;
+
     public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
 
         super(seshCode, broadcaster, SeshType.QUIZXEL);
         this.playerManager = new QuizxelPlayerManager(MAXPLAYERS);
+        this.currentStageName = QuizxelStageName.LOBBY;
     }
 
     private Map<String, Object> getState() {
@@ -36,6 +42,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         Map<String, Object> state = new HashMap<>();
         state.put("players", this.playerManager.getPlayers());
         state.put("maxPlayers", MAXPLAYERS);
+        state.put("currentStage", currentStageName);
 
         return state;
     }
@@ -97,7 +104,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
         for (Command command : queue) {
 
-            processCommand(command);
+            this.processCommand(command);
         }
 
         this.broadcastToAll(getState());
@@ -105,7 +112,32 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void processCommand(Command command) {
 
+        if (this.currentStageName == QuizxelStageName.LOBBY) {
+
+            this.processLobbyCommand(command);
+
+        } else if (this.currentStageName == QuizxelStageName.QUIZ) {
+
+            this.processQuizCommand(command);
+        }
+    }
+
+    private void processQuizCommand(Command command) {
+
         String playerName = command.getPlayer();
         Action action = command.getAction();
+
+        if (this.playerManager.isVIP(playerName) && action instanceof StartSeshAction){
+
+            this.currentStageName = QuizxelStageName.QUIZ;
+
+        } else if (action instanceof MakeVIPAction makeVIPAction) {
+
+            this.playerManager.setVIP(makeVIPAction.getPlayerName());
+        }
+    }
+
+    private void processLobbyCommand(Command command) {
+
     }
 }

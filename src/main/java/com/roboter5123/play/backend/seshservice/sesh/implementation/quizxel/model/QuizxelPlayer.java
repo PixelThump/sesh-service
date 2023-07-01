@@ -5,11 +5,11 @@ import lombok.Data;
 public class QuizxelPlayer {
 
     private final String playerName;
-    private Boolean isVip;
+    private Boolean vip;
 
     public QuizxelPlayer(String playerName) {
 
         this.playerName = playerName;
-        this.isVip = false;
+        this.vip = false;
     }
 }

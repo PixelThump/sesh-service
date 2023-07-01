@@ -2,7 +2,7 @@ package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.SeshFactoryImpl;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import org.junit.jupiter.api.BeforeEach;
