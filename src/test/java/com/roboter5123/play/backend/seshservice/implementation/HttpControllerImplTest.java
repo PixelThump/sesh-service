@@ -4,15 +4,15 @@ import com.roboter5123.play.backend.seshservice.api.model.HttpSeshDTO;
 import com.roboter5123.play.backend.seshservice.api.model.exception.BadRequestException;
 import com.roboter5123.play.backend.seshservice.api.model.exception.NoSuchSeshHttpException;
 import com.roboter5123.play.backend.seshservice.api.model.exception.TooManySeshsHttpException;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
+import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ class HttpControllerImplTest {
     void setUp() {
 
         sessionCode = "abcd";
-        this.sesh = new ChatSesh(sessionCode, broadcasterMock);
+        this.sesh = new QuizxelSesh(sessionCode, broadcasterMock);
     }
 
     @Test
@@ -63,10 +63,10 @@ class HttpControllerImplTest {
     @Test
     void create_Session_should_return_http_game() throws TooManySeshsException {
 
-        when(seshServiceMock.createSesh(SeshType.CHAT)).thenReturn(sesh);
+        when(seshServiceMock.createSesh(SeshType.QUIZXEL)).thenReturn(sesh);
 
         HttpSeshDTO expected = new HttpSeshDTO(sesh.getSeshType(), sesh.getSeshCode());
-        HttpSeshDTO result = httpController.createSesh(SeshType.CHAT.name());
+        HttpSeshDTO result = httpController.createSesh(SeshType.QUIZXEL.name());
 
         assertEquals(expected, result);
     }
@@ -91,7 +91,7 @@ class HttpControllerImplTest {
 
         when(seshServiceMock.getSesh(any())).thenReturn(sesh);
 
-        HttpSeshDTO expected = new HttpSeshDTO(SeshType.CHAT, sessionCode);
+        HttpSeshDTO expected = new HttpSeshDTO(SeshType.QUIZXEL, sessionCode);
         HttpSeshDTO result = httpController.getSesh(sessionCode);
 
         assertEquals(expected, result);

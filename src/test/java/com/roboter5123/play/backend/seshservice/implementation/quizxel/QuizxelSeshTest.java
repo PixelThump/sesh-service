@@ -10,7 +10,7 @@ import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSesh
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelStageName;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ class QuizxelSeshTest {
         Map<String, Object> expected = new HashMap<>();
         expected.put("players", new ArrayList<QuizxelPlayer>());
         expected.put("maxPlayers", 5);
-        expected.put("currentStage", QuizxelStageName.LOBBY);
+        expected.put("currentStage", SeshStage.LOBBY);
         Map<String, Object> result = this.sesh.joinSeshAsHost();
         assertEquals(expected, result);
     }

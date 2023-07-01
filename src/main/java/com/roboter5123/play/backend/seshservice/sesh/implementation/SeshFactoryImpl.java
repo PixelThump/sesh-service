@@ -1,8 +1,8 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation;
+import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
-import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +21,9 @@ public class SeshFactoryImpl implements SeshFactory {
 
         final Sesh sesh;
 
-        if (seshType == SeshType.CHAT) {
+        if (seshType == SeshType.QUIZXEL) {
 
-            sesh = new ChatSesh(seshCode, broadcaster);
+            sesh = new QuizxelSesh(seshCode, broadcaster);
 
         } else {
 
