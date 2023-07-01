@@ -2,5 +2,5 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.mod
 public enum SeshStage {
 
     LOBBY,
-    QUIZ
+    MAIN
 }

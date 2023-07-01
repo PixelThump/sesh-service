@@ -21,7 +21,7 @@ public interface Sesh {
 
     void broadcastToAll(Object payload);
     void broadcastToHost(Object payload);
-    void broatcastToControllers(Object payload);
+    void broadcastToControllers(Object payload);
 
     void addCommand(Command command) throws PlayerNotInSeshException;
 

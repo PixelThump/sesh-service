@@ -109,7 +109,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
             this.processLobbyCommand(command);
 
-        } else if (this.currentStage == SeshStage.QUIZ) {
+        } else if (this.currentStage == SeshStage.MAIN) {
 
             this.processQuizCommand(command);
         }

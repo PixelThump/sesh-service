@@ -35,8 +35,8 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
         try {
 
-            brodcastSeshUpdateToControllers(seshcode,payload);
-            brodcastSeshUpdateToHost(seshcode,payload);
+            broadcastSeshUpdateToControllers(seshcode,payload);
+            broadcastSeshUpdateToHost(seshcode,payload);
 
         } catch (UnsupportedOperationException e) {
 
@@ -48,7 +48,7 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     }
 
     @Override
-    public void brodcastSeshUpdateToControllers(String seshcode, Object payload) {
+    public void broadcastSeshUpdateToControllers(String seshcode, Object payload) {
 
         final String destination = SESH_BASE_PATH + seshcode + "/controller";
 
@@ -67,7 +67,7 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     }
 
     @Override
-    public void brodcastSeshUpdateToHost(String seshcode, Object payload) {
+    public void broadcastSeshUpdateToHost(String seshcode, Object payload) {
 
         final String destination = SESH_BASE_PATH + seshcode + "/host";
 

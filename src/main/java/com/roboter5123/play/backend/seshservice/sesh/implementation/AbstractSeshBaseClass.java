@@ -41,13 +41,13 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     @Override
     public void broadcastToHost(Object payload) {
 
-        this.broadcaster.brodcastSeshUpdateToHost(this.seshCode, payload);
+        this.broadcaster.broadcastSeshUpdateToHost(this.seshCode, payload);
     }
 
     @Override
-    public void broatcastToControllers(Object payload) {
+    public void broadcastToControllers(Object payload) {
 
-        this.broadcaster.brodcastSeshUpdateToControllers(this.seshCode, payload);
+        this.broadcaster.broadcastSeshUpdateToControllers(this.seshCode, payload);
     }
 
     @Override
@@ -63,7 +63,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         if (this.playerManager.isVIP(playerName) && action instanceof StartSeshAction) {
 
-            this.currentStage = SeshStage.QUIZ;
+            this.currentStage = SeshStage.MAIN;
 
         } else if (action instanceof MakeVIPAction makeVIPAction) {
 
