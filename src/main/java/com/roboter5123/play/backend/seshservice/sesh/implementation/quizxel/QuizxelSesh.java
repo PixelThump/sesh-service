@@ -1,7 +1,6 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
@@ -9,6 +8,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullExcepti
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +23,6 @@ import java.util.Map;
 public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
-
 
     public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
 
@@ -90,7 +89,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     @Scheduled(fixedRate = 33)
-    private void processQueue() {
+    public void processQueue() {
 
         Deque<Command> queue = new LinkedList<>(this.unprocessedCommands);
         this.unprocessedCommands.clear();
@@ -117,8 +116,6 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void processQuizCommand(Command command) {
 
-
     }
-
 
 }
