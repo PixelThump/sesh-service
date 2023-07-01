@@ -19,7 +19,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected AbstractSeshBaseClass(String seshCode, MessageBroadcaster broadcaster, SeshType seshType) {
 
         this.seshCode = seshCode;
-
         this.broadcaster = broadcaster;
         this.seshType = seshType;
         this.lastInteractionTime = LocalDateTime.now();
@@ -28,6 +27,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     @Override
     public void broadcastToHost(Object payload) {
 
+        this.broadcaster.brodcastSeshUpdateToHost(this.seshCode, payload);
     }
 
     @Override
