@@ -4,6 +4,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 
 import java.time.LocalDateTime;
@@ -20,10 +21,14 @@ public interface Sesh {
     String getSeshCode();
 
     void broadcastToAll(Object payload);
+
     void broadcastToHost(Object payload);
+
     void broadcastToControllers(Object payload);
 
     void addCommand(Command command) throws PlayerNotInSeshException;
 
     LocalDateTime getLastInteractionTime();
+
+    SeshStage getCurrentStage();
 }

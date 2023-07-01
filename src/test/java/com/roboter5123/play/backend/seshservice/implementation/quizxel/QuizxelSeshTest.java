@@ -1,8 +1,6 @@
 package com.roboter5123.play.backend.seshservice.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.seshservice.messaging.model.Action;
-import com.roboter5123.play.backend.seshservice.messaging.model.BasicAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.messaging.model.*;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
@@ -128,7 +126,6 @@ class QuizxelSeshTest {
     @Test
     void addCommand_should_add_command_to_unproccesssedCommands() throws NoSuchFieldException, IllegalAccessException {
 
-        String playerName = this.playerName;
         this.sesh.joinSeshAsHost();
         this.sesh.joinSeshAsController(this.playerName);
 
@@ -143,12 +140,23 @@ class QuizxelSeshTest {
     }
 
     @Test
-    void processQueue_should_call_broadcastSeshUpdate(){
+    void processQueue_should_call_broadcastSeshUpdate() {
 
         this.sesh.joinSeshAsHost();
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
         this.sesh.addCommand(new Command(this.playerName, new BasicAction()));
         this.sesh.processQueue();
         verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);
+    }
+
+    @Test
+    void processQueue_should_advance_current_stage_to_main() {
+
+        this.sesh.joinSeshAsHost();
+        this.sesh.joinSeshAsController(this.playerName);
+        this.sesh.addCommand(new Command(this.playerName, new MakeVIPAction(this.playerName, true)));
+        this.sesh.addCommand(new Command(this.playerName, new StartSeshAction(true)));
+        this.sesh.processQueue();
+        assertEquals(SeshStage.MAIN, this.sesh.getCurrentStage());
     }
 }

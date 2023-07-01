@@ -25,6 +25,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected LocalDateTime lastInteractionTime;
     protected final Deque<Command> unprocessedCommands;
     protected final PlayerManager playerManager;
+    @Getter
     protected SeshStage currentStage;
 
     protected AbstractSeshBaseClass(String seshCode, MessageBroadcaster broadcaster, SeshType seshType, PlayerManager playerManager) {

@@ -1,8 +1,10 @@
 package com.roboter5123.play.backend.seshservice.messaging.model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class StartSeshAction {
+@AllArgsConstructor
+public class StartSeshAction implements Action {
 
     boolean startGame;
 }
