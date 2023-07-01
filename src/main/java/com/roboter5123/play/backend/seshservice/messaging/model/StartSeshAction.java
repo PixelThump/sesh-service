@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.seshservice.sesh.model;
+package com.roboter5123.play.backend.seshservice.messaging.model;
 import lombok.Data;
 
 @Data

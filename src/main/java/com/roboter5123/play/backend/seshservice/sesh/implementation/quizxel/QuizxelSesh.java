@@ -3,7 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
-import com.roboter5123.play.backend.seshservice.sesh.model.MakeVIPAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.MakeVIPAction;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
@@ -12,7 +12,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullExcepti
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelStageName;
-import com.roboter5123.play.backend.seshservice.sesh.model.StartSeshAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.StartSeshAction;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
