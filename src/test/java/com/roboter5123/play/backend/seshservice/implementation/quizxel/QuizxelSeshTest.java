@@ -7,10 +7,15 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJ
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -33,6 +38,25 @@ class QuizxelSeshTest {
     @AfterEach
     void tearDown() {
 
+    }
+
+    @Test
+    void joinSeshAsHost_should_throw_player_already_joined_exception() {
+
+        this.sesh.joinSeshAsHost();
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsHost());
+        String expectedMessage = "Host has already joined this sesh";
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void joinSeshAsHost_should_return_state() {
+
+        Map<String, Object> expected = new HashMap<>();
+        expected.put("players", new ArrayList<QuizxelPlayer>());
+        expected.put("maxPlayers", 5);
+        Map<String, Object> result = this.sesh.joinSeshAsHost();
+        assertEquals(expected, result);
     }
 
     @Test
@@ -89,14 +113,5 @@ class QuizxelSeshTest {
         SeshCurrentlyNotJoinableException exception = assertThrows(SeshCurrentlyNotJoinableException.class, () -> this.sesh.joinSeshAsController(playerName));
         String expectedErrorMessage = "Host hasn't connected yet. Try again later.";
         assertEquals(expectedErrorMessage, exception.getMessage());
-    }
-
-    @Test
-    void joinSeshAsHost_should_throw_player_already_joined_exception() {
-
-        this.sesh.joinSeshAsHost();
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsHost());
-        String expectedMessage = "Host has already joined this sesh";
-        assertEquals(expectedMessage, exception.getMessage());
     }
 }

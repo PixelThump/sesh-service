@@ -32,12 +32,6 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         this.playerManager = new QuizxelPlayerManager(MAXPLAYERS);
     }
 
-    private void broadcastJoinCommand(QuizxelJoinAction action) {
-
-        Command command = new Command("Server", action);
-        this.broadcastToAll(command);
-    }
-
     private Map<String, Object> getState() {
 
         Map<String, Object> state = new HashMap<>();
@@ -62,12 +56,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
         if (this.playerManager.isSeshFull()) {
 
-            throw new SeshIsFullException("A maximum of " + MAXPLAYERS + " is allowed to join this Sesh.");
-        }
-
-        if (!this.playerManager.joinAsPlayer(playerName)) {
-
-            throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
+            throw new SeshIsFullException("A maximum of " + this.playerManager.getMaxPlayers() + " is allowed to join this Sesh.");
         }
 
         if (!this.playerManager.hasHostJoined()) {
@@ -75,19 +64,31 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             throw new SeshCurrentlyNotJoinableException("Host hasn't connected yet. Try again later.");
         }
 
+        if (!this.playerManager.joinAsPlayer(playerName)) {
+
+            throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
+        }
+
         broadcastJoinCommand(new QuizxelJoinAction(playerName));
         return this.getState();
+    }
+
+    private void broadcastJoinCommand(QuizxelJoinAction action) {
+
+        Command command = new Command("Server", action);
+        this.broadcastToAll(command);
     }
 
     @Override
     public void addCommand(Command command) throws PlayerNotInSeshException {
 
-        if (!this.playerManager.hasPlayerAlreadyJoined(command.getPlayer())){
+        if (!this.playerManager.hasPlayerAlreadyJoined(command.getPlayer())) {
 
             throw new PlayerNotInSeshException(command.getPlayer() + " hasn't joined the sesh.");
         }
 
         this.unprocessedCommands.offer(command);
+        this.broadcastToAll(command);
     }
 
     @Scheduled(fixedRate = 33)
@@ -100,6 +101,8 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
             processCommand(command);
         }
+
+        this.broadcastToAll(getState());
     }
 
     private void processCommand(Command command) {
