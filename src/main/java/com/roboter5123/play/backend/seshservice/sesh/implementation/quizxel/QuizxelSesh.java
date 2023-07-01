@@ -1,5 +1,6 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
@@ -23,9 +24,7 @@ import java.util.Map;
 public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
-    private final Deque<Command> unprocessedCommands = new LinkedList<>();
     private final PlayerManager playerManager;
-
     public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
 
         super(seshCode, broadcaster, SeshType.QUIZXEL);
@@ -88,7 +87,6 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         }
 
         this.unprocessedCommands.offer(command);
-        this.broadcastToAll(command);
     }
 
     @Scheduled(fixedRate = 33)
@@ -107,6 +105,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void processCommand(Command command) {
 
-        throw new UnsupportedOperationException();
+        String playerName = command.getPlayer();
+        Action action = command.getAction();
     }
 }
