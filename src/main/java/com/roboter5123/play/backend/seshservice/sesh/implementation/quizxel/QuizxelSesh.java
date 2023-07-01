@@ -56,7 +56,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
         if (this.playerManager.isSeshFull()) {
 
-            throw new SeshIsFullException("A maximum of " + this.playerManager.getMaxPlayers() + " is allowed to join this Sesh.");
+            throw new SeshIsFullException("A maximum of " + MAXPLAYERS + " is allowed to join this Sesh.");
         }
 
         if (!this.playerManager.hasHostJoined()) {
