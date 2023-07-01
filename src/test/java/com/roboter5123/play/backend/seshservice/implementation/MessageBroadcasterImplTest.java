@@ -41,7 +41,8 @@ class MessageBroadcasterImplTest {
 
         messageBroadcaster.broadcastSeshUpdate(sessionCode, exception);
 
-        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode, expected);
+        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode + "/controller", expected);
+        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode + "/host", expected);
     }
 
     @Test

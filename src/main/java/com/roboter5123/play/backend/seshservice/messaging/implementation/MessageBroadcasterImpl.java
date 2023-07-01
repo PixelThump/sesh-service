@@ -32,12 +32,11 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     @Override
     public void broadcastSeshUpdate(final String seshcode, final Object payload) throws UnsupportedOperationException {
 
-        final String destination = SESH_BASE_PATH + seshcode;
 
         try {
 
-            final StompMessage message = factory.getMessage(payload);
-            broadcast(destination, message);
+            brodcastSeshUpdateToControllers(seshcode,payload);
+            brodcastSeshUpdateToHost(seshcode,payload);
 
         } catch (UnsupportedOperationException e) {
 
