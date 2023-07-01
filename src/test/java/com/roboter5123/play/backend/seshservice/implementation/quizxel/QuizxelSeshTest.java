@@ -3,6 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,5 +116,31 @@ class QuizxelSeshTest {
         SeshCurrentlyNotJoinableException exception = assertThrows(SeshCurrentlyNotJoinableException.class, () -> this.sesh.joinSeshAsController(playerName));
         String expectedErrorMessage = "Host hasn't connected yet. Try again later.";
         assertEquals(expectedErrorMessage, exception.getMessage());
+    }
+
+    @Test
+    void addCommand_should_throw_Player_not_in_sesh_exception() {
+
+        Command command = new Command("roboter5123", new QuizxelJoinAction("roboter5123"));
+        PlayerNotInSeshException exception = assertThrows(PlayerNotInSeshException.class, () -> this.sesh.addCommand(command));
+        String expectedErrorMessage = command.getPlayer() + " hasn't joined the sesh.";
+        assertEquals(expectedErrorMessage, exception.getMessage());
+    }
+
+    @Test
+    void addCommand_should_add_command_to_unproccesssedCommands() throws NoSuchFieldException, IllegalAccessException {
+
+        String playerName = "roboter5123";
+        this.sesh.joinSeshAsHost();
+        this.sesh.joinSeshAsController(playerName);
+
+        Command command = new Command(playerName, new QuizxelJoinAction(playerName));
+        this.sesh.addCommand(command);
+
+        Field queueField = this.sesh.getClass().getDeclaredField("unprocessedCommands");
+        queueField.setAccessible(true);
+        Object queueObject = queueField.get(this.sesh);
+        Deque<Command> queue = (Deque<Command>) queueObject;
+        assertTrue(queue.contains(command));
     }
 }
