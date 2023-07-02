@@ -1,6 +1,7 @@
 package com.roboter5123.play.backend.seshservice.messaging.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 

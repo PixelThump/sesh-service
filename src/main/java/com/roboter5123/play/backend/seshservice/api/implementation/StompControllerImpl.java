@@ -1,8 +1,8 @@
 package com.roboter5123.play.backend.seshservice.api.implementation;
 import com.roboter5123.play.backend.seshservice.api.api.StompController;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.CommandStompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.StompMessage;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;

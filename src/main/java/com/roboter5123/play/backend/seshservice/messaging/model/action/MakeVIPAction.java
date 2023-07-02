@@ -1,10 +1,10 @@
-package com.roboter5123.play.backend.seshservice.messaging.model;
+package com.roboter5123.play.backend.seshservice.messaging.model.action;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MakeVIPAction implements Action{
+public class MakeVIPAction implements Action {
 
     private String playerName;
     private boolean makeVip;

@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.seshservice.messaging.model;
+package com.roboter5123.play.backend.seshservice.messaging.model.message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,7 +1,7 @@
 package com.roboter5123.play.backend.seshservice.messaging.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.StompMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

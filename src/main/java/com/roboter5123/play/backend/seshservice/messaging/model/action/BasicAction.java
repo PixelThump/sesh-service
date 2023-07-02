@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.seshservice.messaging.model;
+package com.roboter5123.play.backend.seshservice.messaging.model.action;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BasicAction implements Action{
+public class BasicAction implements Action {
 
     String playerName;
     String message;

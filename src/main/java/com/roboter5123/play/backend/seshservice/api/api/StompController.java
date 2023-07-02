@@ -1,6 +1,6 @@
 package com.roboter5123.play.backend.seshservice.api.api;
-import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.CommandStompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.StompMessage;
 
 public interface StompController {
 

@@ -1,6 +1,10 @@
 package com.roboter5123.play.backend.seshservice.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.MakeVIPAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.StartSeshAction;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
@@ -9,7 +13,7 @@ import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSesh
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

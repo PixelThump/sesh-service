@@ -1,5 +1,5 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model;
-import com.roboter5123.play.backend.seshservice.messaging.model.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import lombok.Data;
 
 @Data

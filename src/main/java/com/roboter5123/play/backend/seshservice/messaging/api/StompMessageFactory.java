@@ -1,5 +1,5 @@
 package com.roboter5123.play.backend.seshservice.messaging.api;
-import com.roboter5123.play.backend.seshservice.messaging.model.StompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.StompMessage;
 
 import java.util.Map;
 

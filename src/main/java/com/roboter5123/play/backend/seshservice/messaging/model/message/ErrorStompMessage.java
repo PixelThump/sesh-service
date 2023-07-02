@@ -1,4 +1,4 @@
-package com.roboter5123.play.backend.seshservice.messaging.model;
+package com.roboter5123.play.backend.seshservice.messaging.model.message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericStompMessage implements StompMessage {
+public class ErrorStompMessage implements StompMessage {
 
-    private Object object;
+    private String error;
 }

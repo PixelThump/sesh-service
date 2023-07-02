@@ -2,7 +2,7 @@ package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.implementation.MessageBroadcasterImpl;
-import com.roboter5123.play.backend.seshservice.messaging.model.ErrorStompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.ErrorStompMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

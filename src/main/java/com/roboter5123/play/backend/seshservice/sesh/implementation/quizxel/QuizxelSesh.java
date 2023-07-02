@@ -7,7 +7,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJ
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
