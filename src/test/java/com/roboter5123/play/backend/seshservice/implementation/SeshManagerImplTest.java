@@ -39,7 +39,9 @@ class SeshManagerImplTest {
     void setUp() {
 
         this.seshCode = "ABCD";
-        quizxel = new QuizxelSesh(seshCode, broadcaster);
+        quizxel = new QuizxelSesh(broadcaster);
+        quizxel.setSeshCode(seshCode);
+        quizxel.startSesh();
     }
 
     @AfterEach

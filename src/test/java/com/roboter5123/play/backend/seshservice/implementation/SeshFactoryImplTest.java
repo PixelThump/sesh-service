@@ -8,20 +8,27 @@ import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 class SeshFactoryImplTest {
 
     SeshFactory seshfactory;
     String seshCode;
+    @MockBean
+    ApplicationContext applicationContext;
 
     @BeforeEach
     void setUp() {
 
         MessageBroadcaster broadcaster = Mockito.mock(MessageBroadcaster.class);
-        seshfactory = new SeshFactoryImpl(broadcaster);
+        ApplicationContext applicationContext = Mockito.mock(ApplicationContext.class);
+        when(applicationContext.getBean(QuizxelSesh.class)).thenReturn(new QuizxelSesh(broadcaster));
+        seshfactory = new SeshFactoryImpl(applicationContext);
         seshCode = "ABCD";
     }
 

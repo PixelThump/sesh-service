@@ -48,7 +48,9 @@ class HttpControllerImplTest {
     void setUp() {
 
         sessionCode = "abcd";
-        this.sesh = new QuizxelSesh(sessionCode, broadcasterMock);
+        this.sesh = new QuizxelSesh( broadcasterMock);
+        this.sesh.setSeshCode(sessionCode);
+        this.sesh.startSesh();
     }
 
     @Test

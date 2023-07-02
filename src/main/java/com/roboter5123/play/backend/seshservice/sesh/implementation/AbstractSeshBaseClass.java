@@ -9,6 +9,7 @@ import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Deque;
@@ -19,7 +20,8 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     @Getter
     private final SeshType seshType;
     @Getter
-    private final String seshCode;
+    @Setter
+    private String seshCode;
     private final MessageBroadcaster broadcaster;
     @Getter
     protected LocalDateTime lastInteractionTime;
@@ -27,16 +29,17 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected final PlayerManager playerManager;
     @Getter
     protected SeshStage currentStage;
+    protected boolean isStarted;
 
-    protected AbstractSeshBaseClass(String seshCode, MessageBroadcaster broadcaster, SeshType seshType, PlayerManager playerManager) {
+    protected AbstractSeshBaseClass(MessageBroadcaster broadcaster, SeshType seshType, PlayerManager playerManager) {
 
-        this.seshCode = seshCode;
         this.broadcaster = broadcaster;
         this.seshType = seshType;
         this.lastInteractionTime = LocalDateTime.now();
         this.unprocessedCommands = new LinkedList<>();
         this.playerManager = playerManager;
         this.currentStage = SeshStage.LOBBY;
+        isStarted = false;
     }
 
     @Override
@@ -70,5 +73,10 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
             this.playerManager.setVIP(makeVIPAction.getPlayerName());
         }
+    }
+
+    public void startSesh(){
+
+        this.isStarted = true;
     }
 }

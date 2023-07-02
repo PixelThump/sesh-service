@@ -11,7 +11,9 @@ import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.Deque;
 import java.util.HashMap;
@@ -20,13 +22,15 @@ import java.util.Map;
 
 @Log4j2
 @ToString
+@Component
+@Scope("prototype")
 public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
 
-    public QuizxelSesh(String seshCode, MessageBroadcaster broadcaster) {
+    public QuizxelSesh(MessageBroadcaster broadcaster) {
 
-        super(seshCode, broadcaster, SeshType.QUIZXEL, new QuizxelPlayerManager(MAXPLAYERS));
+        super(broadcaster, SeshType.QUIZXEL, new QuizxelPlayerManager(MAXPLAYERS));
     }
 
     private Map<String, Object> getState() {
@@ -88,8 +92,13 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         this.unprocessedCommands.offer(command);
     }
 
-    @Scheduled(fixedRate = 33)
+    @Scheduled(fixedDelay = 100)
     public void processQueue() {
+
+        if (!isStarted && !playerManager.hasHostJoined() && playerManager.getPlayers().isEmpty()) {
+
+            return;
+        }
 
         Deque<Command> queue = new LinkedList<>(this.unprocessedCommands);
         this.unprocessedCommands.clear();

@@ -41,7 +41,9 @@ class QuizxelSeshTest {
     void setUp() {
 
         this.broadcaster = mock(MessageBroadcaster.class);
-        sesh = new QuizxelSesh(SESHCODE, broadcaster);
+        sesh = new QuizxelSesh(broadcaster);
+        sesh.setSeshCode(SESHCODE);
+        sesh.startSesh();
         this.playerName = "roboter5123";
     }
 

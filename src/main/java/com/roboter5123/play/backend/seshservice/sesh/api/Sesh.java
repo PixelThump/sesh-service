@@ -19,6 +19,7 @@ public interface Sesh {
     SeshType getSeshType();
 
     String getSeshCode();
+    void setSeshCode(String seshCode);
 
     void broadcastToAll(Object payload);
 
@@ -31,4 +32,6 @@ public interface Sesh {
     LocalDateTime getLastInteractionTime();
 
     SeshStage getCurrentStage();
+
+    void startSesh();
 }

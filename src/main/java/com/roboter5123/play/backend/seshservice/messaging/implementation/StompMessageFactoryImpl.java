@@ -1,11 +1,12 @@
 package com.roboter5123.play.backend.seshservice.messaging.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
-import com.roboter5123.play.backend.seshservice.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -23,6 +24,13 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
 
             message = getMessage(exception);
 
+        } else if (payload instanceof Map<?, ?> genericState) {
+
+            Map<String, Object> state = genericState.entrySet().stream()
+                    .filter(entry -> entry.getValue() != null)
+                    .filter(entry -> entry.getKey() instanceof String)
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), Map.Entry::getValue));
+            message = getMessage(state);
         } else {
 
             String errorMessage = "Could not create StompMessage. Unsupported payload type";

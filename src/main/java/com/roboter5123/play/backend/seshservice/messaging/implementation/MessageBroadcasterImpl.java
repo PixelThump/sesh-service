@@ -32,11 +32,10 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
     @Override
     public void broadcastSeshUpdate(final String seshcode, final Object payload) throws UnsupportedOperationException {
 
-
         try {
 
-            broadcastSeshUpdateToControllers(seshcode,payload);
-            broadcastSeshUpdateToHost(seshcode,payload);
+            broadcastSeshUpdateToControllers(seshcode, payload);
+            broadcastSeshUpdateToHost(seshcode, payload);
 
         } catch (UnsupportedOperationException e) {
 
