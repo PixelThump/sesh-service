@@ -75,7 +75,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
     }
 
-    public void startSesh(){
+    public void startSesh() {
 
         this.isStarted = true;
     }

@@ -7,7 +7,6 @@ public class QuizxelPlayer {
 
     private final String playerName;
     private Boolean vip;
-
     private PlayerId playerId;
 
     public QuizxelPlayer(String playerName) {
@@ -17,7 +16,7 @@ public class QuizxelPlayer {
         this.playerId = new PlayerId();
     }
 
-    public String getPlayerId(){
+    public String getPlayerId() {
 
         return this.playerId.getId();
     }

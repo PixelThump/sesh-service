@@ -9,6 +9,7 @@ public class PlayerId {
     String id;
 
     public PlayerId() {
+
         this.id = UUID.randomUUID().toString();
     }
 
