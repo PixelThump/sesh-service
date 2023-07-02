@@ -84,7 +84,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     @Override
     public void addCommand(Command command) throws PlayerNotInSeshException {
 
-        if (!this.playerManager.hasPlayerAlreadyJoined(command.getPlayer())) {
+        if (!this.playerManager.hasPlayerAlreadyJoinedByPlayerId(command.getPlayer())) {
 
             throw new PlayerNotInSeshException(command.getPlayer() + " hasn't joined the sesh.");
         }

@@ -20,10 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -75,9 +72,8 @@ class QuizxelSeshTest {
     @Test
     void joinSeshAsController_should_throw_player_already_joined_exception() {
 
-        this.sesh.joinSeshAsHost();
-        this.sesh.joinSeshAsController(this.playerName);
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(this.playerName));
+        setupPlayer();
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(playerName));
         String expectedMessage = "Player with name " + this.playerName + " has already joined the Sesh";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -132,10 +128,9 @@ class QuizxelSeshTest {
     @Test
     void addCommand_should_add_command_to_unproccesssedCommands() throws NoSuchFieldException, IllegalAccessException {
 
-        this.sesh.joinSeshAsHost();
-        this.sesh.joinSeshAsController(this.playerName);
+        String playerId = setupPlayer();
 
-        Command command = new Command(this.playerName, new QuizxelJoinAction(this.playerName));
+        Command command = new Command(playerId, new QuizxelJoinAction(playerId));
         this.sesh.addCommand(command);
 
         Field queueField = AbstractSeshBaseClass.class.getDeclaredField("unprocessedCommands");
@@ -145,12 +140,21 @@ class QuizxelSeshTest {
         assertTrue(queue.contains(command));
     }
 
+    private String setupPlayer() {
+
+        this.sesh.joinSeshAsHost();
+        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
+        String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
+        return playerId;
+    }
+
     @Test
     void processQueue_should_call_broadcastSeshUpdate() {
 
         this.sesh.joinSeshAsHost();
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
-        this.sesh.addCommand(new Command(this.playerName, new BasicAction()));
+        String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
+        this.sesh.addCommand(new Command(playerId, new BasicAction()));
         this.sesh.processQueue();
         verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);
     }
@@ -158,10 +162,9 @@ class QuizxelSeshTest {
     @Test
     void processQueue_should_advance_current_stage_to_main() {
 
-        this.sesh.joinSeshAsHost();
-        this.sesh.joinSeshAsController(this.playerName);
-        this.sesh.addCommand(new Command(this.playerName, new MakeVIPAction(this.playerName, true)));
-        this.sesh.addCommand(new Command(this.playerName, new StartSeshAction(true)));
+        String playerId = setupPlayer();
+        this.sesh.addCommand(new Command(playerId, new MakeVIPAction(playerId, true)));
+        this.sesh.addCommand(new Command(playerId, new StartSeshAction(true)));
         this.sesh.processQueue();
         assertEquals(SeshStage.MAIN, this.sesh.getCurrentStage());
     }
