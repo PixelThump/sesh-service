@@ -1,12 +1,12 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.seshservice.messaging.model.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.messaging.model.MakeVIPAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.StartSeshAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.MakeVIPAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.StartSeshAction;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.SeshStage;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.Getter;
 
