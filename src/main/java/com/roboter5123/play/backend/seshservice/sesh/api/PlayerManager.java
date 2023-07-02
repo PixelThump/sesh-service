@@ -9,9 +9,6 @@ public interface PlayerManager {
     boolean joinAsHost();
 
     boolean joinAsPlayer(String playerName);
-
-    boolean hasPlayerAlreadyJoinedByName(String playerName);
-
     boolean hasPlayerAlreadyJoinedByPlayerId(String playerId);
 
     boolean hasHostJoined() throws PlayerAlreadyJoinedException;

@@ -21,12 +21,6 @@ public interface Sesh {
     String getSeshCode();
     void setSeshCode(String seshCode);
 
-    void broadcastToAll(Object payload);
-
-    void broadcastToHost(Object payload);
-
-    void broadcastToControllers(Object payload);
-
     void addCommand(Command command) throws PlayerNotInSeshException;
 
     LocalDateTime getLastInteractionTime();

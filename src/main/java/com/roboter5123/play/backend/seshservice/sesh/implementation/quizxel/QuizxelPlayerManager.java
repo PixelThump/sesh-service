@@ -52,8 +52,7 @@ public class QuizxelPlayerManager implements PlayerManager {
         return true;
     }
 
-    @Override
-    public boolean hasPlayerAlreadyJoinedByName(String playerName) {
+    private boolean hasPlayerAlreadyJoinedByName(String playerName) {
 
         boolean playerHasJoinedAlready = this.players.values().stream().anyMatch(player -> player.getPlayerName().equals(playerName));
         return playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);

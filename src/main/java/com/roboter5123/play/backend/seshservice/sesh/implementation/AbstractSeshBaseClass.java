@@ -42,23 +42,21 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         isStarted = false;
     }
 
-    @Override
-    public void broadcastToHost(Object payload) {
+    protected void broadcastToHost(Object payload) {
 
         this.broadcaster.broadcastSeshUpdateToHost(this.seshCode, payload);
     }
 
-    @Override
-    public void broadcastToControllers(Object payload) {
+    protected void broadcastToControllers(Object payload) {
 
         this.broadcaster.broadcastSeshUpdateToControllers(this.seshCode, payload);
     }
 
-    @Override
-    public void broadcastToAll(Object payload) {
+    protected void broadcastToAll(Object payload) {
 
         this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
+
     protected void processLobbyCommand(Command command) {
 
         String playerId = command.getPlayerId();

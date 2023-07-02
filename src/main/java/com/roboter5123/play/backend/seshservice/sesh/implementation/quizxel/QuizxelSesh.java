@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -49,6 +50,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
             throw new PlayerAlreadyJoinedException("Host has already joined this sesh");
         }
+        this.lastInteractionTime = LocalDateTime.now();
         return this.getState();
     }
 
@@ -70,6 +72,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }
 
+        this.lastInteractionTime = LocalDateTime.now();
         return this.getState();
     }
 
@@ -81,6 +84,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             throw new PlayerNotInSeshException(command.getPlayerId() + " hasn't joined the sesh.");
         }
 
+        this.lastInteractionTime = LocalDateTime.now();
         this.unprocessedCommands.offer(command);
     }
 
@@ -117,6 +121,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void processQuizCommand(Command command) {
 
+        throw new UnsupportedOperationException(command.toString());
     }
 
 }

@@ -13,7 +13,6 @@ import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.Quiz
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchecked")
 class QuizxelSeshTest {
 
     private static final String SESHCODE = "ABCD";
@@ -39,11 +39,6 @@ class QuizxelSeshTest {
         sesh.setSeshCode(SESHCODE);
         sesh.startSesh();
         this.playerName = "roboter5123";
-    }
-
-    @AfterEach
-    void tearDown() {
-
     }
 
     @Test
@@ -118,6 +113,7 @@ class QuizxelSeshTest {
         Field queueField = AbstractSeshBaseClass.class.getDeclaredField("unprocessedCommands");
         queueField.setAccessible(true);
         Object queueObject = queueField.get(this.sesh);
+        //noinspection unchecked
         Deque<Command> queue = (Deque<Command>) queueObject;
         assertTrue(queue.contains(command));
     }
@@ -126,8 +122,7 @@ class QuizxelSeshTest {
 
         this.sesh.joinSeshAsHost();
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
-        String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
-        return playerId;
+        return ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
     }
 
     @Test
@@ -135,6 +130,7 @@ class QuizxelSeshTest {
 
         this.sesh.joinSeshAsHost();
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
+        //noinspection unchecked
         String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
         this.sesh.addCommand(new Command(playerId, new BasicAction()));
         this.sesh.processQueue();
