@@ -46,7 +46,7 @@ class StompMessageFactoryImplTest {
 
         Command command = new Command();
         command.setAction(new BasicAction());
-        command.setPlayer(playerName);
+        command.setPlayerId(playerName);
 
         CommandStompMessage expected = new CommandStompMessage();
         expected.setCommand(serviceCommand);

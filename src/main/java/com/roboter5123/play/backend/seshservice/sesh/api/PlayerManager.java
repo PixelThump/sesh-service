@@ -23,4 +23,6 @@ public interface PlayerManager {
     boolean isVIP(String playerName);
 
     boolean setVIP(String playerName);
+
+    boolean hasVIP();
 }

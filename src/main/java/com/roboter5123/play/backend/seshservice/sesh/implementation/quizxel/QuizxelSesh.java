@@ -6,7 +6,6 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshEx
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.ToString;
@@ -71,22 +70,15 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }
 
-        broadcastJoinCommand(new QuizxelJoinAction(playerName));
         return this.getState();
-    }
-
-    private void broadcastJoinCommand(QuizxelJoinAction action) {
-
-        Command command = new Command("Server", action);
-        this.broadcastToAll(command);
     }
 
     @Override
     public void addCommand(Command command) throws PlayerNotInSeshException {
 
-        if (!this.playerManager.hasPlayerAlreadyJoinedByPlayerId(command.getPlayer())) {
+        if (!this.playerManager.hasPlayerAlreadyJoinedByPlayerId(command.getPlayerId())) {
 
-            throw new PlayerNotInSeshException(command.getPlayer() + " hasn't joined the sesh.");
+            throw new PlayerNotInSeshException(command.getPlayerId() + " hasn't joined the sesh.");
         }
 
         this.unprocessedCommands.offer(command);

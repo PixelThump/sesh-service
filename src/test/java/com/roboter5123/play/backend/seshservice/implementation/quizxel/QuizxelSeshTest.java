@@ -1,7 +1,6 @@
 package com.roboter5123.play.backend.seshservice.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.seshservice.messaging.model.*;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.MakeVIPAction;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.StartSeshAction;
@@ -17,13 +16,11 @@ import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -91,21 +88,6 @@ class QuizxelSeshTest {
         SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSeshAsController(this.playerName));
         assertTrue(exception.getMessage().contains("A maximum of "));
         assertTrue(exception.getMessage().contains(" is allowed to join this Sesh."));
-    }
-
-    @Test
-    void joinSeshAsController_should_broadcast_join_message_on_successful_join() {
-
-        this.sesh.joinSeshAsHost();
-        this.sesh.joinSeshAsController(this.playerName);
-        ArgumentCaptor<Command> argumentCaptor = ArgumentCaptor.forClass(Command.class);
-        verify(this.broadcaster).broadcastSeshUpdate(eq(SESHCODE), argumentCaptor.capture());
-
-        Action sentAction = argumentCaptor.getValue().getAction();
-        assertInstanceOf(QuizxelJoinAction.class, sentAction);
-
-        QuizxelJoinAction quizxelJoinAction = (QuizxelJoinAction) sentAction;
-        assertEquals(this.playerName, quizxelJoinAction.getJoiningPlayer());
     }
 
     @Test

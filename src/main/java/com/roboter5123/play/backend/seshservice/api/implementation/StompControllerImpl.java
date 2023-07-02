@@ -6,6 +6,7 @@ import com.roboter5123.play.backend.seshservice.messaging.model.message.StompMes
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -88,7 +89,7 @@ public class StompControllerImpl implements StompController {
             log.info("StompControllerImpl: Exiting sendCommandToSesh(reply={})", reply);
             return reply;
 
-        } catch (NoSuchSeshException | UnsupportedOperationException e) {
+        } catch (NoSuchSeshException | UnsupportedOperationException | PlayerNotInSeshException e) {
 
             StompMessage reply = messageFactory.getMessage(e);
 

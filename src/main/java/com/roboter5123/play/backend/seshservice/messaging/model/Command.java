@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Command {
 
-    private String player;
+    private String playerId;
     private Action action;
 }

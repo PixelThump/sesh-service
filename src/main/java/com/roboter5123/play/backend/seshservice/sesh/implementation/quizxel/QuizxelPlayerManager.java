@@ -98,4 +98,10 @@ public class QuizxelPlayerManager implements PlayerManager {
         return true;
     }
 
+    @Override
+    public boolean hasVIP() {
+
+        return this.players.values().stream().anyMatch(QuizxelPlayer::getVip);
+    }
+
 }

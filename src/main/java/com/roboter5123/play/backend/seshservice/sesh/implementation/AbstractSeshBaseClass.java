@@ -59,19 +59,18 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
-
     protected void processLobbyCommand(Command command) {
 
-        String playerName = command.getPlayer();
+        String playerId = command.getPlayerId();
         Action action = command.getAction();
 
-        if (this.playerManager.isVIP(playerName) && action instanceof StartSeshAction) {
+        if (this.playerManager.isVIP(playerId) && action instanceof StartSeshAction) {
 
             this.currentStage = SeshStage.MAIN;
 
-        } else if (action instanceof MakeVIPAction makeVIPAction) {
+        } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action instanceof MakeVIPAction makeVIPAction) {
 
-            this.playerManager.setVIP(makeVIPAction.getPlayerName());
+            this.playerManager.setVIP(makeVIPAction.getPlayerId());
         }
     }
 
