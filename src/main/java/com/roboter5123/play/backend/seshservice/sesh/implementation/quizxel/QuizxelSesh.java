@@ -88,7 +88,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         this.unprocessedCommands.offer(command);
     }
 
-    @Scheduled(fixedDelay = 100)
+    @Scheduled(fixedDelay = 30000)
     public void processQueue() {
 
         if (!isStarted && !playerManager.hasHostJoined() && playerManager.getPlayers().isEmpty()) {

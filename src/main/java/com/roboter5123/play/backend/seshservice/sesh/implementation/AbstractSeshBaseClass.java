@@ -1,11 +1,9 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.MakeVIPAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.StartSeshAction;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.api.SeshLobby;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.Getter;
@@ -29,6 +27,8 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected final PlayerManager playerManager;
     @Getter
     protected SeshStage currentStage;
+
+    protected SeshLobby lobby;
     protected boolean isStarted;
 
     protected AbstractSeshBaseClass(MessageBroadcaster broadcaster, SeshType seshType, PlayerManager playerManager) {
@@ -40,16 +40,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.playerManager = playerManager;
         this.currentStage = SeshStage.LOBBY;
         isStarted = false;
-    }
-
-    protected void broadcastToHost(Object payload) {
-
-        this.broadcaster.broadcastSeshUpdateToHost(this.seshCode, payload);
-    }
-
-    protected void broadcastToControllers(Object payload) {
-
-        this.broadcaster.broadcastSeshUpdateToControllers(this.seshCode, payload);
+        lobby = new SeshLobbyImplementation(playerManager);
     }
 
     protected void broadcastToAll(Object payload) {
@@ -59,16 +50,9 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     protected void processLobbyCommand(Command command) {
 
-        String playerId = command.getPlayerId();
-        Action action = command.getAction();
-
-        if (this.playerManager.isVIP(playerId) && action instanceof StartSeshAction) {
+        if (lobby.processLobbyCommand(command)){
 
             this.currentStage = SeshStage.MAIN;
-
-        } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action instanceof MakeVIPAction makeVIPAction) {
-
-            this.playerManager.setVIP(makeVIPAction.getPlayerId());
         }
     }
 

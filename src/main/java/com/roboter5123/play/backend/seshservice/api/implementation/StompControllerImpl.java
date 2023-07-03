@@ -7,6 +7,7 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
+import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -42,13 +43,13 @@ public class StompControllerImpl implements StompController {
             Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName);
             StompMessage reply = messageFactory.getMessage(state);
 
-            log.info("StompControllerImpl: Exiting joinSeshAsController(error={})", reply);
+            log.info("StompControllerImpl: Exiting joinSeshAsController(reply={})", reply);
             return reply;
 
-        } catch (NoSuchSeshException | PlayerAlreadyJoinedException e) {
+        } catch (NoSuchSeshException | PlayerAlreadyJoinedException | SeshIsFullException e) {
 
             StompMessage reply = messageFactory.getMessage(e);
-            log.error("StompControllerImpl: Exiting joinSeshAsController(reply={})", reply);
+            log.error("StompControllerImpl: Exiting joinSeshAsController(error={})", reply);
             return reply;
         }
     }
