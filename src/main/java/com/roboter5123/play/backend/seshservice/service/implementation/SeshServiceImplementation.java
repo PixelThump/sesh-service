@@ -42,6 +42,7 @@ public class SeshServiceImplementation implements SeshService {
 
     @Override
     public Map<String, Object> joinSeshAsHost(String seshCode) {
+
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSeshAsHost();
     }

@@ -1,9 +1,9 @@
 package com.roboter5123.play.backend.seshservice.api.api;
-import com.roboter5123.play.backend.seshservice.api.model.exception.BadRequestException;
-import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import com.roboter5123.play.backend.seshservice.api.model.HttpSeshDTO;
+import com.roboter5123.play.backend.seshservice.api.model.exception.BadRequestException;
 import com.roboter5123.play.backend.seshservice.api.model.exception.NoSuchSeshHttpException;
 import com.roboter5123.play.backend.seshservice.api.model.exception.TooManySeshsHttpException;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 
 import java.util.List;
 

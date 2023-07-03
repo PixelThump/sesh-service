@@ -19,6 +19,7 @@ public interface Sesh {
     SeshType getSeshType();
 
     String getSeshCode();
+
     void setSeshCode(String seshCode);
 
     void addCommand(Command command) throws PlayerNotInSeshException;

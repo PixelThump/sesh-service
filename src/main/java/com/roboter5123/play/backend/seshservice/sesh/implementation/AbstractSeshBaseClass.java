@@ -27,7 +27,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected final PlayerManager playerManager;
     @Getter
     protected SeshStage currentStage;
-
     protected SeshLobby lobby;
     protected boolean isStarted;
 
@@ -50,7 +49,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     protected void processLobbyCommand(Command command) {
 
-        if (lobby.processLobbyCommand(command)){
+        if (lobby.processLobbyCommand(command)) {
 
             this.currentStage = SeshStage.MAIN;
         }

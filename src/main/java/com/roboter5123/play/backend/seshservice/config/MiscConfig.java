@@ -8,7 +8,7 @@ import java.util.Random;
 public class MiscConfig {
 
     @Bean
-    Random getSystemWideRandom(){
+    Random getSystemWideRandom() {
 
         return new Random();
     }

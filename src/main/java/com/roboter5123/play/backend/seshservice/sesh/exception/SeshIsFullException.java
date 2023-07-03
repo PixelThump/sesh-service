@@ -1,5 +1,5 @@
 package com.roboter5123.play.backend.seshservice.sesh.exception;
-public class SeshIsFullException extends RuntimeException{
+public class SeshIsFullException extends RuntimeException {
 
     /**
      * Constructs a new runtime exception with the specified detail message.
