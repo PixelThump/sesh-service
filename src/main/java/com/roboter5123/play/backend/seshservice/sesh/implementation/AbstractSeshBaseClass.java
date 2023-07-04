@@ -135,7 +135,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
     }
 
-    protected void processLobbyCommand(Command command) {
+    private void processLobbyCommand(Command command) {
 
         if (lobby.processLobbyCommand(command)) {
 
