@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class QuizxelJoinAction implements Action {
 
-    private final String joiningPlayer;
+    private final String targetId;
 
     public QuizxelJoinAction(String playerName) {
 
-        this.joiningPlayer = playerName;
+        this.targetId = playerName;
     }
 }

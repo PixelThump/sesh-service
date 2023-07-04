@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class MakeVIPAction implements Action {
 
-    private String playerId;
+    private String targetId;
     private boolean makeVip;
 }

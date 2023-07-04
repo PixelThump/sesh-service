@@ -144,7 +144,7 @@ class QuizxelSeshTest {
 
         String playerId = setupPlayer();
         this.sesh.addCommand(new Command(playerId, new MakeVIPAction(playerId, true)));
-        this.sesh.addCommand(new Command(playerId, new StartSeshAction(true)));
+        this.sesh.addCommand(new Command(playerId, new StartSeshAction(playerId,true)));
         this.sesh.processQueue();
         assertEquals(SeshStage.MAIN, this.sesh.getCurrentStage());
     }

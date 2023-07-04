@@ -6,5 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class StartSeshAction implements Action {
 
+    String targetId;
     boolean startSesh;
 }

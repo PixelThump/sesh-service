@@ -27,7 +27,7 @@ public class SeshLobbyImplementation implements SeshLobby {
 
         } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action instanceof MakeVIPAction makeVIPAction) {
 
-            this.playerManager.setVIP(makeVIPAction.getPlayerId());
+            this.playerManager.setVIP(makeVIPAction.getTargetId());
         }
 
         return false;
