@@ -54,11 +54,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.maxPlayers = maxplayers;
     }
 
-    protected void broadcastToAll(Object payload) {
-
-        this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
-    }
-
     @Override
     public Map<String, Object> joinSeshAsHost() throws PlayerAlreadyJoinedException {
 
@@ -104,6 +99,11 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.unprocessedCommands.offer(command);
     }
 
+    public void startSesh() {
+
+        this.isStarted = true;
+    }
+
     @Scheduled(fixedDelay = 30000)
     public void processQueue() {
 
@@ -122,6 +122,13 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         this.broadcastToAll(getState());
     }
+
+    protected void broadcastToAll(Object payload) {
+
+        this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
+    }
+
+    protected abstract Map<String, Object> getState();
 
     private void processCommand(Command command) {
 
@@ -145,10 +152,4 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     protected abstract void processMainCommand(Command command);
 
-    public void startSesh() {
-
-        this.isStarted = true;
-    }
-
-    protected abstract Map<String, Object> getState();
 }
