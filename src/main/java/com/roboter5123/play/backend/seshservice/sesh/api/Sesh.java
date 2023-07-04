@@ -12,9 +12,9 @@ import java.util.Map;
 
 public interface Sesh {
 
-    Map<String, Object> joinSeshAsHost() throws PlayerAlreadyJoinedException;
+    Map<String, Object> joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException;
 
-    Map<String, Object> joinSeshAsController(String playerName) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
+    Map<String, Object> joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
 
     SeshType getSeshType();
 

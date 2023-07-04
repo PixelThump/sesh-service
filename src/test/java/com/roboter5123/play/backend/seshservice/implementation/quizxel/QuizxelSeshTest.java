@@ -30,6 +30,7 @@ class QuizxelSeshTest {
     QuizxelSesh sesh;
     MessageBroadcaster broadcaster;
     private String playerName;
+    private String socketId;
 
     @BeforeEach
     void setUp() {
@@ -39,13 +40,14 @@ class QuizxelSeshTest {
         sesh.setSeshCode(SESHCODE);
         sesh.startSesh();
         this.playerName = "roboter5123";
+        socketId = "asda63a+d";
     }
 
     @Test
     void joinSeshAsHost_should_throw_player_already_joined_exception() {
 
-        this.sesh.joinSeshAsHost();
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsHost());
+        this.sesh.joinSeshAsHost(this.socketId);
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsHost(socketId));
         String expectedMessage = "Host has already joined this sesh";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -57,7 +59,7 @@ class QuizxelSeshTest {
         expected.put("players", new ArrayList<QuizxelPlayer>());
         expected.put("maxPlayers", 5);
         expected.put("currentStage", SeshStage.LOBBY);
-        Map<String, Object> result = this.sesh.joinSeshAsHost();
+        Map<String, Object> result = this.sesh.joinSeshAsHost(socketId);
         assertEquals(expected, result);
     }
 
@@ -65,7 +67,7 @@ class QuizxelSeshTest {
     void joinSeshAsController_should_throw_player_already_joined_exception() {
 
         setupPlayer();
-        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(playerName));
+        PlayerAlreadyJoinedException exception = assertThrows(PlayerAlreadyJoinedException.class, () -> this.sesh.joinSeshAsController(playerName, socketId + 1));
         String expectedMessage = "Player with name " + this.playerName + " has already joined the Sesh";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -73,14 +75,14 @@ class QuizxelSeshTest {
     @Test
     void joinSeshAsController_should_throw_sesh_is_full_exception() {
 
-        this.sesh.joinSeshAsHost();
+        this.sesh.joinSeshAsHost(socketId);
 
         for (int i = 0; i < 5; i++) {
 
-            this.sesh.joinSeshAsController(this.playerName + i);
+            this.sesh.joinSeshAsController(this.playerName + i, socketId + i);
         }
 
-        SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSeshAsController(this.playerName));
+        SeshIsFullException exception = assertThrows(SeshIsFullException.class, () -> this.sesh.joinSeshAsController(this.playerName, socketId + -1));
         assertTrue(exception.getMessage().contains("A maximum of "));
         assertTrue(exception.getMessage().contains(" is allowed to join this Sesh."));
     }
@@ -88,7 +90,7 @@ class QuizxelSeshTest {
     @Test
     void joinSeshAsController_should_throw_Sesh_currently_not_joinable_exception() {
 
-        SeshCurrentlyNotJoinableException exception = assertThrows(SeshCurrentlyNotJoinableException.class, () -> this.sesh.joinSeshAsController(this.playerName));
+        SeshCurrentlyNotJoinableException exception = assertThrows(SeshCurrentlyNotJoinableException.class, () -> this.sesh.joinSeshAsController(this.playerName, this.socketId));
         String expectedErrorMessage = "Host hasn't connected yet. Try again later.";
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
@@ -120,16 +122,16 @@ class QuizxelSeshTest {
 
     private String setupPlayer() {
 
-        this.sesh.joinSeshAsHost();
-        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
+        this.sesh.joinSeshAsHost(socketId);
+        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
         return ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
     }
 
     @Test
     void processQueue_should_call_broadcastSeshUpdate() {
 
-        this.sesh.joinSeshAsHost();
-        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName);
+        this.sesh.joinSeshAsHost(socketId);
+        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
         //noinspection unchecked
         String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
         this.sesh.addCommand(new Command(playerId, new BasicAction()));

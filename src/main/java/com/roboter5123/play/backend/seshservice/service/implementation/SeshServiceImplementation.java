@@ -44,13 +44,13 @@ public class SeshServiceImplementation implements SeshService {
     public Map<String, Object> joinSeshAsHost(String seshCode, String socketId) {
 
         final Sesh sesh = this.getSesh(seshCode);
-        return sesh.joinSeshAsHost();
+        return sesh.joinSeshAsHost(socketId);
     }
 
     @Override
     public Map<String, Object> joinSeshAsController(String seshCode, String playerName, String socketId) {
 
         final Sesh sesh = this.getSesh(seshCode);
-        return sesh.joinSeshAsController(playerName);
+        return sesh.joinSeshAsController(playerName, socketId);
     }
 }

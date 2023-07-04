@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface PlayerManager {
 
-    boolean joinAsHost();
+    boolean joinAsHost(String socketId);
 
-    boolean joinAsPlayer(String playerName);
+    boolean joinAsPlayer(String playerName, String socketId);
 
     boolean hasPlayerAlreadyJoinedByPlayerId(String playerId);
 

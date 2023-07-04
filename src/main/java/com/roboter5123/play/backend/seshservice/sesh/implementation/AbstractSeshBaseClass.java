@@ -55,9 +55,9 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     }
 
     @Override
-    public Map<String, Object> joinSeshAsHost() throws PlayerAlreadyJoinedException {
+    public Map<String, Object> joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException {
 
-        if (!playerManager.joinAsHost()) {
+        if (!playerManager.joinAsHost(socketId)) {
 
             throw new PlayerAlreadyJoinedException("Host has already joined this sesh");
         }
@@ -66,7 +66,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     }
 
     @Override
-    public Map<String, Object> joinSeshAsController(String playerName) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException {
+    public Map<String, Object> joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException {
 
         if (this.playerManager.isSeshFull()) {
 
@@ -78,7 +78,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
             throw new SeshCurrentlyNotJoinableException("Host hasn't connected yet. Try again later.");
         }
 
-        if (!this.playerManager.joinAsPlayer(playerName)) {
+        if (!this.playerManager.joinAsPlayer(playerName, socketId)) {
 
             throw new PlayerAlreadyJoinedException("Player with name " + playerName + " has already joined the Sesh");
         }

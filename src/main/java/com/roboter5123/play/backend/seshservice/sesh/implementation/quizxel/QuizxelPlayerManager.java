@@ -17,35 +17,33 @@ public class QuizxelPlayerManager implements PlayerManager {
     @Setter
     private boolean isJoinable;
     private final Map<String, QuizxelPlayer> players;
-    private boolean hostJoined;
+    private String hostId;
 
     public QuizxelPlayerManager(final Integer maxPlayers) {
 
         this.maxPlayers = maxPlayers;
         this.isJoinable = false;
-        this.hostJoined = false;
         this.players = new HashMap<>();
     }
 
     @Override
-    public boolean joinAsHost() {
+    public boolean joinAsHost(String socketId) {
 
         if (hasHostJoined()) {
 
             return false;
         }
-
-        this.hostJoined = true;
+        this.hostId = socketId;
         this.isJoinable = true;
         return true;
     }
 
     @Override
-    public boolean joinAsPlayer(String playerName) {
+    public boolean joinAsPlayer(String playerName, String socketId) {
 
         if (hasPlayerAlreadyJoinedByName(playerName)) return false;
 
-        QuizxelPlayer player = new QuizxelPlayer(playerName);
+        QuizxelPlayer player = new QuizxelPlayer(playerName, socketId);
         this.players.put(player.getPlayerId(), player);
         this.isJoinable = !isSeshFull();
 
@@ -55,7 +53,7 @@ public class QuizxelPlayerManager implements PlayerManager {
     private boolean hasPlayerAlreadyJoinedByName(String playerName) {
 
         boolean playerHasJoinedAlready = this.players.values().stream().anyMatch(player -> player.getPlayerName().equals(playerName));
-        return playerHasJoinedAlready || (playerName.equals("Host") && this.hostJoined);
+        return playerHasJoinedAlready || (playerName.equals("Host") && (this.hostId != null));
     }
 
     @Override
@@ -67,7 +65,7 @@ public class QuizxelPlayerManager implements PlayerManager {
     @Override
     public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
 
-        return this.hostJoined;
+        return this.hostId != null;
     }
 
     @Override

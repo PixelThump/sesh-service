@@ -37,6 +37,7 @@ class SeshServiceImplementationTest {
 	String sessionCode;
 	Sesh sesh;
 	private String playerName;
+	private String socketId;
 
 	@BeforeEach
 	void setup() {
@@ -44,6 +45,7 @@ class SeshServiceImplementationTest {
         this.sessionCode = "abcd";
         this.playerName = "roboter5123";
         sesh = Mockito.mock(Sesh.class);
+		socketId = "asd62a6sd5";
     }
 
 	@Test
@@ -87,7 +89,7 @@ class SeshServiceImplementationTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSeshAsHost()).thenReturn(expected);
+		when(sesh.joinSeshAsHost(this.socketId)).thenReturn(expected);
 
 		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode, playerName);
 		assertEquals(expected, result);
@@ -108,7 +110,7 @@ class SeshServiceImplementationTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSeshAsController(playerName)).thenReturn(expected);
+		when(sesh.joinSeshAsController(playerName, socketId)).thenReturn(expected);
 
 		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName, playerName);
 		assertEquals(expected, result);
