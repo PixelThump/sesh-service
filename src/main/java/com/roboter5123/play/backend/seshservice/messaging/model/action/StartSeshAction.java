@@ -6,5 +6,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class StartSeshAction implements Action {
 
-    boolean startGame;
+    boolean startSesh;
 }
