@@ -92,7 +92,7 @@ class SeshServiceImplTest {
 
 		when(sesh.joinSeshAsHost()).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode);
+		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode, playerName);
 		assertEquals(expected, result);
 	}
 
@@ -101,7 +101,7 @@ class SeshServiceImplTest {
 
 		when(sessionManager.getSesh(any())).thenThrow(new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found."));
 
-		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsHost(sessionCode));
+		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsHost(sessionCode, playerName));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ class SeshServiceImplTest {
 
 		when(sesh.joinSeshAsController(playerName)).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName);
+		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName, playerName);
 		assertEquals(expected, result);
 	}
 
@@ -122,7 +122,7 @@ class SeshServiceImplTest {
 
 		when(sessionManager.getSesh(any())).thenThrow(new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found."));
 
-		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsController(sessionCode, playerName));
+		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsController(sessionCode, playerName, playerName));
 	}
 
 	@Test

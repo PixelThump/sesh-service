@@ -13,9 +13,9 @@ public interface SeshService {
 
     Sesh createSesh(SeshType seshType) throws TooManySeshsException;
 
-    Map<String, Object> joinSeshAsHost(String seshCode) throws NoSuchSeshException, PlayerAlreadyJoinedException;
+    Map<String, Object> joinSeshAsHost(String seshCode, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
-    Map<String, Object> joinSeshAsController(String seshCode, String playerName) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
+    Map<String, Object> joinSeshAsController(String seshCode, String playerName, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
 
     Sesh getSesh(String seshCode) throws NoSuchSeshException;
 

@@ -34,13 +34,13 @@ public class StompControllerImpl implements StompController {
 
     @Override
     @SubscribeMapping("/topic/sesh/{seshCode}/controller")
-    public StompMessage joinSeshAsController(@Header final String playerName, @DestinationVariable final String seshCode) {
+    public StompMessage joinSeshAsController(@Header final String playerName, @DestinationVariable final String seshCode, final @Header("simpSessionId") String socketId) {
 
-        log.info("StompControllerImpl: Entering joinSeshAsController(playerName={} seshCode={})", playerName, seshCode);
+        log.info("StompControllerImpl: Entering joinSeshAsController(playerName={} seshCode={}, socketId={})", playerName, seshCode, socketId);
 
         try {
 
-            Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName);
+            Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName, socketId);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSeshAsController(reply={})", reply);
@@ -56,13 +56,13 @@ public class StompControllerImpl implements StompController {
 
     @Override
     @SubscribeMapping("/topic/sesh/{seshCode}/host")
-    public StompMessage joinSeshAsHost(@DestinationVariable final String seshCode) {
+    public StompMessage joinSeshAsHost(@DestinationVariable final String seshCode, final @Header("simpSessionId") String socketId) {
 
-        log.info("StompControllerImpl: Entering joinSeshAsHost(seshCode={})", seshCode);
+        log.info("StompControllerImpl: Entering joinSeshAsHost(seshCode={}, socketId={})", seshCode, socketId);
 
         try {
 
-            Map<String, Object> state = seshService.joinSeshAsHost(seshCode);
+            Map<String, Object> state = seshService.joinSeshAsHost(seshCode, socketId);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSesh(reply={})", reply);

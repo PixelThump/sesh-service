@@ -38,23 +38,26 @@ class StompControllerImplTest {
 	String sessionCode;
 	String playerName;
 
+	String socketId;
+
 	@BeforeEach
 	void setUp() {
 
 		sessionCode = "abcd";
 		playerName = "roboter5123";
+		socketId = "asfd7465asd";
 	}
 
 	@Test
 	void joinSessionAsHost_should_return_error_message_when_called_with_non_existent_session() {
 
 		NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
-		when(seshServiceMock.joinSeshAsHost(any())).thenThrow(exception);
+		when(seshServiceMock.joinSeshAsHost(sessionCode, socketId)).thenThrow(exception);
 
 		ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
 		when(factoryMock.getMessage(exception)).thenReturn(expected);
 
-		StompMessage result = stompController.joinSeshAsHost(sessionCode);
+		StompMessage result = stompController.joinSeshAsHost(sessionCode, socketId);
 
 		assertEquals(expected, result);
 	}
@@ -65,12 +68,12 @@ class StompControllerImplTest {
 		Map<String, Object> state = new HashMap<>();
 		state.put("a", new ArrayList<>());
 		state.put("b", new ArrayList<>());
-		when(seshServiceMock.joinSeshAsHost(sessionCode)).thenReturn(state);
+		when(seshServiceMock.joinSeshAsHost(sessionCode, socketId)).thenReturn(state);
 
 		StompMessage expected = new StateStompMessage(state);
 		when(factoryMock.getMessage(any())).thenReturn(expected);
 
-		StompMessage result = stompController.joinSeshAsHost(sessionCode);
+		StompMessage result = stompController.joinSeshAsHost(sessionCode, socketId);
 
 		assertEquals(expected, result);
 	}
@@ -79,12 +82,12 @@ class StompControllerImplTest {
 	void joinSessionAsController_should_return_error_message_when_called_with_non_existent_session() {
 
 		NoSuchSeshException exception = new NoSuchSeshException("No session with code " + sessionCode + " exists");
-		when(seshServiceMock.joinSeshAsController(any(), any())).thenThrow(exception);
+		when(seshServiceMock.joinSeshAsController(sessionCode, playerName, socketId)).thenThrow(exception);
 
 		ErrorStompMessage expected = new ErrorStompMessage(exception.getMessage());
 		when(factoryMock.getMessage(exception)).thenReturn(expected);
 
-		StompMessage result = stompController.joinSeshAsController(playerName, sessionCode);
+		StompMessage result = stompController.joinSeshAsController(playerName, sessionCode, socketId);
 
 		assertEquals(expected, result);
 	}
@@ -95,12 +98,12 @@ class StompControllerImplTest {
 		Map<String, Object> state = new HashMap<>();
 		state.put("a", new ArrayList<>());
 		state.put("b", new ArrayList<>());
-		when(seshServiceMock.joinSeshAsController(sessionCode, playerName)).thenReturn(state);
+		when(seshServiceMock.joinSeshAsController(sessionCode, playerName, socketId)).thenReturn(state);
 
 		StompMessage expected = new StateStompMessage(state);
 		when(factoryMock.getMessage(any())).thenReturn(expected);
 
-		StompMessage result = stompController.joinSeshAsController(playerName, sessionCode);
+		StompMessage result = stompController.joinSeshAsController(playerName, sessionCode, socketId);
 
 		assertEquals(expected, result);
 	}
@@ -112,7 +115,7 @@ class StompControllerImplTest {
 
 		when(factoryMock.getAckMessage()).thenReturn(expected);
 
-		Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(socketId, new BasicAction(playerName, "Chat message"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 		StompMessage result = stompController.sendCommandToSesh(incomingMessage, sessionCode);
 		assertEquals(expected, result);
