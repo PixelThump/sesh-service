@@ -42,9 +42,10 @@ public class QuizxelPlayerManager implements PlayerManager {
     public boolean joinAsPlayer(String playerName, String socketId) {
 
         if (hasPlayerAlreadyJoinedByName(playerName)) return false;
+        if (hasPlayerAlreadyJoinedByPlayerId(socketId)) return false;
 
         QuizxelPlayer player = new QuizxelPlayer(playerName, socketId);
-        this.players.put(player.getPlayerId(), player);
+        this.players.put(socketId, player);
         this.isJoinable = !isSeshFull();
 
         return true;
@@ -87,11 +88,12 @@ public class QuizxelPlayerManager implements PlayerManager {
     }
 
     @Override
-    public boolean setVIP(String playerName) {
+    public boolean setVIP(String playerId) {
 
         if (this.players.values().stream().anyMatch(QuizxelPlayer::getVip)) return false;
+        if (!this.players.containsKey(playerId)) return false;
 
-        this.players.get(playerName).setVip(true);
+        this.players.get(playerId).setVip(true);
         return true;
     }
 
@@ -100,5 +102,4 @@ public class QuizxelPlayerManager implements PlayerManager {
 
         return this.players.values().stream().anyMatch(QuizxelPlayer::getVip);
     }
-
 }

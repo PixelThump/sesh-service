@@ -78,12 +78,13 @@ public class StompControllerImpl implements StompController {
 
     @Override
     @MessageMapping("/topic/sesh/{seshCode}")
-    public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode) {
+    public StompMessage sendCommandToSesh(final CommandStompMessage message, @DestinationVariable final String seshCode, final @Header("simpSessionId") String socketId) {
 
-        log.info("StompControllerImpl: Entering sendCommandToSesh(message={} seshCode={})", message, seshCode);
+        log.info("StompControllerImpl: Entering sendCommandToSesh(message={} seshCode={}, socketId={})", message, seshCode, socketId);
 
         try {
 
+            message.getCommand().setPlayerId(socketId);
             this.seshService.sendCommandToSesh(message, seshCode);
             StompMessage reply = messageFactory.getAckMessage();
 
