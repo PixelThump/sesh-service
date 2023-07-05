@@ -150,6 +150,10 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
     }
 
+    /**
+     * The main game logic resides in this method.
+     * @param command The command that should be processed.
+     */
     protected abstract void processMainCommand(Command command);
 
 }

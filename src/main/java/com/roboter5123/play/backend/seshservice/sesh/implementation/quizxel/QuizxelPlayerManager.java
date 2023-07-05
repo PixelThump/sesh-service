@@ -1,6 +1,5 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
-import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,25 +26,25 @@ public class QuizxelPlayerManager implements PlayerManager {
     }
 
     @Override
-    public boolean joinAsHost(String socketId) {
+    public boolean joinAsHost(String playerId) {
 
         if (hasHostJoined()) {
 
             return false;
         }
-        this.hostId = socketId;
+        this.hostId = playerId;
         this.isJoinable = true;
         return true;
     }
 
     @Override
-    public boolean joinAsPlayer(String playerName, String socketId) {
+    public boolean joinAsPlayer(String playerName, String playerId) {
 
         if (hasPlayerAlreadyJoinedByName(playerName)) return false;
-        if (hasPlayerAlreadyJoinedByPlayerId(socketId)) return false;
+        if (hasPlayerAlreadyJoinedByPlayerId(playerId)) return false;
 
-        QuizxelPlayer player = new QuizxelPlayer(playerName, socketId);
-        this.players.put(socketId, player);
+        QuizxelPlayer player = new QuizxelPlayer(playerName, playerId);
+        this.players.put(playerId, player);
         this.isJoinable = !isSeshFull();
 
         return true;
@@ -64,7 +63,7 @@ public class QuizxelPlayerManager implements PlayerManager {
     }
 
     @Override
-    public boolean hasHostJoined() throws PlayerAlreadyJoinedException {
+    public boolean hasHostJoined() {
 
         return this.hostId != null;
     }
@@ -82,9 +81,9 @@ public class QuizxelPlayerManager implements PlayerManager {
     }
 
     @Override
-    public boolean isVIP(String playerName) {
+    public boolean isVIP(String playerId) {
 
-        return this.players.get(playerName).getVip();
+        return this.players.get(playerId).getVip();
     }
 
     @Override
