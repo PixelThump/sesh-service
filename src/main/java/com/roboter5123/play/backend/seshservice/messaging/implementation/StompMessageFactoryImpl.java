@@ -26,10 +26,7 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
 
         } else if (payload instanceof Map<?, ?> genericState) {
 
-            Map<String, Object> state = genericState.entrySet().stream()
-                    .filter(entry -> entry.getValue() != null)
-                    .filter(entry -> entry.getKey() instanceof String)
-                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), Map.Entry::getValue));
+            Map<String, Object> state = (Map<String, Object>) genericState;
             message = getMessage(state);
         } else {
 
@@ -48,7 +45,7 @@ public class StompMessageFactoryImpl implements StompMessageFactory {
         return message;
     }
 
-    public StateStompMessage getMessage(Map<String, Object> seshState) {
+    private StateStompMessage getMessage(Map<String, Object> seshState) {
 
         final StateStompMessage message = new StateStompMessage();
         message.setState(seshState);
