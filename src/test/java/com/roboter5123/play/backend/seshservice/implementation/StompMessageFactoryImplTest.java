@@ -30,7 +30,7 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_EXCEPTION_SHOULD_RETURN_ERROR_STOMP_MESSAGE_WITH_EXCEPTION_MESSAGE() {
+    void getMessage_WITH_EXCEPTION_SHOULD_RETURN_ERROR_STOMP_MESSAGE_WITH_EXCEPTION_MESSAGE() {
 
         Exception exception = new RuntimeException(errorMessage);
         ErrorStompMessage expected = new ErrorStompMessage();
@@ -40,7 +40,7 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
+    void getMessage_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
         Command serviceCommand= new Command(playerName, new BasicAction());
 
@@ -55,7 +55,7 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
+    void getMessage_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
 
         Map<String, Object> state = new HashMap<>();
         StateStompMessage expected = new StateStompMessage();
