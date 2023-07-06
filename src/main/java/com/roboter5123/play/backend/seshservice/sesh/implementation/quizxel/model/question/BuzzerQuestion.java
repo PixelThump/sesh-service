@@ -2,8 +2,14 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.mod
 import lombok.Data;
 
 @Data
-public class BuzzerQuestion {
+public class BuzzerQuestion implements QuizxelQuestion {
 
-    private String question;
-    private String answer;
+    private String questionText;
+    private String questionAnswer;
+
+    public BuzzerQuestion(String questionText, String questionAnswer) {
+
+        this.questionText = questionText;
+        this.questionAnswer = questionAnswer;
+    }
 }

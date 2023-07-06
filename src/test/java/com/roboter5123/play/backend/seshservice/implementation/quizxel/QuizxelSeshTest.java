@@ -10,7 +10,7 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJ
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelJoinAction;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.action.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,7 +133,7 @@ class QuizxelSeshTest {
         this.sesh.joinSeshAsHost(socketId);
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
         //noinspection unchecked
-        String playerId = ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
+        String playerId = ((List<QuizxelPlayer>)sesh.getState().get("players")).get(0).getPlayerId();
         this.sesh.addCommand(new Command(playerId, new BasicAction()));
         this.sesh.processQueue();
         verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);

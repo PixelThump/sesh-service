@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -63,6 +64,19 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
         this.lastInteractionTime = LocalDateTime.now();
         return this.getState();
+    }
+
+    public Map<String, Object> getState() {
+
+        if (this.currentStage == SeshStage.LOBBY) {
+
+            return getLobbyState();
+
+        } else if (this.currentStage == SeshStage.MAIN) {
+
+            return getMainStageState();
+        }
+        return new HashMap<>();
     }
 
     @Override
@@ -119,7 +133,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
             this.processCommand(command);
         }
-
         this.broadcastToAll(getState());
     }
 
@@ -128,7 +141,15 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
 
-    protected abstract Map<String, Object> getState();
+    protected Map<String, Object> getLobbyState() {
+
+        Map<String, Object> state = new HashMap<>();
+        state.put("players", this.playerManager.getPlayers());
+        state.put("maxPlayers", maxPlayers);
+        state.put("currentStage", this.currentStage);
+
+        return state;
+    }
 
     private void processCommand(Command command) {
 
@@ -146,14 +167,19 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         if (lobby.processLobbyCommand(command)) {
 
-            this.currentStage = SeshStage.MAIN;
+            this.startMainStage();
         }
     }
 
+    protected abstract void startMainStage();
+
     /**
      * The main game logic resides in this method.
+     *
      * @param command The command that should be processed.
      */
     protected abstract void processMainCommand(Command command);
+
+    protected abstract Map<String, Object> getMainStageState();
 
 }
