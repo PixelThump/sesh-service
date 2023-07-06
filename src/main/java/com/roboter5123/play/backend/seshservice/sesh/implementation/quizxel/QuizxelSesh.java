@@ -57,5 +57,4 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             this.currentQuestion = questionProvider.getNextQuestion();
         }
     }
-
 }
