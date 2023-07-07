@@ -1,16 +1,13 @@
 package com.roboter5123.play.backend.seshservice.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.MakeVIPAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.StartSeshAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.action.QuizxelJoinAction;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,7 +95,7 @@ class QuizxelSeshTest {
     @Test
     void addCommand_should_throw_Player_not_in_sesh_exception() {
 
-        Command command = new Command(this.playerName, new QuizxelJoinAction(this.playerName));
+        Command command = new Command(this.playerName, new Action<>("join", this.playerName));
         PlayerNotInSeshException exception = assertThrows(PlayerNotInSeshException.class, () -> this.sesh.addCommand(command));
         String expectedErrorMessage = this.playerName + " hasn't joined the sesh.";
         assertEquals(expectedErrorMessage, exception.getMessage());
@@ -109,7 +106,7 @@ class QuizxelSeshTest {
 
         String playerId = setupPlayer();
 
-        Command command = new Command(playerId, new QuizxelJoinAction(playerId));
+        Command command = new Command(playerId, new Action<>("join", this.playerName));
         this.sesh.addCommand(command);
 
         Field queueField = AbstractSeshBaseClass.class.getDeclaredField("unprocessedCommands");
@@ -134,7 +131,7 @@ class QuizxelSeshTest {
         Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
         //noinspection unchecked
         String playerId = ((List<QuizxelPlayer>)sesh.getState().get("players")).get(0).getPlayerId();
-        this.sesh.addCommand(new Command(playerId, new BasicAction()));
+        this.sesh.addCommand(new Command(playerId, new Action<>("command", "any")));
         this.sesh.processQueue();
         verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);
     }
@@ -143,8 +140,8 @@ class QuizxelSeshTest {
     void processQueue_should_advance_current_stage_to_main() {
 
         String playerId = setupPlayer();
-        this.sesh.addCommand(new Command(playerId, new MakeVIPAction(playerId, true)));
-        this.sesh.addCommand(new Command(playerId, new StartSeshAction(playerId,true)));
+        this.sesh.addCommand(new Command(playerId, new Action<>("makeVip", playerId)));
+        this.sesh.addCommand(new Command(playerId, new Action<>("startSesh","whatevs")));
         this.sesh.processQueue();
         assertEquals(SeshStage.MAIN, this.sesh.getCurrentStage());
     }

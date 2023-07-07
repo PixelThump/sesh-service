@@ -1,9 +1,9 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshLobby;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
@@ -39,7 +39,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected final PlayerManager playerManager;
     @Getter
     protected SeshStage currentStage;
-    protected SeshLobby lobby;
     protected boolean isStarted;
 
     protected AbstractSeshBaseClass(MessageBroadcaster broadcaster, SeshType seshType, PlayerManager playerManager, Integer maxplayers) {
@@ -51,7 +50,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.playerManager = playerManager;
         this.currentStage = SeshStage.LOBBY;
         isStarted = false;
-        lobby = new SeshLobbyImplementation(playerManager);
         this.maxPlayers = maxplayers;
     }
 
@@ -165,13 +163,19 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     private void processLobbyCommand(Command command) {
 
-        if (lobby.processLobbyCommand(command)) {
+        String playerId = command.getPlayerId();
+        Action<?> action = command.getAction();
+
+        if (this.playerManager.isVIP(playerId) && action.getType().equals("startSesh")) {
 
             this.startMainStage();
+
+        } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action.getType().equals("makeVip")) {
+
+
+            this.playerManager.setVIP(command.getPlayerId());
         }
     }
-
-    protected abstract void startMainStage();
 
     /**
      * The main game logic resides in this method.
@@ -179,6 +183,8 @@ public abstract class AbstractSeshBaseClass implements Sesh {
      * @param command The command that should be processed.
      */
     protected abstract void processMainCommand(Command command);
+
+    protected abstract void startMainStage();
 
     protected abstract Map<String, Object> getMainStageState();
 

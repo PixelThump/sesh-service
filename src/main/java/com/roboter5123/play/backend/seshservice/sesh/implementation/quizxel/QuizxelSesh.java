@@ -3,7 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.action.NextQuestionAction;
+
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.question.QuizxelQuestion;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
@@ -32,8 +32,10 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
         Map<String, Object> state = new HashMap<>();
         state.put("players", this.playerManager.getPlayers());
+        state.put("seshCode", this.getSeshCode());
         state.put("currentQuestion", this.currentQuestion);
         state.put("currentStage", this.currentStage);
+        state.put("maxPlayers", MAXPLAYERS);
 
         return state;
     }
@@ -43,15 +45,16 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
         this.currentStage = SeshStage.MAIN;
         this.currentQuestion = questionProvider.getNextQuestion();
+        this.broadcastToAll(getState());
     }
 
     @Override
     protected void processMainCommand(Command command) {
 
         String executerId = command.getPlayerId();
-        Action action = command.getAction();
+        Action<?> action = command.getAction();
 
-        if (action instanceof NextQuestionAction) {
+        if (action.getType().equals("nextQuestion")) {
 
             if (!this.playerManager.isVIP(executerId)) return;
             this.currentQuestion = questionProvider.getNextQuestion();

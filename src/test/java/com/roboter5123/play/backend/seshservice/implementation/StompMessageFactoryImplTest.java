@@ -2,7 +2,7 @@ package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.implementation.StompMessageFactoryImpl;
 import com.roboter5123.play.backend.seshservice.messaging.model.*;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,10 +42,10 @@ class StompMessageFactoryImplTest {
     @Test
     void getMessage_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
-        Command serviceCommand= new Command(playerName, new BasicAction());
+        Command serviceCommand= new Command(playerName, new Action<>("asd", "asd"));
 
         Command command = new Command();
-        command.setAction(new BasicAction());
+        command.setAction(new Action<>("asd", "asd"));
         command.setPlayerId(playerName);
 
         CommandStompMessage expected = new CommandStompMessage();

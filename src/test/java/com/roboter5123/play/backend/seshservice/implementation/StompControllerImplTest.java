@@ -3,7 +3,7 @@ import com.roboter5123.play.backend.seshservice.api.api.StompController;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
@@ -115,7 +115,7 @@ class StompControllerImplTest {
 
 		when(factoryMock.getAckMessage()).thenReturn(expected);
 
-		Command incomingCommand = new Command(socketId, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(socketId, new Action<>(playerName, "Chat message"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 		StompMessage result = stompController.sendCommandToSesh(incomingMessage, seshCode, this.socketId);
 		assertEquals(expected, result);
@@ -131,7 +131,7 @@ class StompControllerImplTest {
 
 		StompMessage expected = new ErrorStompMessage(exception.getMessage());
 
-		Command incomingCommand = new Command(socketId, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(socketId, new Action<>(playerName, "Chat message"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 		StompMessage result = stompController.sendCommandToSesh(incomingMessage, seshCode, this.socketId);
 		assertEquals(expected, result);

@@ -1,7 +1,7 @@
 package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.seshservice.messaging.model.action.BasicAction;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.CommandStompMessage;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
@@ -129,7 +129,7 @@ class SeshServiceImplementationTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(playerName, new Action<>("basic", "any"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 
 		seshService.sendCommandToSesh(incomingMessage, sessionCode);
@@ -143,7 +143,7 @@ class SeshServiceImplementationTest {
 		NoSuchSeshException exception = new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found.");
 		when(sessionManager.getSesh(any())).thenThrow(exception);
 
-		Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(playerName, new Action<>("basic", "any"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 		assertThrows(NoSuchSeshException.class, () -> seshService.sendCommandToSesh(incomingMessage, sessionCode));
 	}

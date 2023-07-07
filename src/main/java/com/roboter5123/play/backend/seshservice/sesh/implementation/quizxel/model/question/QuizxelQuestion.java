@@ -2,5 +2,8 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.mod
 public interface QuizxelQuestion {
 
     String getQuestionText();
+
     String getQuestionAnswer();
+
+    QuizxelQuestionType getType();
 }
