@@ -143,6 +143,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         Map<String, Object> state = new HashMap<>();
         state.put("players", this.playerManager.getPlayers());
+        state.put("seshCode", this.getSeshCode());
         state.put("maxPlayers", maxPlayers);
         state.put("currentStage", this.currentStage);
 
@@ -166,14 +167,14 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         String playerId = command.getPlayerId();
         Action<?> action = command.getAction();
 
-        if (this.playerManager.isVIP(playerId) && action.getType().equals("startSesh")) {
+        if (this.playerManager.isVIP(playerId) && action.getType().equals("startSesh") && action.getBody().equals(true)) {
 
             this.startMainStage();
 
         } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action.getType().equals("makeVip")) {
 
 
-            this.playerManager.setVIP(command.getPlayerId());
+            this.playerManager.setVIP((String) action.getBody());
         }
     }
 
