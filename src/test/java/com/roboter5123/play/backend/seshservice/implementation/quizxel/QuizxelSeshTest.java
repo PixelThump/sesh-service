@@ -56,6 +56,7 @@ class QuizxelSeshTest {
         expected.put("players", new ArrayList<QuizxelPlayer>());
         expected.put("maxPlayers", 5);
         expected.put("currentStage", SeshStage.LOBBY);
+        expected.put("seshCode", "ABCD");
         Map<String, Object> result = this.sesh.joinSeshAsHost(socketId);
         assertEquals(expected, result);
     }
