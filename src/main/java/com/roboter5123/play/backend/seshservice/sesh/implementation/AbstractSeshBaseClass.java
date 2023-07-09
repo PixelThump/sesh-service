@@ -167,7 +167,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         String playerId = command.getPlayerId();
         Action<?> action = command.getAction();
 
-        if (this.playerManager.isVIP(playerId) && action.getType().equals("startSesh") && action.getBody().equals(true)) {
+        if (this.playerManager.isVIP(playerId) && action.getType().equals("startSesh")) {
 
             this.startMainStage();
 
