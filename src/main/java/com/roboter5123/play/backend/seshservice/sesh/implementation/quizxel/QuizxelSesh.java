@@ -3,23 +3,26 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
-
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.question.QuizxelQuestion;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
 @Scope("prototype")
+@Log4j2
 public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private static final Integer MAXPLAYERS = 5;
     private final QuizxelQuestionProvider questionProvider;
     private QuizxelQuestion currentQuestion;
+    private boolean buzzered;
+    private String buzzedPlayerId;
+    private boolean showQuestion;
 
     public QuizxelSesh(MessageBroadcaster broadcaster) {
 
@@ -30,12 +33,10 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     @Override
     protected Map<String, Object> getMainStageState() {
 
-        Map<String, Object> state = new HashMap<>();
-        state.put("players", this.playerManager.getPlayers());
-        state.put("seshCode", this.getSeshCode());
+        Map<String, Object> state = getLobbyState();
         state.put("currentQuestion", this.currentQuestion);
-        state.put("currentStage", this.currentStage);
-        state.put("maxPlayers", MAXPLAYERS);
+        state.put("buzzedPlayerId", this.buzzedPlayerId);
+        state.put("showQuestion", this.showQuestion);
 
         return state;
     }
@@ -51,13 +52,49 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     @Override
     protected void processMainCommand(Command command) {
 
-        String executerId = command.getPlayerId();
         Action<?> action = command.getAction();
+        String actionType = action.getType();
 
-        if (action.getType().equals("nextQuestion")) {
-
-            if (!this.playerManager.isVIP(executerId)) return;
-            this.currentQuestion = questionProvider.getNextQuestion();
+        switch (actionType) {
+            case "nextQuestion" -> handleNextQuestionCommand(command);
+            case "showQuestion" -> handleShowQuestionCommand(command);
+            case "buzzer" -> handleBuzzerCommand(command);
+            default -> log.error("QuizxelSesh: Got a command without a valid Action type. Action={}", action);
         }
+    }
+
+    private void handleShowQuestionCommand(Command command) {
+
+        Action<Boolean> action = command.getAction();
+        String executerId = command.getPlayerId();
+
+        if (!this.playerManager.isVIP(executerId)) return;
+
+        this.showQuestion = action.getBody();
+    }
+
+    private void handleBuzzerCommand(Command command) {
+
+        Action<Boolean> action = command.getAction();
+        String executerId = command.getPlayerId();
+
+        if (this.buzzered && !this.playerManager.isVIP(executerId)) return;
+
+        if (this.playerManager.isVIP(executerId)) {
+
+            this.buzzered = action.getBody();
+
+        } else {
+
+            this.buzzered = true;
+            this.buzzedPlayerId = executerId;
+        }
+    }
+
+    private void handleNextQuestionCommand(Command command) {
+
+        if (!this.playerManager.isVIP(command.getPlayerId())) return;
+        this.currentQuestion = questionProvider.getNextQuestion();
+        this.showQuestion = false;
     }
 }
