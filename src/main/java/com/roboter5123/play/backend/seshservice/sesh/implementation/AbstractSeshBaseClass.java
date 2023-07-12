@@ -173,7 +173,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         } else if ((this.playerManager.isVIP(playerId) || !this.playerManager.hasVIP()) && action.getType().equals("makeVip")) {
 
-
             this.playerManager.setVIP((String) action.getBody());
         }
     }
@@ -188,5 +187,4 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected abstract void startMainStage();
 
     protected abstract Map<String, Object> getMainStageState();
-
 }
