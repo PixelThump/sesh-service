@@ -1,5 +1,6 @@
 package com.roboter5123.play.backend.seshservice.sesh.api;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
+import com.roboter5123.play.backend.seshservice.sesh.model.Player;
 
 import java.util.List;
 
@@ -54,4 +55,8 @@ public interface PlayerManager {
      * @return True if a vip exists. False if not.
      */
     boolean hasVIP();
+
+    Player getPlayer(String buzzedPlayerId);
+
+    Long getPlayerCount();
 }
