@@ -1,6 +1,7 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
+import com.roboter5123.play.backend.seshservice.sesh.model.Player;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -100,5 +101,17 @@ public class QuizxelPlayerManager implements PlayerManager {
     public boolean hasVIP() {
 
         return this.players.values().stream().anyMatch(QuizxelPlayer::getVip);
+    }
+
+    @Override
+    public Player getPlayer(String buzzedPlayerId) {
+
+        return this.players.get(buzzedPlayerId);
+    }
+
+    @Override
+    public Long getPlayerCount() {
+
+        return (long) this.players.size();
     }
 }
