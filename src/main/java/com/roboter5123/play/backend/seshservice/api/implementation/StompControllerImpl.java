@@ -8,6 +8,7 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -15,8 +16,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-
-import java.util.Map;
 
 @Controller
 @Log4j2
@@ -40,7 +39,7 @@ public class StompControllerImpl implements StompController {
 
         try {
 
-            Map<String, Object> state = seshService.joinSeshAsController(seshCode, playerName, socketId);
+            AbstractSeshState state = seshService.joinSeshAsController(seshCode, playerName, socketId);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSeshAsController(reply={})", reply);
@@ -62,7 +61,7 @@ public class StompControllerImpl implements StompController {
 
         try {
 
-            Map<String, Object> state = seshService.joinSeshAsHost(seshCode, socketId);
+            AbstractSeshState state = seshService.joinSeshAsHost(seshCode, socketId);
             StompMessage reply = messageFactory.getMessage(state);
 
             log.info("StompControllerImpl: Exiting joinSesh(reply={})", reply);

@@ -1,7 +1,4 @@
 package com.roboter5123.play.backend.seshservice.sesh.api;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
-import com.roboter5123.play.backend.seshservice.sesh.model.Player;
-
 import java.util.List;
 
 public interface PlayerManager {
@@ -37,7 +34,7 @@ public interface PlayerManager {
     /**
      * @return A list of players rthat have joined the sesh. Does not include host.
      */
-    List<QuizxelPlayer> getPlayers();
+    List<Player> getPlayers();
 
     /**
      * @param playerId The playerId that should be checked for vip status

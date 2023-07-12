@@ -4,11 +4,10 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class SeshServiceImplementation implements SeshService {
@@ -41,14 +40,14 @@ public class SeshServiceImplementation implements SeshService {
     }
 
     @Override
-    public Map<String, Object> joinSeshAsHost(String seshCode, String socketId) {
+    public AbstractSeshState joinSeshAsHost(String seshCode, String socketId) {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSeshAsHost(socketId);
     }
 
     @Override
-    public Map<String, Object> joinSeshAsController(String seshCode, String playerName, String socketId) {
+    public AbstractSeshState joinSeshAsController(String seshCode, String playerName, String socketId) {
 
         final Sesh sesh = this.getSesh(seshCode);
         return sesh.joinSeshAsController(playerName, socketId);

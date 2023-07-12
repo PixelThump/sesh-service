@@ -1,14 +1,12 @@
 package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.implementation.StompMessageFactoryImpl;
-import com.roboter5123.play.backend.seshservice.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -57,7 +55,7 @@ class StompMessageFactoryImplTest {
     @Test
     void getMessage_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
 
-        Map<String, Object> state = new HashMap<>();
+        AbstractSeshState state = new AbstractSeshState();
         StateStompMessage expected = new StateStompMessage();
         expected.setState(state);
         StompMessage result = messageFactory.getMessage(state);

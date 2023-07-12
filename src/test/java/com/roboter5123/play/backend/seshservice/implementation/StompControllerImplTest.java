@@ -8,15 +8,12 @@ import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -65,9 +62,7 @@ class StompControllerImplTest {
 	@Test
 	void joinSessionAsHost_should_return_state_message_when_called_with_existing_session() {
 
-		Map<String, Object> state = new HashMap<>();
-		state.put("a", new ArrayList<>());
-		state.put("b", new ArrayList<>());
+		AbstractSeshState state = new AbstractSeshState();
 		when(seshServiceMock.joinSeshAsHost(seshCode, socketId)).thenReturn(state);
 
 		StompMessage expected = new StateStompMessage(state);
@@ -95,9 +90,7 @@ class StompControllerImplTest {
 	@Test
 	void joinSessionAsController_should_return_state_message_when_called_with_existing_session() {
 
-		Map<String, Object> state = new HashMap<>();
-		state.put("a", new ArrayList<>());
-		state.put("b", new ArrayList<>());
+		AbstractSeshState state = new AbstractSeshState();
 		when(seshServiceMock.joinSeshAsController(seshCode, playerName, socketId)).thenReturn(state);
 
 		StompMessage expected = new StateStompMessage(state);

@@ -5,9 +5,8 @@ import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsEx
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
-
-import java.util.Map;
 
 public interface SeshService {
 
@@ -25,7 +24,7 @@ public interface SeshService {
      * @throws NoSuchSeshException Thrown if there is no sesh with the given seshcode.
      * @throws PlayerAlreadyJoinedException Thrown if the player has already joined this sesh.
      */
-    Map<String, Object> joinSeshAsHost(String seshCode, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException;
+    AbstractSeshState joinSeshAsHost(String seshCode, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException;
 
     /**
      * @param playerName The playerName the client wants to have.
@@ -36,7 +35,7 @@ public interface SeshService {
      * @throws PlayerAlreadyJoinedException Thrown if the player has already joined this sesh.
      * @throws SeshCurrentlyNotJoinableException Thrown if the sesh is currently not joinable.
      */
-    Map<String, Object> joinSeshAsController(String seshCode, String playerName, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
+    AbstractSeshState joinSeshAsController(String seshCode, String playerName, String socketId) throws NoSuchSeshException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
 
     /**
      * @param seshCode The seshcode of the sesh that should be gotten.

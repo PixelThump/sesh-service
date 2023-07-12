@@ -1,7 +1,7 @@
 package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
-import com.roboter5123.play.backend.seshservice.sesh.model.Player;
+import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -76,7 +76,7 @@ public class QuizxelPlayerManager implements PlayerManager {
     }
 
     @Override
-    public List<QuizxelPlayer> getPlayers() {
+    public List<Player> getPlayers() {
 
         return new ArrayList<>(this.players.values());
     }

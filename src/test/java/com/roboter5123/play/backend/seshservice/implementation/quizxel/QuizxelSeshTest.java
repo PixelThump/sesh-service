@@ -8,13 +8,15 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJ
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.LobbyState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -52,12 +54,12 @@ class QuizxelSeshTest {
     @Test
     void joinSeshAsHost_should_return_state() {
 
-        Map<String, Object> expected = new HashMap<>();
-        expected.put("players", new ArrayList<QuizxelPlayer>());
-        expected.put("maxPlayers", 5);
-        expected.put("currentStage", SeshStage.LOBBY);
-        expected.put("seshCode", "ABCD");
-        Map<String, Object> result = this.sesh.joinSeshAsHost(socketId);
+        LobbyState expected = new LobbyState();
+        expected.setPlayers(new ArrayList<>());
+        expected.setCurrentStage(SeshStage.LOBBY);
+        expected.setSeshCode("ABCD");
+        expected.setMaxPlayers(5);
+        AbstractSeshState result = this.sesh.joinSeshAsHost(socketId);
         assertEquals(expected, result);
     }
 
@@ -121,17 +123,16 @@ class QuizxelSeshTest {
     private String setupPlayer() {
 
         this.sesh.joinSeshAsHost(socketId);
-        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
-        return ((List<QuizxelPlayer>)state.get("players")).get(0).getPlayerId();
+        AbstractSeshState state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
+        return state.getPlayers().get(0).getPlayerId();
     }
 
     @Test
     void processQueue_should_call_broadcastSeshUpdate() {
 
         this.sesh.joinSeshAsHost(socketId);
-        Map<String, Object> state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
-        //noinspection unchecked
-        String playerId = ((List<QuizxelPlayer>)sesh.getState().get("players")).get(0).getPlayerId();
+        AbstractSeshState state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
+        String playerId = sesh.getState().getPlayers().get(0).getPlayerId();
         this.sesh.addCommand(new Command(playerId, new Action<>("command", "any")));
         this.sesh.processQueue();
         verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);

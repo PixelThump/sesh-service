@@ -2,16 +2,15 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelState;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.question.QuizxelQuestion;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Scope("prototype")
@@ -32,12 +31,15 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     }
 
     @Override
-    protected Map<String, Object> getMainStageState() {
+    protected QuizxelState getMainStageState() {
 
-        Map<String, Object> state = getLobbyState();
-        state.put("currentQuestion", this.currentQuestion);
-        state.put("buzzedPlayerId", this.buzzedPlayerId);
-        state.put("showQuestion", this.showQuestion);
+        QuizxelState state = new QuizxelState();
+        state.setPlayers(this.playerManager.getPlayers());
+        state.setSeshCode(this.getSeshCode());
+        state.setCurrentStage(this.currentStage);
+        state.setCurrentQuestion(this.currentQuestion);
+        state.setBuzzeredPlayerId(this.buzzedPlayerId);
+        state.setShowQuestion(this.showQuestion);
 
         return state;
     }
@@ -67,7 +69,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void handleShowQuestionCommand(Command command) {
 
-        Action<Boolean> action = command.getAction();
+        Action<Boolean> action = (Action<Boolean>) command.getAction();
         String executerId = command.getPlayerId();
 
         if (!this.playerManager.isVIP(executerId)) return;
@@ -93,7 +95,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void handleFreeBuzzerCommand(Command command) {
 
-        Action<Boolean> action = command.getAction();
+        Action<Boolean> action = (Action<Boolean>) command.getAction();
         String executerId = command.getPlayerId();
 
         if (!this.playerManager.isVIP(executerId)) return;
@@ -129,7 +131,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void awardPointsToAllOtherPlayers(String buzzedPlayerId) {
 
-        for (QuizxelPlayer player : this.playerManager.getPlayers()) {
+        for (Player player : this.playerManager.getPlayers()) {
 
             if (!player.getPlayerId().equals(buzzedPlayerId)) {
 

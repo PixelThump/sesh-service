@@ -8,6 +8,7 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +16,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,7 +35,6 @@ class SeshServiceImplTest {
 	String sessionCode;
 	Sesh sesh;
 	private String playerName;
-	private String socketId;
 
 	@BeforeEach
 	void setup() {
@@ -45,7 +42,6 @@ class SeshServiceImplTest {
 		this.sessionCode = "abcd";
 		this.playerName = "roboter5123";
 		sesh = Mockito.mock(Sesh.class);
-		socketId = "sad96+asd";
 	}
 
 	@Test
@@ -85,13 +81,13 @@ class SeshServiceImplTest {
 	@Test
 	void joinSeshAsHost_should_return_state() {
 
-		Map<String, Object> expected = new HashMap<>();
+		AbstractSeshState expected = new AbstractSeshState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSeshAsHost(this.socketId)).thenReturn(expected);
+		when(sesh.joinSeshAsHost(any())).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode, playerName);
+		AbstractSeshState result = seshService.joinSeshAsHost(sessionCode, playerName);
 		assertEquals(expected, result);
 	}
 
@@ -106,13 +102,13 @@ class SeshServiceImplTest {
 	@Test
 	void joinSeshAsController_should_return_state() {
 
-		Map<String, Object> expected = new HashMap<>();
+		AbstractSeshState expected = new AbstractSeshState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSeshAsController(playerName, this.socketId)).thenReturn(expected);
+		when(sesh.joinSeshAsController(any(), any())).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName, playerName);
+		AbstractSeshState result = seshService.joinSeshAsController(sessionCode, playerName, playerName);
 		assertEquals(expected, result);
 	}
 

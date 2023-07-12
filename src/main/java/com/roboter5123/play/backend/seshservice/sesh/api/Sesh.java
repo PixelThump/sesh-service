@@ -5,11 +5,11 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public interface Sesh {
 
@@ -18,7 +18,7 @@ public interface Sesh {
      * @return The state of the sesh
      * @throws PlayerAlreadyJoinedException Thrown if the player has already joined this sesh.
      */
-    Map<String, Object> joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException;
+    AbstractSeshState joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException;
 
     /**
      * @param playerName The playerName the client wants to have.
@@ -28,7 +28,7 @@ public interface Sesh {
      * @throws PlayerAlreadyJoinedException      Thrown if the player has already joined this sesh.
      * @throws SeshCurrentlyNotJoinableException Thrown if the sesh is currently not joinable.
      */
-    Map<String, Object> joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
+    AbstractSeshState joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException;
 
     /**
      * @param command The command the client wants the sesh to execute.

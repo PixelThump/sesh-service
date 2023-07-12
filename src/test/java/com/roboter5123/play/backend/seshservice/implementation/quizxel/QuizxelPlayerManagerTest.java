@@ -1,6 +1,6 @@
 package com.roboter5123.play.backend.seshservice.implementation.quizxel;
+import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelPlayerManager;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class QuizxelPlayerManagerTest {
         this.playerManager.joinAsPlayer(playerName, this.socketId);
 
 
-        List<QuizxelPlayer> playersList = this.playerManager.getPlayers();
+        List<Player> playersList = this.playerManager.getPlayers();
         assertEquals(playerName, playersList.get(0).getPlayerName());
         assertEquals(this.socketId, playersList.get(0).getPlayerId());
     }

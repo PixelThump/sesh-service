@@ -8,6 +8,8 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoin
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
+import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.LobbyState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.Getter;
@@ -18,9 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 @Log4j2
 @ToString
@@ -54,7 +54,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     }
 
     @Override
-    public Map<String, Object> joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException {
+    public AbstractSeshState joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException {
 
         if (!playerManager.joinAsHost(socketId)) {
 
@@ -64,7 +64,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         return this.getState();
     }
 
-    public Map<String, Object> getState() {
+    public AbstractSeshState getState() {
 
         if (this.currentStage == SeshStage.LOBBY) {
 
@@ -73,12 +73,15 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         } else if (this.currentStage == SeshStage.MAIN) {
 
             return getMainStageState();
+
+        } else {
+
+            throw new RuntimeException();
         }
-        return new HashMap<>();
     }
 
     @Override
-    public Map<String, Object> joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException {
+    public AbstractSeshState joinSeshAsController(String playerName, String socketId) throws SeshIsFullException, PlayerAlreadyJoinedException, SeshCurrentlyNotJoinableException {
 
         if (this.playerManager.isSeshFull()) {
 
@@ -139,13 +142,13 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
     }
 
-    protected Map<String, Object> getLobbyState() {
+    protected LobbyState getLobbyState() {
 
-        Map<String, Object> state = new HashMap<>();
-        state.put("players", this.playerManager.getPlayers());
-        state.put("seshCode", this.getSeshCode());
-        state.put("maxPlayers", maxPlayers);
-        state.put("currentStage", this.currentStage);
+        LobbyState state = new LobbyState();
+        state.setPlayers(this.playerManager.getPlayers());
+        state.setSeshCode(this.getSeshCode());
+        state.setMaxPlayers(maxPlayers);
+        state.setCurrentStage(this.currentStage);
 
         return state;
     }
@@ -186,5 +189,5 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     protected abstract void startMainStage();
 
-    protected abstract Map<String, Object> getMainStageState();
+    protected abstract AbstractSeshState getMainStageState();
 }
