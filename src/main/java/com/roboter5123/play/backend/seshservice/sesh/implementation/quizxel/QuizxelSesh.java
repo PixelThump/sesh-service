@@ -3,6 +3,7 @@ import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelPlayer;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.question.QuizxelQuestion;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
@@ -59,6 +60,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
             case "nextQuestion" -> handleNextQuestionCommand(command);
             case "showQuestion" -> handleShowQuestionCommand(command);
             case "buzzer" -> handleBuzzerCommand(command);
+            case "freeBuzzer" -> handleFreeBuzzerCommand(command);
             default -> log.error("QuizxelSesh: Got a command without a valid Action type. Action={}", action);
         }
     }
@@ -75,19 +77,41 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
 
     private void handleBuzzerCommand(Command command) {
 
-        Action<Boolean> action = command.getAction();
         String executerId = command.getPlayerId();
 
-        if (this.buzzered && !this.playerManager.isVIP(executerId)) return;
+        if (isBuzzed() && !this.playerManager.isVIP(executerId)) return;
 
         if (this.playerManager.isVIP(executerId)) {
 
-            this.buzzered = action.getBody();
+            unlockBuzzer();
 
         } else {
 
-            this.buzzered = true;
-            this.buzzedPlayerId = executerId;
+            buzzer(executerId);
+        }
+    }
+
+    private void handleFreeBuzzerCommand(Command command) {
+
+        Action<Boolean> action = command.getAction();
+        String executerId = command.getPlayerId();
+
+        if (!this.playerManager.isVIP(executerId)) return;
+        if (!isBuzzed()) return;
+
+        if (action.getBody() == null) {
+
+            unlockBuzzer();
+
+        } else if (Boolean.TRUE.equals(action.getBody())) {
+
+            awardPointsToPlayer(this.buzzedPlayerId);
+            unlockBuzzer();
+
+        } else if (Boolean.FALSE.equals(action.getBody())) {
+
+            awardPointsToAllOtherPlayers(this.buzzedPlayerId);
+            unlockBuzzer();
         }
     }
 
@@ -96,5 +120,38 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         if (!this.playerManager.isVIP(command.getPlayerId())) return;
         this.currentQuestion = questionProvider.getNextQuestion();
         this.showQuestion = false;
+    }
+
+    private void awardPointsToPlayer(String buzzedPlayerId) {
+
+        this.playerManager.getPlayer(buzzedPlayerId).addPoints(this.playerManager.getPlayerCount() - 2);
+    }
+
+    private void awardPointsToAllOtherPlayers(String buzzedPlayerId) {
+
+        for (QuizxelPlayer player : this.playerManager.getPlayers()) {
+
+            if (!player.getPlayerId().equals(buzzedPlayerId)) {
+
+                player.addPoints(1L);
+            }
+        }
+    }
+
+    private boolean isBuzzed() {
+
+        return this.buzzered || (this.buzzedPlayerId != null);
+    }
+
+    private void unlockBuzzer() {
+
+        this.buzzered = false;
+        this.buzzedPlayerId = null;
+    }
+
+    private void buzzer(String playerId) {
+
+        this.buzzered = true;
+        this.buzzedPlayerId = playerId;
     }
 }
