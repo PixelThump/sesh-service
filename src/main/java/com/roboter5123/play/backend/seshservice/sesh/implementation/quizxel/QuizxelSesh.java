@@ -135,6 +135,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         if (!this.playerManager.isVIP(command.getPlayerId())) return;
         this.currentQuestion = questionProvider.getNextQuestion();
         this.showQuestion = false;
+        this.showAnswer = false;
     }
 
     private void awardPointsToPlayer(String buzzedPlayerId) {
