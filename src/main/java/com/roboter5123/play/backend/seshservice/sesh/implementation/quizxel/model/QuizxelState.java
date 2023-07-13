@@ -13,8 +13,9 @@ import java.util.Objects;
 public class QuizxelState extends AbstractSeshState {
 
     private QuizxelQuestion currentQuestion;
-    private String buzzeredPlayerId;
+    private String buzzedPlayerId;
     private boolean showQuestion;
+    private boolean showAnswer;
 
     @Override
     public boolean equals(Object o) {
@@ -22,12 +23,12 @@ public class QuizxelState extends AbstractSeshState {
         if (this == o) return true;
         if (!(o instanceof QuizxelState that)) return false;
         if (!super.equals(o)) return false;
-        return showQuestion == that.showQuestion && Objects.equals(currentQuestion, that.currentQuestion) && Objects.equals(buzzeredPlayerId, that.buzzeredPlayerId);
+        return showQuestion == that.showQuestion && Objects.equals(currentQuestion, that.currentQuestion) && Objects.equals(buzzedPlayerId, that.buzzedPlayerId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), currentQuestion, buzzeredPlayerId, showQuestion);
+        return Objects.hash(super.hashCode(), currentQuestion, buzzedPlayerId, showQuestion);
     }
 }

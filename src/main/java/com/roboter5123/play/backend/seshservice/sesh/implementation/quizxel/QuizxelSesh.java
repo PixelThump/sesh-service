@@ -23,6 +23,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     private boolean buzzered;
     private String buzzedPlayerId;
     private boolean showQuestion;
+    private boolean showAnswer;
 
     public QuizxelSesh(MessageBroadcaster broadcaster) {
 
@@ -38,8 +39,9 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         state.setSeshCode(this.getSeshCode());
         state.setCurrentStage(this.currentStage);
         state.setCurrentQuestion(this.currentQuestion);
-        state.setBuzzeredPlayerId(this.buzzedPlayerId);
+        state.setBuzzedPlayerId(this.buzzedPlayerId);
         state.setShowQuestion(this.showQuestion);
+        state.setShowAnswer(this.showAnswer);
 
         return state;
     }
@@ -48,7 +50,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     protected void startMainStage() {
 
         this.currentStage = SeshStage.MAIN;
-        this.currentQuestion = questionProvider.getNextQuestion();
+        this.currentQuestion = questionProvider.getCurrentQuestion();
         this.broadcastToAll(getState());
     }
 
@@ -61,10 +63,21 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         switch (actionType) {
             case "nextQuestion" -> handleNextQuestionCommand(command);
             case "showQuestion" -> handleShowQuestionCommand(command);
+            case "showAnswer" -> handleShowAnswerCommand(command);
             case "buzzer" -> handleBuzzerCommand(command);
             case "freeBuzzer" -> handleFreeBuzzerCommand(command);
             default -> log.error("QuizxelSesh: Got a command without a valid Action type. Action={}", action);
         }
+    }
+
+    private void handleShowAnswerCommand(Command command) {
+
+        Action<Boolean> action = (Action<Boolean>) command.getAction();
+        String executerId = command.getPlayerId();
+
+        if (!this.playerManager.isVIP(executerId)) return;
+
+        this.showAnswer = action.getBody();
     }
 
     private void handleShowQuestionCommand(Command command) {
