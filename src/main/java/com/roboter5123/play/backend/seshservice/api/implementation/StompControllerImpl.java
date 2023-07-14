@@ -8,7 +8,7 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

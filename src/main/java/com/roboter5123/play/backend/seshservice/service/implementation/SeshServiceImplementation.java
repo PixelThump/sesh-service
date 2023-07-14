@@ -4,7 +4,7 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

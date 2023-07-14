@@ -4,8 +4,9 @@ import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.QuizxelState;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.question.QuizxelQuestion;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.state.QuizxelControllerMainStageState;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.state.QuizxelHostMainStageState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.extern.log4j.Log4j2;
@@ -31,10 +32,16 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         this.questionProvider = new QuizxelQuestionProvider();
     }
 
-    @Override
-    protected QuizxelState getMainStageState() {
+    protected void startMainStage() {
 
-        QuizxelState state = new QuizxelState();
+        this.currentStage = SeshStage.MAIN;
+        this.currentQuestion = questionProvider.getCurrentQuestion();
+        broadcastState();
+    }
+
+    protected QuizxelHostMainStageState getHostMainStageState() {
+
+        QuizxelHostMainStageState state = new QuizxelHostMainStageState();
         state.setPlayers(this.playerManager.getPlayers());
         state.setSeshCode(this.getSeshCode());
         state.setCurrentStage(this.currentStage);
@@ -46,21 +53,30 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
         return state;
     }
 
-    @Override
-    protected void startMainStage() {
+    protected QuizxelControllerMainStageState getControllerMainStageState() {
 
-        this.currentStage = SeshStage.MAIN;
-        this.currentQuestion = questionProvider.getCurrentQuestion();
-        this.broadcastToAll(getState());
+        QuizxelControllerMainStageState state = new QuizxelControllerMainStageState();
+        state.setPlayers(this.playerManager.getPlayers());
+        state.setSeshCode(this.getSeshCode());
+        state.setCurrentStage(this.currentStage);
+
+        return state;
     }
 
-    @Override
+    protected void broadcastMainStageState() {
+
+        broadcastToHost(getHostState());
+        broadcastToVipController(getHostState());
+        broadcastToNonVipControllers(getControllerState());
+    }
+
     protected void processMainCommand(Command command) {
 
         Action<?> action = command.getAction();
         String actionType = action.getType();
 
         switch (actionType) {
+
             case "nextQuestion" -> handleNextQuestionCommand(command);
             case "showQuestion" -> handleShowQuestionCommand(command);
             case "showAnswer" -> handleShowAnswerCommand(command);

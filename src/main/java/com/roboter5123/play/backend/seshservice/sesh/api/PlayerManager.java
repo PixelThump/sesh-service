@@ -56,4 +56,8 @@ public interface PlayerManager {
     Player getPlayer(String buzzedPlayerId);
 
     Long getPlayerCount();
+
+    String getHostId();
+
+    String getVipId();
 }

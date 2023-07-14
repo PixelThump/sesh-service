@@ -2,16 +2,18 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerNotInSeshException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
-import com.roboter5123.play.backend.seshservice.sesh.model.LobbyState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.ControllerLobbyState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.HostLobbyState;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +23,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.time.LocalDateTime;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 @Log4j2
 @ToString
@@ -53,6 +56,11 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.maxPlayers = maxplayers;
     }
 
+    public void startSesh() {
+
+        this.isStarted = true;
+    }
+
     @Override
     public AbstractSeshState joinSeshAsHost(String socketId) throws PlayerAlreadyJoinedException {
 
@@ -60,24 +68,10 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
             throw new PlayerAlreadyJoinedException("Host has already joined this sesh");
         }
+
         this.lastInteractionTime = LocalDateTime.now();
-        return this.getState();
-    }
 
-    public AbstractSeshState getState() {
-
-        if (this.currentStage == SeshStage.LOBBY) {
-
-            return getLobbyState();
-
-        } else if (this.currentStage == SeshStage.MAIN) {
-
-            return getMainStageState();
-
-        } else {
-
-            throw new RuntimeException();
-        }
+        return this.getHostState();
     }
 
     @Override
@@ -99,7 +93,52 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
 
         this.lastInteractionTime = LocalDateTime.now();
-        return this.getState();
+
+        return this.getControllerState();
+    }
+
+    public AbstractSeshState getHostState() {
+
+        if (this.currentStage == SeshStage.LOBBY) {
+
+            return getHostLobbyState();
+
+        } else {
+
+            return getHostMainStageState();
+        }
+    }
+
+    protected AbstractSeshState getControllerState() {
+
+        if (this.currentStage == SeshStage.LOBBY) {
+
+            return getControllerLobbyState();
+
+        } else {
+
+            return getControllerMainStageState();
+        }
+    }
+
+    protected HostLobbyState getHostLobbyState() {
+
+        HostLobbyState state = new HostLobbyState();
+        state.setMaxPlayers(this.maxPlayers);
+        state.setSeshCode(this.seshCode);
+        state.setPlayers(this.playerManager.getPlayers());
+        state.setCurrentStage(this.currentStage);
+        return state;
+    }
+
+    protected ControllerLobbyState getControllerLobbyState() {
+
+        ControllerLobbyState state = new ControllerLobbyState();
+        state.setSeshCode(this.seshCode);
+        state.setPlayers(this.playerManager.getPlayers());
+        state.setCurrentStage(this.currentStage);
+
+        return state;
     }
 
     @Override
@@ -112,11 +151,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
         this.lastInteractionTime = LocalDateTime.now();
         this.unprocessedCommands.offer(command);
-    }
-
-    public void startSesh() {
-
-        this.isStarted = true;
     }
 
     @Scheduled(fixedDelay = 30000)
@@ -134,23 +168,55 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
             this.processCommand(command);
         }
-        this.broadcastToAll(getState());
+
+        broadcastState();
     }
 
-    protected void broadcastToAll(Object payload) {
+    protected void broadcastState() {
 
-        this.broadcaster.broadcastSeshUpdate(this.seshCode, payload);
+        if (this.currentStage == SeshStage.LOBBY){
+
+            broadcastLobbyState();
+
+        }else{
+
+            broadcastMainStageState();
+        }
     }
 
-    protected LobbyState getLobbyState() {
+    protected void broadcastLobbyState(){
 
-        LobbyState state = new LobbyState();
-        state.setPlayers(this.playerManager.getPlayers());
-        state.setSeshCode(this.getSeshCode());
-        state.setMaxPlayers(maxPlayers);
-        state.setCurrentStage(this.currentStage);
+        broadcastToHost(getHostLobbyState());
+        broadcastToAllControllers(getControllerLobbyState());
+    }
 
-        return state;
+    protected abstract void broadcastMainStageState();
+
+    protected void broadcastToHost(Object payload) {
+
+        this.broadcaster.broadcastSeshUpdateToHost(this.seshCode, payload);
+    }
+
+    protected void broadcastToAllControllers(Object payload) {
+
+        this.broadcaster.broadcastSeshUpdateToControllers(this.seshCode, payload);
+    }
+
+    protected void broadcastToNonVipControllers(Object payload) {
+
+        List<String> nonVipPlayers = this.playerManager.getPlayers().stream().filter(player -> !player.getVip()).map(Player::getPlayerId).toList();
+        this.broadcaster.broadcastToPlayers(nonVipPlayers, payload);
+    }
+
+    protected void broadcastToVipController(Object payload) {
+
+        String vipId = this.playerManager.getVipId();
+        broadcastCommandToPlayer(vipId, payload);
+    }
+
+    protected void broadcastCommandToPlayer(String playerId, Object payload) {
+
+        this.broadcaster.broadcastToPlayer(playerId, payload);
     }
 
     private void processCommand(Command command) {
@@ -189,5 +255,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
 
     protected abstract void startMainStage();
 
-    protected abstract AbstractSeshState getMainStageState();
+    protected abstract AbstractSeshState getHostMainStageState();
+
+    protected abstract AbstractSeshState getControllerMainStageState();
 }

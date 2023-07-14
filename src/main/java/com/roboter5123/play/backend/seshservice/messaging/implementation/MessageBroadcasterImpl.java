@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Log4j2
 public class MessageBroadcasterImpl implements MessageBroadcaster {
@@ -82,5 +84,30 @@ public class MessageBroadcasterImpl implements MessageBroadcaster {
 
             throw e;
         }
+    }
+
+    @Override
+    public void broadcastToPlayer(String socketId, Object payload) {
+
+        final String destination = "user/" + socketId;
+
+        try {
+
+            final StompMessage message = factory.getMessage(payload);
+            broadcast(destination, message);
+
+        } catch (UnsupportedOperationException e) {
+
+            log.error(ERROR_MESSAGE_LINE_1, payload);
+            log.error(ERROR_MESSAGE_LINE_2, payload.getClass());
+
+            throw e;
+        }
+    }
+
+    @Override
+    public void broadcastToPlayers(List<String> playerIds, Object payload) {
+
+        playerIds.forEach(playerId-> broadcastToPlayer(playerId, payload));
     }
 }

@@ -4,7 +4,7 @@ import com.roboter5123.play.backend.seshservice.messaging.implementation.StompMe
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
 import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

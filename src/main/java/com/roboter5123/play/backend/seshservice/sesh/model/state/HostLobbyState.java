@@ -1,20 +1,20 @@
-package com.roboter5123.play.backend.seshservice.sesh.model;
+package com.roboter5123.play.backend.seshservice.sesh.model.state;
 import lombok.Data;
 
 import java.util.Objects;
 
 @Data
-public class LobbyState extends AbstractSeshState {
+public class HostLobbyState extends AbstractSeshState{
 
-    private Integer maxPlayers;
+    private int maxPlayers;
 
     @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
-        if (!(o instanceof LobbyState that)) return false;
+        if (!(o instanceof HostLobbyState that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(maxPlayers, that.maxPlayers);
+        return maxPlayers == that.maxPlayers;
     }
 
     @Override

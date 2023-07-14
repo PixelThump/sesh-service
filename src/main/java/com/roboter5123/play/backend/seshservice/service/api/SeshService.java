@@ -5,7 +5,7 @@ import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsEx
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJoinableException;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 
 public interface SeshService {

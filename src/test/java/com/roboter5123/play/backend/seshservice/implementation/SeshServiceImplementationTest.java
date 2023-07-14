@@ -8,9 +8,10 @@ import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
-import com.roboter5123.play.backend.seshservice.sesh.model.LobbyState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.ControllerLobbyState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.HostLobbyState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -82,7 +83,7 @@ class SeshServiceImplementationTest {
 	@Test
 	void joinSeshAsHost_should_return_state() {
 
-		AbstractSeshState expected = new LobbyState();
+		AbstractSeshState expected = new HostLobbyState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
@@ -103,7 +104,7 @@ class SeshServiceImplementationTest {
 	@Test
 	void joinSeshAsController_should_return_state() {
 
-		AbstractSeshState expected = new LobbyState();
+		AbstractSeshState expected = new ControllerLobbyState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 

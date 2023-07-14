@@ -8,7 +8,7 @@ import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
 import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
 import com.roboter5123.play.backend.seshservice.service.api.SeshService;
 import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

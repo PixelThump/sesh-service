@@ -8,8 +8,9 @@ import com.roboter5123.play.backend.seshservice.sesh.exception.SeshCurrentlyNotJ
 import com.roboter5123.play.backend.seshservice.sesh.exception.SeshIsFullException;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.AbstractSeshBaseClass;
 import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
-import com.roboter5123.play.backend.seshservice.sesh.model.AbstractSeshState;
-import com.roboter5123.play.backend.seshservice.sesh.model.LobbyState;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.model.state.QuizxelHostMainStageState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.HostLobbyState;
 import com.roboter5123.play.backend.seshservice.sesh.model.SeshStage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class QuizxelSeshTest {
     @Test
     void joinSeshAsHost_should_return_state() {
 
-        LobbyState expected = new LobbyState();
+        HostLobbyState expected = new HostLobbyState();
         expected.setPlayers(new ArrayList<>());
         expected.setCurrentStage(SeshStage.LOBBY);
         expected.setSeshCode("ABCD");
@@ -132,10 +133,10 @@ class QuizxelSeshTest {
 
         this.sesh.joinSeshAsHost(socketId);
         AbstractSeshState state = this.sesh.joinSeshAsController(this.playerName, socketId + 1);
-        String playerId = sesh.getState().getPlayers().get(0).getPlayerId();
+        String playerId = sesh.getHostState().getPlayers().get(0).getPlayerId();
         this.sesh.addCommand(new Command(playerId, new Action<>("command", "any")));
         this.sesh.processQueue();
-        verify(broadcaster).broadcastSeshUpdate(sesh.getSeshCode(), state);
+        verify(broadcaster).broadcastSeshUpdateToControllers(sesh.getSeshCode(), state);
     }
 
     @Test
@@ -146,5 +147,42 @@ class QuizxelSeshTest {
         this.sesh.addCommand(new Command(playerId, new Action<>("startSesh","whatevs")));
         this.sesh.processQueue();
         assertEquals(SeshStage.MAIN, this.sesh.getCurrentStage());
+    }
+
+    @Test
+    void processQueue_should_handle_commands_show_question_correctly() {
+
+        String playerId = setupPlayer();
+        this.sesh.addCommand(new Command(playerId, new Action<>("makeVip", playerId)));
+        this.sesh.addCommand(new Command(playerId, new Action<>("startSesh","whatevs")));
+
+        this.sesh.addCommand(new Command(playerId, new Action<>("showQuestion",true)));
+        this.sesh.processQueue();
+        QuizxelHostMainStageState state = (QuizxelHostMainStageState) this.sesh.getHostState();
+        assertTrue(state.isShowQuestion());
+
+        this.sesh.addCommand(new Command(playerId, new Action<>("showQuestion",false)));
+        this.sesh.processQueue();
+        state = (QuizxelHostMainStageState) this.sesh.getHostState();
+        assertFalse(state.isShowQuestion());
+    }
+
+    @Test
+    void processQueue_should_handle_commands_show_answer_correctly() {
+
+        String playerId = setupPlayer();
+
+        this.sesh.addCommand(new Command(playerId, new Action<>("makeVip", playerId)));
+        this.sesh.addCommand(new Command(playerId, new Action<>("startSesh","whatevs")));
+
+        this.sesh.addCommand(new Command(playerId, new Action<>("showAnswer",true)));
+        this.sesh.processQueue();
+        QuizxelHostMainStageState state = (QuizxelHostMainStageState) this.sesh.getHostState();
+        assertTrue(state.isShowAnswer());
+
+        this.sesh.addCommand(new Command(playerId, new Action<>("showAnswer",false)));
+        this.sesh.processQueue();
+        state = (QuizxelHostMainStageState) this.sesh.getHostState();
+        assertFalse(state.isShowAnswer());
     }
 }
