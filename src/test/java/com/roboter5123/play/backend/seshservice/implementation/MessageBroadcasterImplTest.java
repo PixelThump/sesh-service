@@ -2,7 +2,7 @@ package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.implementation.MessageBroadcasterImpl;
-import com.roboter5123.play.backend.seshservice.messaging.model.ErrorStompMessage;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.ErrorStompMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ class MessageBroadcasterImplTest {
     }
 
     @Test
-    void broadcast_error_message_should_call_convert_and_send_with_correct_message() {
+    void broadcastSeshUpdate_should_call_convert_and_send_with_error_message() {
 
         RuntimeException exception = new RuntimeException("this is an error");
 
@@ -41,13 +41,28 @@ class MessageBroadcasterImplTest {
 
         messageBroadcaster.broadcastSeshUpdate(sessionCode, exception);
 
-        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode, expected);
+        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode + "/controller", expected);
+        verify(messagingTemplate).convertAndSend("/topic/sesh/" + sessionCode + "/host", expected);
     }
 
     @Test
-    void BROADCAST_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
+    void broadcastSeshUpdate_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
 
         when(factory.getMessage(factory)).thenThrow(new UnsupportedOperationException());
         assertThrows(UnsupportedOperationException.class, () -> messageBroadcaster.broadcastSeshUpdate(sessionCode, factory));
+    }
+
+    @Test
+    void broadcastSeshUpdateToControllers_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
+
+        when(factory.getMessage(factory)).thenThrow(new UnsupportedOperationException());
+        assertThrows(UnsupportedOperationException.class, () -> messageBroadcaster.broadcastSeshUpdateToControllers(sessionCode, factory));
+    }
+
+    @Test
+    void broadcastSeshUpdateToHost_WITH_NON_SUPPORTED_PAYLOAD_SHOULD_THROW_EXCEPTION() {
+
+        when(factory.getMessage(factory)).thenThrow(new UnsupportedOperationException());
+        assertThrows(UnsupportedOperationException.class, () -> messageBroadcaster.broadcastSeshUpdateToHost(sessionCode, factory));
     }
 }

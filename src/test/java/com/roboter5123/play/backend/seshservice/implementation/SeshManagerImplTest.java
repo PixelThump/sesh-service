@@ -5,8 +5,8 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
-import com.roboter5123.play.backend.seshservice.sesh.implementation.chat.ChatSesh;
+import com.roboter5123.play.backend.seshservice.sesh.implementation.quizxel.QuizxelSesh;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -32,14 +32,16 @@ class SeshManagerImplTest {
     @Autowired
     SeshManager seshManager;
     @Mock
-    Sesh chat;
+    Sesh quizxel;
     String seshCode;
 
     @BeforeEach
     void setUp() {
 
         this.seshCode = "ABCD";
-        chat = new ChatSesh(seshCode, broadcaster);
+        quizxel = new QuizxelSesh(broadcaster);
+        quizxel.setSeshCode(seshCode);
+        quizxel.startSesh();
     }
 
     @AfterEach
@@ -51,10 +53,10 @@ class SeshManagerImplTest {
     @Test
     void create_sesh_and_get_sesh_should_create_and_return_chat_game() throws TooManySeshsException {
 
-        when(factory.createSesh(any(), eq(SeshType.CHAT))).thenReturn(chat);
+        when(factory.createSesh(any(), eq(SeshType.QUIZXEL))).thenReturn(quizxel);
         ArgumentCaptor<String> capturedArgument = ArgumentCaptor.forClass(String.class);
-        Sesh expected = seshManager.createSesh(SeshType.CHAT);
-        verify(factory).createSesh(capturedArgument.capture(), eq(SeshType.CHAT));
+        Sesh expected = seshManager.createSesh(SeshType.QUIZXEL);
+        verify(factory).createSesh(capturedArgument.capture(), eq(SeshType.QUIZXEL));
         Sesh result = seshManager.getSesh(capturedArgument.getValue());
 
         assertEquals(expected, result);
@@ -70,14 +72,14 @@ class SeshManagerImplTest {
     @Test
     void CREATE_GAME_SESSION_SHOULD_THROW_EXCEPTION_WHEN_TOO_MANY_SESSIONS() throws TooManySeshsException {
 
-        when(factory.createSesh(any(), any())).thenReturn(chat);
+        when(factory.createSesh(any(), any())).thenReturn(quizxel);
 
         double maxSessionCount = Math.pow(26, 4) + 1;
         assertThrows(TooManySeshsException.class, () -> {
 
             for (int i = 0; i < maxSessionCount; i++) {
 
-                seshManager.createSesh(SeshType.CHAT);
+                seshManager.createSesh(SeshType.QUIZXEL);
             }
         });
     }

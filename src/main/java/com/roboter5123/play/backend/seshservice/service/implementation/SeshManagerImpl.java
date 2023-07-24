@@ -4,7 +4,7 @@ import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshExce
 import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.api.SeshFactory;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,9 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -94,6 +92,7 @@ public class SeshManagerImpl implements SeshManager {
 
         long deletedSeshs = 0L;
         log.info("Checking for idle Seshs.");
+        List<String> seshsToBeDeleted = new ArrayList<>();
         for (Map.Entry<String, Sesh> seshEntry : seshs.entrySet()) {
 
             LocalDateTime currentTimePlusMaxIdleTime = LocalDateTime.now().minusMinutes(10L);
@@ -101,10 +100,16 @@ public class SeshManagerImpl implements SeshManager {
             LocalDateTime lastInteractionTime = seshEntry.getValue().getLastInteractionTime();
             if (lastInteractionTime.isBefore(currentTimePlusMaxIdleTime)) {
 
-                this.seshs.remove(seshEntry.getKey());
-                deletedSeshs += 1;
-                log.info("Deleted a Sesh; Code: {} Sesh= {}", seshEntry.getKey(), seshEntry.getValue());
+                seshsToBeDeleted.add(seshEntry.getKey());
+
             }
+        }
+
+        for (String key : seshsToBeDeleted) {
+
+            Sesh sesh = this.seshs.remove(key);
+            deletedSeshs += 1;
+            log.info("Deleted a Sesh; Code: {} Sesh= {}", key, sesh);
         }
 
         log.info("Finished deleting idle Seshs. Deleted {} Seshs", deletedSeshs);

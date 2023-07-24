@@ -1,12 +1,12 @@
 package com.roboter5123.play.backend.seshservice.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.StompMessageFactory;
 import com.roboter5123.play.backend.seshservice.messaging.implementation.StompMessageFactoryImpl;
-import com.roboter5123.play.backend.seshservice.messaging.model.*;
+import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.*;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,7 +28,7 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_EXCEPTION_SHOULD_RETURN_ERROR_STOMP_MESSAGE_WITH_EXCEPTION_MESSAGE() {
+    void getMessage_WITH_EXCEPTION_SHOULD_RETURN_ERROR_STOMP_MESSAGE_WITH_EXCEPTION_MESSAGE() {
 
         Exception exception = new RuntimeException(errorMessage);
         ErrorStompMessage expected = new ErrorStompMessage();
@@ -38,13 +38,13 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
+    void getMessage_WITH_COMMAND_SHOULD_RETURN_COMMAND_STOMP_MESSAGE_WITH_COMMAND() {
 
-        Command serviceCommand= new Command(playerName, new BasicAction());
+        Command serviceCommand= new Command(playerName, new Action<>("asd", "asd"));
 
         Command command = new Command();
-        command.setAction(new BasicAction());
-        command.setPlayer(playerName);
+        command.setAction(new Action<>("asd", "asd"));
+        command.setPlayerId(playerName);
 
         CommandStompMessage expected = new CommandStompMessage();
         expected.setCommand(serviceCommand);
@@ -53,9 +53,9 @@ class StompMessageFactoryImplTest {
     }
 
     @Test
-    void GET_MESSAGE_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
+    void getMessage_WITH_GAME_STATE_SHOULD_RETURN_GAME_STATE_STOMP_MESSAGE_WITH_GAME_STATE() {
 
-        Map<String, Object> state = new HashMap<>();
+        AbstractSeshState state = new AbstractSeshState();
         StateStompMessage expected = new StateStompMessage();
         expected.setState(state);
         StompMessage result = messageFactory.getMessage(state);

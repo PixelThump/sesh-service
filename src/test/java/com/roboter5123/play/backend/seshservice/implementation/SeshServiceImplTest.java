@@ -1,25 +1,21 @@
 package com.roboter5123.play.backend.seshservice.implementation;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
+import com.roboter5123.play.backend.seshservice.messaging.model.Command;
+import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
+import com.roboter5123.play.backend.seshservice.messaging.model.message.CommandStompMessage;
+import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
+import com.roboter5123.play.backend.seshservice.service.api.SeshService;
+import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
+import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
+import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
+import com.roboter5123.play.backend.seshservice.sesh.model.state.AbstractSeshState;
+import com.roboter5123.play.backend.seshservice.sesh.model.SeshType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
-import com.roboter5123.play.backend.seshservice.messaging.model.BasicAction;
-import com.roboter5123.play.backend.seshservice.messaging.model.Command;
-import com.roboter5123.play.backend.seshservice.messaging.model.CommandStompMessage;
-import com.roboter5123.play.backend.seshservice.service.api.SeshManager;
-import com.roboter5123.play.backend.seshservice.service.api.SeshService;
-import com.roboter5123.play.backend.seshservice.service.exception.NoSuchSeshException;
-import com.roboter5123.play.backend.seshservice.service.exception.TooManySeshsException;
-import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
-import com.roboter5123.play.backend.seshservice.sesh.api.SeshType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +42,6 @@ class SeshServiceImplTest {
 		this.sessionCode = "abcd";
 		this.playerName = "roboter5123";
 		sesh = Mockito.mock(Sesh.class);
-
 	}
 
 	@Test
@@ -86,13 +81,13 @@ class SeshServiceImplTest {
 	@Test
 	void joinSeshAsHost_should_return_state() {
 
-		Map<String, Object> expected = new HashMap<>();
+		AbstractSeshState expected = new AbstractSeshState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSesh("host")).thenReturn(expected);
+		when(sesh.joinSeshAsHost(any())).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsHost(sessionCode);
+		AbstractSeshState result = seshService.joinSeshAsHost(sessionCode, playerName);
 		assertEquals(expected, result);
 	}
 
@@ -101,19 +96,19 @@ class SeshServiceImplTest {
 
 		when(sessionManager.getSesh(any())).thenThrow(new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found."));
 
-		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsHost(sessionCode));
+		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsHost(sessionCode, playerName));
 	}
 
 	@Test
 	void joinSeshAsController_should_return_state() {
 
-		Map<String, Object> expected = new HashMap<>();
+		AbstractSeshState expected = new AbstractSeshState();
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		when(sesh.joinSesh(playerName)).thenReturn(expected);
+		when(sesh.joinSeshAsController(any(), any())).thenReturn(expected);
 
-		Map<String, Object> result = seshService.joinSeshAsController(sessionCode, playerName);
+		AbstractSeshState result = seshService.joinSeshAsController(sessionCode, playerName, playerName);
 		assertEquals(expected, result);
 	}
 
@@ -122,7 +117,7 @@ class SeshServiceImplTest {
 
 		when(sessionManager.getSesh(any())).thenThrow(new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found."));
 
-		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsController(sessionCode, playerName));
+		assertThrows(NoSuchSeshException.class, () -> seshService.joinSeshAsController(sessionCode, playerName, playerName));
 	}
 
 	@Test
@@ -130,7 +125,7 @@ class SeshServiceImplTest {
 
 		when(sessionManager.getSesh(sessionCode)).thenReturn(sesh);
 
-		Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(playerName, new Action<>(playerName, "Chat message"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 
 		seshService.sendCommandToSesh(incomingMessage, sessionCode);
@@ -144,7 +139,7 @@ class SeshServiceImplTest {
 		NoSuchSeshException exception = new NoSuchSeshException("Could not join session with code " + sessionCode + ".Session not found.");
 		when(sessionManager.getSesh(any())).thenThrow(exception);
 
-		Command incomingCommand = new Command(playerName, new BasicAction(playerName, "Chat message"));
+		Command incomingCommand = new Command(playerName, new Action<>(playerName, "Chat message"));
 		CommandStompMessage incomingMessage = new CommandStompMessage(incomingCommand);
 		assertThrows(NoSuchSeshException.class, () -> seshService.sendCommandToSesh(incomingMessage, sessionCode));
 	}
