@@ -153,7 +153,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         this.unprocessedCommands.offer(command);
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 33)
     public void processQueue() {
 
         if (!isStarted && !playerManager.hasHostJoined() && playerManager.getPlayers().isEmpty()) {
