@@ -32,7 +32,7 @@ public class QuizxelQuestionProvider {
         currentIndex = 0;
     }
 
-    public QuizxelQuestion getCurrentQuestion(){
+    public QuizxelQuestion getCurrentQuestion() {
 
         return questions.get(currentIndex);
     }
@@ -40,7 +40,14 @@ public class QuizxelQuestionProvider {
     public QuizxelQuestion getNextQuestion() {
 
         currentIndex++;
-        if (currentIndex >= (questions.size())) currentIndex = 0;
+        if (currentIndex >= (questions.size())) currentIndex--;
+        return questions.get(currentIndex);
+    }
+
+    public QuizxelQuestion getPreviousQuestion() {
+
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = 0;
         return questions.get(currentIndex);
     }
 }

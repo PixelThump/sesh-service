@@ -66,8 +66,7 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     protected void broadcastMainStageState() {
 
         broadcastToHost(getHostState());
-        broadcastToVipController(getHostState());
-        broadcastToNonVipControllers(getControllerState());
+        broadcastToAllControllers(getHostState());
     }
 
     protected void processMainCommand(Command command) {
@@ -149,7 +148,11 @@ public class QuizxelSesh extends AbstractSeshBaseClass {
     private void handleNextQuestionCommand(Command command) {
 
         if (!this.playerManager.isVIP(command.getPlayerId())) return;
-        this.currentQuestion = questionProvider.getNextQuestion();
+        Action<String> action = (Action<String>) command.getAction();
+
+        if ("next".equals(action.getBody())) this.currentQuestion = questionProvider.getNextQuestion();
+        if ("prev".equals(action.getBody())) this.currentQuestion = questionProvider.getPreviousQuestion();
+
         this.showQuestion = false;
         this.showAnswer = false;
     }
