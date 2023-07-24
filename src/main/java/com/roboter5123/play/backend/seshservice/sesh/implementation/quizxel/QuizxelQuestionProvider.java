@@ -13,8 +13,15 @@ public class QuizxelQuestionProvider {
     public QuizxelQuestionProvider() {
 
         List<QuizxelQuestion> localQuestions = new ArrayList<>();
-        localQuestions.add(new BuzzerQuestion("Test Question Text 1", "Test Question Answer 1"));
-        localQuestions.add(new BuzzerQuestion("Test Question Text 2", "Test Question Answer 2"));
+        localQuestions.add(new BuzzerQuestion("1. Warum sind wir heute alle hier?", "Weil Thomas Geburtstag hat."));
+        localQuestions.add(new BuzzerQuestion("2. Eines von Thomas Lieblingsspiele ist left4dead2. \n In diesem Spiel gibt es ein Achievement bei dem man einen Garten Zwerg retten muss. Wie heißt dieser Zwerg? ", "Gnome Chompski"));
+        localQuestions.add(new BuzzerQuestion("3. Bleiben wir bei l4d2. Wie viele Special Infected gibt es in l4d2?", "//TODO: Add answer"));
+        localQuestions.add(new BuzzerQuestion("4. Und wie heißen sie? 1 Infected pro Buzzer.", "//TODO: Add answer"));
+        localQuestions.add(new BuzzerQuestion("5. Genug von l4d. Was thomas auch mag ist das MCU. Wofür steht das nochmal mcu?", "Marvel Cinematic Universe"));
+        localQuestions.add(new BuzzerQuestion("6. Was war denn der erste releaste mcu Film?", "Iron Man"));
+        localQuestions.add(new BuzzerQuestion("7. Und der neueste?", "Guardians of the Galaxy Vol. 3"));
+        localQuestions.add(new BuzzerQuestion("8. In Iron Man 2 gab es ein kameo von einem Billionär. Wie heißt er?", "Elon Musk"));
+        localQuestions.add(new BuzzerQuestion("9. Eine Letzte mcu frage noch. Für welchen Satz ist Vin diesels Character bekannt?", "I am Groot/ Ich bin Groot"));
         this.questions = localQuestions;
         currentIndex = 0;
     }
