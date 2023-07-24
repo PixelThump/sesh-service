@@ -128,6 +128,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         state.setSeshCode(this.seshCode);
         state.setPlayers(this.playerManager.getPlayers());
         state.setCurrentStage(this.currentStage);
+        state.setHasVip(playerManager.hasVIP());
         return state;
     }
 
@@ -137,6 +138,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         state.setSeshCode(this.seshCode);
         state.setPlayers(this.playerManager.getPlayers());
         state.setCurrentStage(this.currentStage);
+        state.setHasVip(this.playerManager.hasVIP());
 
         return state;
     }

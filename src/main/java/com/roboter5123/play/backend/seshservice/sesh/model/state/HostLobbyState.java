@@ -7,6 +7,7 @@ import java.util.Objects;
 public class HostLobbyState extends AbstractSeshState{
 
     private int maxPlayers;
+    private boolean hasVip;
 
     @Override
     public boolean equals(Object o) {
