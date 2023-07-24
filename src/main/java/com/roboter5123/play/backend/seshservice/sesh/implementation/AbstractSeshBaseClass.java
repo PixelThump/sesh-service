@@ -107,7 +107,7 @@ public abstract class AbstractSeshBaseClass implements Sesh {
         }
     }
 
-    protected AbstractSeshState getControllerState() {
+    public AbstractSeshState getControllerState() {
 
         if (this.currentStage == SeshStage.LOBBY) {
 
