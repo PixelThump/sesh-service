@@ -2,7 +2,6 @@ package com.roboter5123.play.backend.seshservice.sesh.implementation;
 import com.roboter5123.play.backend.seshservice.messaging.api.MessageBroadcaster;
 import com.roboter5123.play.backend.seshservice.messaging.model.Command;
 import com.roboter5123.play.backend.seshservice.messaging.model.action.Action;
-import com.roboter5123.play.backend.seshservice.sesh.api.Player;
 import com.roboter5123.play.backend.seshservice.sesh.api.PlayerManager;
 import com.roboter5123.play.backend.seshservice.sesh.api.Sesh;
 import com.roboter5123.play.backend.seshservice.sesh.exception.PlayerAlreadyJoinedException;
@@ -23,7 +22,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.time.LocalDateTime;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
 
 @Log4j2
 @ToString
@@ -202,23 +200,6 @@ public abstract class AbstractSeshBaseClass implements Sesh {
     protected void broadcastToAllControllers(Object payload) {
 
         this.broadcaster.broadcastSeshUpdateToControllers(this.seshCode, payload);
-    }
-
-    protected void broadcastToNonVipControllers(Object payload) {
-
-        List<String> nonVipPlayers = this.playerManager.getPlayers().stream().filter(player -> !player.getVip()).map(Player::getPlayerId).toList();
-        this.broadcaster.broadcastToPlayers(nonVipPlayers, payload);
-    }
-
-    protected void broadcastToVipController(Object payload) {
-
-        String vipId = this.playerManager.getVipId();
-        broadcastCommandToPlayer(vipId, payload);
-    }
-
-    protected void broadcastCommandToPlayer(String playerId, Object payload) {
-
-        this.broadcaster.broadcastToPlayer(playerId, payload);
     }
 
     private void processCommand(Command command) {
