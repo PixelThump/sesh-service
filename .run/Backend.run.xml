@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" />
     <module name="pixelvibe_seshservice" />
     <option name="SHORTEN_COMMAND_LINE" value="MANIFEST" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.roboter5123.play.backend.seshservice.BackendApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.pixelthump.seshservice.BackendApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

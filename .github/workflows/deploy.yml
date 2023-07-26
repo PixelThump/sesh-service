@@ -28,7 +28,7 @@ jobs:
       - name: Build with Maven
         run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:check package deploy --file pom.xml
         env:
-          ACCESS_TOKEN: ${{ secrets.PACKAGES_GITHUB_KEY }}
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
@@ -37,9 +37,9 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: roboter5123/seshservice
+          image: pixelthump/sesh-service
           tags: dev
           registry: ghcr.io
           dockerfile: Dockerfile
           username: ${{ secrets.GHRC_USERNAME }}
-          password: ${{ secrets.PACKAGES_GITHUB_KEY }}
+          password: ${{ secrets.GITHUB_TOKEN }}

@@ -8,11 +8,11 @@
         <version>3.0.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.roboter5123.pixelvibe.backend</groupId>
-    <artifactId>seshservice</artifactId>
+    <groupId>com.pixelthump</groupId>
+    <artifactId>sesh-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>PixelVibe Sesh Service</name>
-    <description>The sesh component for the pixelvibe gaming platform</description>
+    <name>Sesh Service</name>
+    <description>The sesh component for the pixelthump gaming platform</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -145,13 +145,13 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>seshservice</finalName>
+        <finalName>sesh-service</finalName>
     </build>
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub roboter5123 Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/roboter5123/pixelvibe_seshservice</url>
+            <name>GitHub pixelthump Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/pixelthump/sesh-service</url>
         </repository>
     </distributionManagement>
 </project>
