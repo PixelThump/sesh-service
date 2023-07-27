@@ -37,9 +37,9 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: pixelthump/sesh-service
+          image: ${{ github.repository }}
           tags: dev
           registry: ghcr.io
           dockerfile: Dockerfile
-          username: ${{ secrets.GHRC_USERNAME }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
