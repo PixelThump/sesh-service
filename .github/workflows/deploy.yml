@@ -29,6 +29,8 @@ jobs:
         run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:check package deploy --file pom.xml
         env:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
