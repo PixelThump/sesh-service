@@ -37,7 +37,9 @@ jobs:
 
       - name: set lower case owner name
         run: |
-            echo "OWNER_LC=${${{ github.repository_owner }},,}" >> {GITHUB_ENV}
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
         
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
