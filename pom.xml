@@ -8,7 +8,7 @@
         <version>3.0.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.${git.repo.ownerlowercase}</groupId>
+    <groupId>com.pixelthump</groupId>
     <artifactId>${git.repo.name}</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <name>Sesh Service</name>
