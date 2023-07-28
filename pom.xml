@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.pixelthump</groupId>
-    <artifactId>${git.repo.name}</artifactId>
+    <artifactId>sesh-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <name>Sesh Service</name>
     <description>The sesh component for the pixelthump gaming platform</description>
