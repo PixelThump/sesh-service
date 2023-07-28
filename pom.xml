@@ -82,7 +82,7 @@
             <type>pom</type>
             <scope>runtime</scope>
         </dependency>
-</dependencies
+</dependencies>
     <executions>
         <execution>
             <id>add-dynamic-properties</id>
