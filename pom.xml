@@ -17,7 +17,7 @@
         <java.version>17</java.version>
          <git.repo.name>sesh-service</git.repo.name>
          <git.repo.owner>PixelThump</git.repo.owner>
-         <git.repo.ownerlowercase>pixelt</git.repo.ownerlowercase>
+         <git.repo.ownerlowercase>${git.repo.owner.toLowerCase()}</git.repo.ownerlowercase>
     </properties>
     <dependencies>
         <dependency>
@@ -70,40 +70,6 @@
     </dependencies>
     <build>
         <plugins>
-                 <plugin>
-    <groupId>org.codehaus.gmavenplus</groupId>
-    <artifactId>gmavenplus-plugin</artifactId>
-    <version>1.6.2</version>
-<dependencies>
-         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.5.3</version>
-            <type>jar</type>
-            <scope>runtime</scope>
-        </dependency>
-</dependencies>
-    <executions>
-        <execution>
-            <id>add-dynamic-properties</id>
-            <phase>initialize</phase>
-            <goals>
-                <goal>execute</goal>
-            </goals>
-            <configuration>
-                <scripts>
-                    <script>
-                        <![CDATA[
-                            repoOwner = "${git.repo.owner}"
-                            repoOwnerLowerCase = repoOwner.toLowerCase()
-                            project.properties.setProperty('git.repo.ownerlowercase', repoOwnerLowerCase)
-                        ]]>
-                    </script>
-                </scripts>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
