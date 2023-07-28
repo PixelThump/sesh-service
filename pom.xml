@@ -17,7 +17,6 @@
         <java.version>17</java.version>
          <git.repo.name>sesh-service</git.repo.name>
          <git.repo.owner>PixelThump</git.repo.owner>
-         <git.repo.ownerlowercase>${git.repo.owner.toLowerCase()}</git.repo.ownerlowercase>
     </properties>
     <dependencies>
         <dependency>
@@ -153,8 +152,8 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub ${git.repo.ownerlowercase} Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/${git.repo.ownerlowercase}/${git.repo.name}</url>
+            <name>GitHub ${git.repo.owner.toLowerCase()} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${git.repo.owner.toLowerCase()}/${git.repo.name}</url>
         </repository>
     </distributionManagement>
 </project>
