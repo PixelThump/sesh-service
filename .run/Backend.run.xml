@@ -4,6 +4,7 @@
     <module name="sesh-service" />
     <option name="SHORTEN_COMMAND_LINE" value="MANIFEST" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.pixelthump.seshservice.Application" />
+    <option name="VM_PARAMETERS" value="-Djasypt.encryptor.password=Derfisch5123" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
