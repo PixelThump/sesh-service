@@ -26,7 +26,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:check package deploy --file pom.xml
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jasypt:decrypt -Djasypt.encryptor.password=${{ secrets.ENCRYPTION_PASSWORD }} -Djasypt.plugin.path=file:$GITHUB_WORKSPACE/src/main/resources/application.properties jacoco:check package deploy --file pom.xml
         env:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
