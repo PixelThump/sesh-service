@@ -11,12 +11,12 @@
     <groupId>com.pixelthump</groupId>
     <artifactId>sesh-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>Sesh Service </name>
+    <name>Sesh Service</name>
     <description>This service allows clients to connect to seshs and interact with them</description>
     <properties>
         <java.version>17</java.version>
-         <git.repo.owner>PixelThump</git.repo.owner>
-         <git.repo.ownerlowercase>pixelthump</git.repo.ownerlowercase>
+        <git.repo.owner>PixelThump</git.repo.owner>
+        <git.repo.ownerlowercase>pixelthump</git.repo.ownerlowercase>
     </properties>
     <dependencies>
         <dependency>
@@ -78,9 +78,19 @@
             <artifactId>mariadb-java-client</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot</artifactId>
+            <version>3.0.5</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-maven-plugin</artifactId>
+                <version>3.0.5</version>
+            </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
