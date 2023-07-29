@@ -17,13 +17,13 @@ import java.util.List;
 
 @RestController
 @Log4j2
-public class HttpControllerImpl {
+public class SeshResource {
 
     private final SeshService seshService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public HttpControllerImpl(SeshService seshService, ModelMapper modelMapper) {
+    public SeshResource(SeshService seshService, ModelMapper modelMapper) {
 
         this.seshService = seshService;
         this.modelMapper = modelMapper;
@@ -43,7 +43,7 @@ public class HttpControllerImpl {
         return stringSeshTypes;
     }
 
-    @PostMapping
+    @PostMapping("/seshs")
     @ResponseBody
     public HttpSeshDTO createSesh(@RequestBody final String seshType) throws TooManySeshsHttpException {
 
@@ -52,10 +52,9 @@ public class HttpControllerImpl {
         HttpSeshDTO httpSeshDTO = modelMapper.map(sesh, HttpSeshDTO.class);
         log.info("HttpControllerImpl: Exiting createSesh(httpSeshDTO={})", httpSeshDTO);
         return httpSeshDTO;
-
     }
 
-    @GetMapping("/{seshCode}")
+    @GetMapping("/seshs/{seshCode}")
     public HttpSeshDTO getSesh(@PathVariable String seshCode) throws NoSuchSeshHttpException {
 
         log.info("HttpControllerImpl: Entering getSesh(seshCode={})", seshCode);
