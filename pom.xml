@@ -11,10 +11,12 @@
     <groupId>com.pixelthump</groupId>
     <artifactId>sesh-service</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <name>Sesh Service</name>
-    <description>The sesh component for the pixelthump gaming platform</description>
+    <name>Sesh Service </name>
+    <description>This service allows clients to connect to seshs and interact with them</description>
     <properties>
         <java.version>17</java.version>
+         <git.repo.owner>PixelThump</git.repo.owner>
+         <git.repo.ownerlowercase>pixelthump</git.repo.ownerlowercase>
     </properties>
     <dependencies>
         <dependency>
@@ -157,13 +159,13 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>sesh-service</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub pixelthump Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/pixelthump/sesh-service</url>
+            <name>GitHub ${git.repo.ownerlowercase} Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/${git.repo.ownerlowercase}/${project.artifactId}</url>
         </repository>
     </distributionManagement>
 </project>

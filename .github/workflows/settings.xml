@@ -17,7 +17,7 @@
         </repository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/pixelthump/sesh-service</url>
+          <url>https://maven.pkg.github.com/${env.OWNER}/${env.REPO_NAME}</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
@@ -29,7 +29,7 @@
   <servers>
     <server>
       <id>github</id>
-      <username>roboter5123</username>
+      <username>${env.OWNER}</username>
       <password>${env.ACCESS_TOKEN}</password>
     </server>
   </servers>

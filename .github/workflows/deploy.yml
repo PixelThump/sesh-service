@@ -29,17 +29,26 @@ jobs:
         run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean test jacoco:check package deploy --file pom.xml
         env:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
 
+
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
+        
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: pixelthump/sesh-service
+          image: ${{env.OWNER_LC}}/${{ github.event.repository.name }}
           tags: dev
           registry: ghcr.io
           dockerfile: Dockerfile
-          username: ${{ secrets.GHRC_USERNAME }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
