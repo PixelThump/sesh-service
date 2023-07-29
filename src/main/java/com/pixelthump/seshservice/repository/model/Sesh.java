@@ -11,6 +11,14 @@ public class Sesh {
     @JoinColumn(name = "sesh_type_name")
     private SeshType seshType;
 
+    public Sesh() {}
+
+    public Sesh(String seshCode, SeshType seshType) {
+
+        this.seshCode = seshCode;
+        this.seshType = seshType;
+    }
+
     public SeshType getSeshType() {
 
         return seshType;
