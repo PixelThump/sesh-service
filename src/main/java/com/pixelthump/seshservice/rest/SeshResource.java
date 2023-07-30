@@ -1,11 +1,10 @@
 package com.pixelthump.seshservice.rest;
 import com.pixelthump.seshservice.repository.model.Sesh;
 import com.pixelthump.seshservice.repository.model.SeshType;
-import com.pixelthump.seshservice.rest.exception.NoSuchSeshHttpException;
-import com.pixelthump.seshservice.rest.exception.TooManySeshsHttpException;
 import com.pixelthump.seshservice.rest.model.HttpSeshDTO;
 import com.pixelthump.seshservice.rest.model.SeshSeshType;
 import com.pixelthump.seshservice.service.SeshService;
+import com.pixelthump.seshservice.service.SeshTypeService;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -19,12 +18,14 @@ import java.util.List;
 public class SeshResource {
 
     private final SeshService seshService;
+    private final SeshTypeService seshTypeService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public SeshResource(SeshService seshService, ModelMapper modelMapper) {
+    public SeshResource(SeshService seshService, SeshTypeService seshTypeService, ModelMapper modelMapper) {
 
         this.seshService = seshService;
+        this.seshTypeService = seshTypeService;
         this.modelMapper = modelMapper;
     }
 
@@ -34,7 +35,7 @@ public class SeshResource {
 
         log.info("Entering getSeshtypes");
 
-        List<SeshType> seshTypes = seshService.getSeshtypes();
+        List<SeshType> seshTypes = seshTypeService.getSeshtypes();
 //        @formatter:off
         List<SeshSeshType> stringSeshTypes = modelMapper.map(seshTypes, new TypeToken<List<SeshSeshType>>() {}.getType());
         //        @formatter:on
@@ -44,7 +45,7 @@ public class SeshResource {
 
     @PostMapping("/seshs")
     @ResponseBody
-    public HttpSeshDTO createSesh(@RequestBody final String seshType) throws TooManySeshsHttpException {
+    public HttpSeshDTO createSesh(@RequestBody final String seshType){
 
         log.info("HttpControllerImpl: Entering createSesh(seshType={})", seshType);
         Sesh sesh = this.seshService.createSesh(seshType);
@@ -54,7 +55,7 @@ public class SeshResource {
     }
 
     @GetMapping("/seshs/{seshCode}")
-    public HttpSeshDTO getSesh(@PathVariable String seshCode) throws NoSuchSeshHttpException {
+    public HttpSeshDTO getSesh(@PathVariable String seshCode){
 
         log.info("HttpControllerImpl: Entering getSesh(seshCode={})", seshCode);
         Sesh sesh = this.seshService.getSesh(seshCode.toUpperCase());

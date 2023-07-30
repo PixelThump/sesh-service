@@ -2,6 +2,7 @@ package com.pixelthump.seshservice.service;
 import com.pixelthump.seshservice.repository.model.Sesh;
 import com.pixelthump.seshservice.repository.model.SeshType;
 import com.pixelthump.seshservice.rest.model.HttpSeshDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,10 +18,10 @@ public class SeshFactoryImpl implements SeshFactory {
     private final RestTemplate restTemplate;
     private final SeshTypeService seshTypeService;
 
-    public SeshFactoryImpl(SeshTypeService seshTypeService) {
-
+    @Autowired
+    public SeshFactoryImpl(SeshTypeService seshTypeService, RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         this.seshTypeService = seshTypeService;
-        restTemplate = new RestTemplate();
     }
 
     @Override

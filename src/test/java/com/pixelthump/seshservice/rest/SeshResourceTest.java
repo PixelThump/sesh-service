@@ -5,6 +5,7 @@ import com.pixelthump.seshservice.repository.model.SeshType;
 import com.pixelthump.seshservice.rest.model.HttpSeshDTO;
 import com.pixelthump.seshservice.rest.model.SeshSeshType;
 import com.pixelthump.seshservice.service.SeshService;
+import com.pixelthump.seshservice.service.SeshTypeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ class SeshResourceTest {
     @MockBean
     private SeshService seshService;
 
+    @MockBean
+    private SeshTypeService seshTypeService;
+
     @BeforeEach
     void setUp() {
 
@@ -36,7 +40,7 @@ class SeshResourceTest {
 
         List<SeshType> serviceResult = new ArrayList<>();
         serviceResult.add(new SeshType("quizxel"));
-        when(seshService.getSeshtypes()).thenReturn(serviceResult);
+        when(seshTypeService.getSeshtypes()).thenReturn(serviceResult);
         List<SeshSeshType> result = seshResource.getSeshTypes();
         List<SeshSeshType> expected = new ArrayList<>();
         expected.add(new SeshSeshType("quizxel"));

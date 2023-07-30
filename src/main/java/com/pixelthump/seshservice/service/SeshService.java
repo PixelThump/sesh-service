@@ -1,9 +1,6 @@
 package com.pixelthump.seshservice.service;
 import com.pixelthump.seshservice.repository.model.Sesh;
-import com.pixelthump.seshservice.repository.model.SeshType;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 public interface SeshService {
 
@@ -20,6 +17,4 @@ public interface SeshService {
      * @throws ResponseStatusException Thrown if there is no sesh with the given seshcode.
      */
     Sesh getSesh(String seshCode) throws ResponseStatusException;
-
-    List<SeshType> getSeshtypes();
 }

@@ -1,5 +1,8 @@
 package com.pixelthump.seshservice.repository.model;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
+
+import java.util.Objects;
 
 @Entity
 public class Sesh {
@@ -41,4 +44,18 @@ public class Sesh {
         this.seshCode = seshCode;
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Sesh sesh = (Sesh) o;
+        return getSeshCode() != null && Objects.equals(getSeshCode(), sesh.getSeshCode());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return getClass().hashCode();
+    }
 }

@@ -1,6 +1,5 @@
 package com.pixelthump.seshservice.service;
 import com.pixelthump.seshservice.repository.SeshRepository;
-import com.pixelthump.seshservice.repository.SeshTypeRepository;
 import com.pixelthump.seshservice.repository.model.Sesh;
 import com.pixelthump.seshservice.repository.model.SeshType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,15 @@ import java.util.Random;
 public class SeshServiceImpl implements SeshService {
 
     private final SeshRepository seshRepository;
-    private final SeshTypeRepository seshTypeRepository;
+    private final SeshTypeService seshTypeService;
     private final SeshFactory seshFactory;
     private final Random random;
 
     @Autowired
-    public SeshServiceImpl(final SeshRepository seshRepository, SeshTypeRepository seshTypeRepository, SeshFactory seshFactory, Random random) {
+    public SeshServiceImpl(final SeshRepository seshRepository, SeshTypeService seshTypeService, SeshFactory seshFactory, Random random) {
 
         this.seshRepository = seshRepository;
-        this.seshTypeRepository = seshTypeRepository;
+        this.seshTypeService = seshTypeService;
         this.seshFactory = seshFactory;
         this.random = random;
     }
@@ -35,8 +34,7 @@ public class SeshServiceImpl implements SeshService {
         SeshType seshType = getSeshtype(seshTypeName);
         String seshCode = generateSeshCode();
         Sesh sesh = seshFactory.createSesh(seshCode, seshType);
-        seshRepository.save(sesh);
-        return sesh;
+        return seshRepository.save(sesh);
     }
 
     @Override
@@ -50,20 +48,16 @@ public class SeshServiceImpl implements SeshService {
         return sesh.get();
     }
 
-    @Override
-    public List<SeshType> getSeshtypes() {
-
-        return seshTypeRepository.findAll();
-    }
-
     private SeshType getSeshtype(String seshTypeName) {
 
-        Optional<SeshType> seshTypeOptional = seshTypeRepository.findByName(seshTypeName);
-        if (seshTypeOptional.isEmpty()) {
+        try {
+
+            return seshTypeService.getSeshTypeByName(seshTypeName);
+        } catch (ResponseStatusException e) {
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return seshTypeOptional.get();
+
     }
 
     private String generateSeshCode() {
