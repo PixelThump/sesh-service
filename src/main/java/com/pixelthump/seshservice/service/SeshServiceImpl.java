@@ -32,12 +32,7 @@ public class SeshServiceImpl implements SeshService {
     @Override
     public Sesh createSesh(String seshTypeName) {
 
-        Optional<SeshType> seshTypeOptional = getSeshtype(seshTypeName);
-        if (seshTypeOptional.isEmpty()) {
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-        SeshType seshType = seshTypeOptional.get();
+        SeshType seshType = getSeshtype(seshTypeName);
         String seshCode = generateSeshCode();
         Sesh sesh = seshFactory.createSesh(seshCode, seshType);
         seshRepository.save(sesh);
@@ -61,9 +56,14 @@ public class SeshServiceImpl implements SeshService {
         return seshTypeRepository.findAll();
     }
 
-    private Optional<SeshType> getSeshtype(String seshTypeName) {
+    private SeshType getSeshtype(String seshTypeName) {
 
-        return seshTypeRepository.findByName(seshTypeName);
+        Optional<SeshType> seshTypeOptional = seshTypeRepository.findByName(seshTypeName);
+        if (seshTypeOptional.isEmpty()) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        return seshTypeOptional.get();
     }
 
     private String generateSeshCode() {

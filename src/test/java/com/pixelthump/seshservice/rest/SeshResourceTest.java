@@ -54,7 +54,7 @@ class SeshResourceTest {
     }
 
     @Test
-    void getSesh() {
+    void getSesh_shouldMapCorrectly() {
 
         Sesh quizxelSesh = new Sesh(new SeshType("quizxel"), "abcd");
         when(seshService.getSesh("ABCD")).thenReturn(quizxelSesh);

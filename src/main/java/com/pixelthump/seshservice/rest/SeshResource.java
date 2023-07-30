@@ -1,12 +1,11 @@
 package com.pixelthump.seshservice.rest;
 import com.pixelthump.seshservice.repository.model.Sesh;
 import com.pixelthump.seshservice.repository.model.SeshType;
-import com.pixelthump.seshservice.rest.model.HttpSeshDTO;
-import com.pixelthump.seshservice.rest.model.SeshSeshType;
 import com.pixelthump.seshservice.rest.exception.NoSuchSeshHttpException;
 import com.pixelthump.seshservice.rest.exception.TooManySeshsHttpException;
+import com.pixelthump.seshservice.rest.model.HttpSeshDTO;
+import com.pixelthump.seshservice.rest.model.SeshSeshType;
 import com.pixelthump.seshservice.service.SeshService;
-import com.pixelthump.seshservice.service.exception.NoSuchSeshException;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -58,17 +57,9 @@ public class SeshResource {
     public HttpSeshDTO getSesh(@PathVariable String seshCode) throws NoSuchSeshHttpException {
 
         log.info("HttpControllerImpl: Entering getSesh(seshCode={})", seshCode);
-
-        try {
-            Sesh sesh = this.seshService.getSesh(seshCode.toUpperCase());
-            HttpSeshDTO httpSeshDTO = modelMapper.map(sesh, HttpSeshDTO.class);
-            log.info("HttpControllerImpl: Exiting getSesh(httpSeshDTO={})", httpSeshDTO);
-            return httpSeshDTO;
-
-        } catch (NoSuchSeshException e) {
-
-            log.error("HttpControllerImpl: Exiting getSesh(error={})", e.getMessage());
-            throw new NoSuchSeshHttpException(e.getMessage());
-        }
+        Sesh sesh = this.seshService.getSesh(seshCode.toUpperCase());
+        HttpSeshDTO httpSeshDTO = modelMapper.map(sesh, HttpSeshDTO.class);
+        log.info("HttpControllerImpl: Exiting getSesh(httpSeshDTO={})", httpSeshDTO);
+        return httpSeshDTO;
     }
 }
