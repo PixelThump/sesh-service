@@ -10,6 +10,15 @@ public class SeshType {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public SeshType(String name) {
+
+        this.name = name;
+    }
+
+    public SeshType() {
+
+    }
+
     public String getName() {
 
         return name;

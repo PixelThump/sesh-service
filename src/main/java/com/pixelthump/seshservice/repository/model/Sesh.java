@@ -4,19 +4,21 @@ import jakarta.persistence.*;
 @Entity
 public class Sesh {
 
-    @Id
-    @Column(name = "sesh_code", nullable = false)
-    private String seshCode;
     @ManyToOne
     @JoinColumn(name = "sesh_type_name")
     private SeshType seshType;
+    @Id
+    @Column(name = "sesh_code", nullable = false)
+    private String seshCode;
 
-    public Sesh() {}
+    public Sesh() {
 
-    public Sesh(String seshCode, SeshType seshType) {
+    }
 
-        this.seshCode = seshCode;
+    public Sesh(SeshType seshType, String seshCode) {
+
         this.seshType = seshType;
+        this.seshCode = seshCode;
     }
 
     public SeshType getSeshType() {

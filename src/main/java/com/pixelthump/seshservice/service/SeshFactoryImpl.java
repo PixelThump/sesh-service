@@ -15,7 +15,6 @@ public class SeshFactoryImpl implements SeshFactory {
     @Value("${pixelthump.backend-basepath}")
     private String backendBasePath;
     private final RestTemplate restTemplate;
-
     private final SeshTypeService seshTypeService;
 
     public SeshFactoryImpl(SeshTypeService seshTypeService) {
@@ -36,6 +35,6 @@ public class SeshFactoryImpl implements SeshFactory {
 
         SeshType seshType = seshTypeService.getSeshTypeByName(response.getSeshType());
         String seshCode = response.getSeshCode();
-        return new Sesh(seshCode,seshType);
+        return new Sesh(seshType, seshCode);
     }
 }
