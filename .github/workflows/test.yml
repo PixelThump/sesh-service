@@ -13,7 +13,7 @@ on:
     branches: [ "!master" ]
   pull_request:
     branches: [ "master" ]
-    
+
 jobs:
   run_tests_and_add_coverage_to_pull_request:
     permissions: write-all
@@ -29,7 +29,7 @@ jobs:
           cache: maven
 
       - name: run tests with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean jacoco:check package --file pom.xml
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml -B clean jasypt:decrypt -Djasypt.encryptor.password=${{ secrets.ENCRYPTION_PASSWORD }} -Djasypt.plugin.path=file:$GITHUB_WORKSPACE/src/main/resources/application.properties -f pom.xml jacoco:check package --file pom.xml
 
       - name: Add coverage to pull request
         uses: madrapps/jacoco-report@v1.3
